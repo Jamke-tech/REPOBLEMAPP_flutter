@@ -22,7 +22,7 @@ class RepoblemAPP extends StatelessWidget {
 
 
       ),
-      initialRoute: '/login',
+      initialRoute: '/register',
 
 
       routes: {
