@@ -11,9 +11,9 @@ class User {
   String email;
   String phone;
   String profilePhoto;
-  DateTime Date;
+  DateTime birthDate;
 
-  User({this.userName,this.name,this.surname,this.password,this.email,this.phone,this.profilePhoto,this.Date});
+  User({this.userName,this.name,this.surname,this.password,this.email,this.phone,this.profilePhoto,this.birthDate});
 
 
 

@@ -15,7 +15,9 @@ class RepoblemAPP extends StatelessWidget {
       title: 'RepoblemAPP',
       theme: ThemeData(
         //Colors Primaris de la APP
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.green,
+        fontFamily: 'Brokenbrush',
+        scaffoldBackgroundColor: Colors.lightGreen[200],
 
         //Lletra de la app
 
