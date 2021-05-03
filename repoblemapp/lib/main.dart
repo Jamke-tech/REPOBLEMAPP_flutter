@@ -24,7 +24,7 @@ class RepoblemAPP extends StatelessWidget {
 
 
       ),
-      initialRoute: '/register',
+      initialRoute: '/edit_profile',
 
 
       routes: {
