@@ -1,7 +1,4 @@
-
-
 class User {
-
   //Variables del Usuari
 
   String userName;
@@ -13,18 +10,17 @@ class User {
   String profilePhoto;
   DateTime birthDate;
 
-  User({this.userName,this.name,this.surname,this.password,this.email,this.phone,this.profilePhoto,this.birthDate});
+  User(
+      {this.userName,
+      this.name,
+      this.surname,
+      this.password,
+      this.email,
+      this.phone,
+      this.profilePhoto,
+      this.birthDate});
 
-
-
-
-
-
-
-
-
-
-
-
-
+  String getUserName() {
+    return this.userName;
+  }
 }
