@@ -20,22 +20,16 @@ class RepoblemAPP extends StatelessWidget {
         scaffoldBackgroundColor: Colors.lightGreen[200],
 
         //Lletra de la app
-
-
-
       ),
-      initialRoute: '/edit_profile',
-
-
+      initialRoute: '/login',
       routes: {
         //Es posen totes les rutes de la aplicació
         '/login': (context) => LogIn(),
         '/register': (context) => Register(),
-        '/home':(context)=> Home(),
-        '/profile':(context)=>Profile(),
-        '/edit_profile':(context)=>EditProfile(),
+        '/home': (context) => Home(),
+        '/profile': (context) => Profile(),
+        '/edit_profile': (context) => EditProfile(),
       },
     );
   }
 }
-

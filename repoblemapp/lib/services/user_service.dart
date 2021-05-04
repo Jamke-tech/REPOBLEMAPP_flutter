@@ -55,16 +55,42 @@ class UsersManager {
     }
   }
 
+  //Funció per fer el login d'un usuari
+
+  Future<int> loginUser(User user) async {
+    try {
+      //Fem el post a la dirección /users/login con los datos de un usuario
+      print("Logging in user...");
+
+      http.Response response = await http.post(
+        Uri.parse("http://${endpoints.IpApi}/api/users/login"),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.acceptHeader: 'application/json',
+        },
+        body:
+            jsonEncode({"userName": user.userName, "password": user.password}),
+      );
+
+      print(response.body);
+      return int.parse(jsonDecode(response.body)["code"]);
+    } catch (error) {
+      print(error);
+      return 505;
+    }
+  }
+
 //Funció per agafar les dades d'un usauri
 
   Map mapResponse;
   Future<User> fetchUser() async {
-    http.Response response = await http
-        .get(Uri.parse("http://${endpoints.IpApi}/api/user/60804df402576135d0d05ad4"),//Este id debe venir no escrito
-         headers: {
-      HttpHeaders.contentTypeHeader: 'application/json',
-      HttpHeaders.acceptHeader: 'application/json',
-    });
+    http.Response response = await http.get(
+        Uri.parse(
+            "http://${endpoints.IpApi}/api/user/60804df402576135d0d05ad4"), //Este id debe venir no escrito
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.acceptHeader: 'application/json',
+        });
     if (response.statusCode == 200) {
       mapResponse = json.decode(response.body);
       User user = mapResponse["user"];
