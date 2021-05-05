@@ -6,6 +6,7 @@ import 'package:repoblemapp/services/user_service.dart';
 
 import 'package:flash/flash.dart';
 import 'package:repoblemapp/widgets/error_toast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LogIn extends StatefulWidget {
   @override
@@ -74,6 +75,8 @@ class _LogInState extends State<LogIn> {
                   ),
 
                   //Container perls camps
+
+                  //Usuari
                   Padding(
                     padding: EdgeInsets.fromLTRB(24, 4, 24, 4),
                     child: Container(
@@ -165,6 +168,8 @@ class _LogInState extends State<LogIn> {
                       ),
                     ),
                   ),
+
+                  //Contrasenya
                   Padding(
                     padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
                     child: ElevatedButton(
@@ -191,37 +196,53 @@ class _LogInState extends State<LogIn> {
                             );
                             print(loginUser.name);
 
-                            int code = await manager.loginUser(loginUser);
-                            print(code);
+                            Map userLogged = await manager.loginUser(loginUser);
+                            print(userLogged);
 
-                            //Comprovem quin codi ens retorna i fem les differents coses
-                            if (code == 200) {
-                              //Guardar token i id en share preferences
-                              Navigator.pushReplacementNamed(context,"/home");
-                              //Pàgina principal
-                              //
-                            } else if (code == 401) {
-                              //Repetición de correo o de nombre de Avatar
+                            //Comprovem si ens retorna null (hi ha hagut error)
+
+                            if (userLogged == null) {
                               showFlash(
                                   context: context,
                                   duration: const Duration(seconds: 3),
                                   builder: (context, controller) {
                                     return ErrorToast(
                                       controller: controller,
-                                      textshow: "Credencials incorrectes",
+                                      textshow: "Error en el servidor",
                                     );
                                   });
                             } else {
-                              //Error en el servidor o en el guardat de dades
-                              showFlash(
-                                  context: context,
-                                  duration: const Duration(seconds: 3),
-                                  builder: (context, controller) {
-                                    return ErrorToast(
-                                      controller: controller,
-                                      textshow: "Usuari no registrar",
-                                    );
-                                  });
+                              if (userLogged["code"] == 200) {
+                                SharedPreferences sharedPrefs =
+                                    await SharedPreferences.getInstance();
+                                sharedPrefs.setString("id", userLogged["id"]);
+                                //També recollir el token.....
+
+                                //Anar a la pàgina principal
+                                Navigator.pushReplacementNamed(
+                                    context, "/home");
+                              } else if (userLogged["code"] == 401) {
+                                //Error autenticació
+                                showFlash(
+                                    context: context,
+                                    duration: const Duration(seconds: 3),
+                                    builder: (context, controller) {
+                                      return ErrorToast(
+                                        controller: controller,
+                                        textshow: "Credencials incorrectes",
+                                      );
+                                    });
+                              } else {
+                                showFlash(
+                                    context: context,
+                                    duration: const Duration(seconds: 3),
+                                    builder: (context, controller) {
+                                      return ErrorToast(
+                                        controller: controller,
+                                        textshow: "Usuari no registrat",
+                                      );
+                                    });
+                              }
                             }
                           }
                         },

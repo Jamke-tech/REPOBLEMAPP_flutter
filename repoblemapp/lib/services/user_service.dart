@@ -55,7 +55,7 @@ class UsersManager {
 
   //Funció per fer el login d'un usuari
 
-  Future<int> loginUser(User user) async {
+  Future<Map> loginUser(User user) async {
     try {
       //Fem el post a la dirección /users/login con los datos de un usuario
       print("Logging in user...");
@@ -71,10 +71,11 @@ class UsersManager {
       );
 
       print(response.body);
-      return int.parse(jsonDecode(response.body)["code"]);
+
+      return jsonDecode(response.body);
     } catch (error) {
       print(error);
-      return 505;
+      return null;
     }
   }
 
@@ -104,8 +105,6 @@ class UsersManager {
     try {
       //Hacemos el PUT a la dirección /user con los datos de un usuario
       print("Updating user...");
-
-
 
       http.Response response = await http.put(
         Uri.parse("http://${endpoints.IpApi}/api/user/$id"),
