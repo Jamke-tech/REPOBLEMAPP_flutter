@@ -196,6 +196,8 @@ class _LogInState extends State<LogIn> {
 
                             //Comprovem quin codi ens retorna i fem les differents coses
                             if (code == 200) {
+                              //Guardar token i id en share preferences
+                              Navigator.pushReplacementNamed(context,"/home");
                               //Pàgina principal
                               //
                             } else if (code == 401) {

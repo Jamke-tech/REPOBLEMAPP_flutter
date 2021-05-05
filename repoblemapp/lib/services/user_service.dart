@@ -1,5 +1,3 @@
-import 'dart:js_util';
-
 import 'package:http/http.dart' as http;
 import 'package:repoblemapp/http_services/endpoints.dart';
 import 'package:repoblemapp/models/User.dart';
@@ -107,8 +105,10 @@ class UsersManager {
       //Hacemos el PUT a la dirección /user con los datos de un usuario
       print("Updating user...");
 
+
+
       http.Response response = await http.put(
-        Uri.parse("http://${endpoints.IpApi}/api/user/:id"),
+        Uri.parse("http://${endpoints.IpApi}/api/user/$id"),
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
           HttpHeaders.acceptHeader: 'application/json',
