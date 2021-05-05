@@ -78,35 +78,15 @@ class UsersManager {
     }
   }
 
-//Funció per agafar les dades d'un usauri
-
-  Map mapResponse;
-  Future<User> fetchUser() async {
-    http.Response response = await http.get(
-        Uri.parse(
-            "http://${endpoints.IpApi}/api/user/60804df402576135d0d05ad4"), //Este id debe venir no escrito
-        headers: {
-          HttpHeaders.contentTypeHeader: 'application/json',
-          HttpHeaders.acceptHeader: 'application/json',
-        });
-    if (response.statusCode == 200) {
-      mapResponse = json.decode(response.body);
-      User user = mapResponse["user"];
-      return user;
-    } else {
-      return null;
-    }
-  }
 
 //Funció per modificar un usauri
 
-  Future<int> updateUser(User user, String id) async {
+  Future<int> updateUser(User user) async {
     try {
       //Hacemos el PUT a la dirección /user con los datos de un usuario
       print("Updating user...");
-
-
-
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String id = prefs.getString('id');
       http.Response response = await http.put(
         Uri.parse("http://${endpoints.IpApi}/api/user/$id"),
         headers: {
