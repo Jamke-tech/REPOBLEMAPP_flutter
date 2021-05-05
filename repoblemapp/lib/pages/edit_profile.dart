@@ -23,17 +23,12 @@ class _EditProfileState extends State<EditProfile> {
 
   final _formKey = GlobalKey<FormState>();
   UsersManager manager = UsersManager.getInstance();
-  
-
- /* @override
-  void initState() {
-    super.initState();
-    futureUser = manager.fetchUser();
-  } */
 
   @override
   Widget build(BuildContext context) {
-    Future<User> futureUser = manager.fetchUser();
+    Map<String, dynamic> infoOfUser;
+    Map data = ModalRoute.of(context).settings.arguments;
+    infoOfUser = data['map']; //Sacamos de los argumentos la información del usuario
     return Scaffold(
       //resizeToAvoidBottomInset: false,
       body: Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
@@ -117,7 +112,6 @@ class _EditProfileState extends State<EditProfile> {
                                     return null;
                                   }
                                 },
-
                                 controller: userNameInputController,
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
@@ -129,8 +123,8 @@ class _EditProfileState extends State<EditProfile> {
                                       size: 35,
                                     ),
                                   ),
-                                  hintText:
-                                      "hola", 
+                                  labelText: infoOfUser["userName"],
+                                  hintText: "Nom avatar",
                                   hintStyle: TextStyle(
                                     fontSize: 20,
                                     color: Colors.teal[900],
@@ -162,6 +156,7 @@ class _EditProfileState extends State<EditProfile> {
                                       size: 35,
                                     ),
                                   ),
+                                  labelText: infoOfUser["name"],
                                   hintText: "Nom", //'Ingressa el teu nom',
                                   hintStyle: TextStyle(
                                     fontSize: 20,
@@ -195,6 +190,7 @@ class _EditProfileState extends State<EditProfile> {
                                       size: 35,
                                     ),
                                   ),
+                                  labelText: infoOfUser["surname"],
                                   hintText: "Cognom", //'Ingressa el teu nom',
                                   hintStyle: TextStyle(
                                     fontSize: 20,
@@ -237,6 +233,7 @@ class _EditProfileState extends State<EditProfile> {
                                       size: 35,
                                     ),
                                   ),
+                                  labelText: infoOfUser["date"],
                                   hintText:
                                       "Aniversari (YYYY-MM-DD)", //'Ingressa el teu nom',
                                   hintStyle: TextStyle(
@@ -271,6 +268,7 @@ class _EditProfileState extends State<EditProfile> {
                                       size: 35,
                                     ),
                                   ),
+                                  labelText: infoOfUser["phone"],
                                   hintText: "Telèfon", //'Ingressa el teu nom',
                                   hintStyle: TextStyle(
                                     fontSize: 20,
@@ -312,6 +310,7 @@ class _EditProfileState extends State<EditProfile> {
                                       size: 35,
                                     ),
                                   ),
+                                  labelText: infoOfUser["email"],
                                   hintText: "Correu Electrònic",
                                   hintStyle: TextStyle(
                                     fontSize: 20,
@@ -352,6 +351,7 @@ class _EditProfileState extends State<EditProfile> {
                                       size: 35,
                                     ),
                                   ),
+                                  labelText: infoOfUser["password"],
                                   hintText: "Contrasenya",
                                   hintStyle: TextStyle(
                                     fontSize: 20,
@@ -408,7 +408,7 @@ class _EditProfileState extends State<EditProfile> {
                             );
                             print(updatedUser.name);
 
-                           /* int code =
+                             int code =
                                 await manager.updateUser(updatedUser);
 
                             //Comprovem quin codi ens retorna
@@ -438,7 +438,7 @@ class _EditProfileState extends State<EditProfile> {
                                       textshow: "Servidor no disponible",
                                     );
                                   });
-                            }*/
+                            }
                           }
                         },
                         child: Text(
