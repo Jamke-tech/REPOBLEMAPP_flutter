@@ -79,6 +79,26 @@ class UsersManager {
     }
   }
 
+//Funció per mostrar un usuari
+  Future<Map> getUser() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String id = prefs.getString('id');
+      http.Response response = await http.get(
+        Uri.parse("http://${endpoints.IpApi}/api/user/$id"),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.acceptHeader: 'application/json',
+        },
+      );
+      print(response.body);
+      return jsonDecode(response.body);
+    } catch (error) {
+      print(error);
+      return null;
+    }
+  }
+
 //Funció per modificar un usauri
 
   Future<int> updateUser(User user) async {
