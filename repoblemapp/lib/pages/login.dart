@@ -76,9 +76,8 @@ class _LogInState extends State<LogIn> {
 
                   //Container perls camps
 
-                  //Usuari
                   Padding(
-                    padding: EdgeInsets.fromLTRB(24, 4, 24, 4),
+                    padding: EdgeInsets.fromLTRB(24, 250, 24, 4),
                     child: Container(
                       height: 120,
                       decoration: BoxDecoration(
@@ -97,6 +96,7 @@ class _LogInState extends State<LogIn> {
                         child: ListView(
                           children: [
                             Padding(
+                              //Usuari
                               padding: const EdgeInsets.fromLTRB(8, 8, 8, 2),
                               child: TextFormField(
                                 validator: (value) {
@@ -133,6 +133,7 @@ class _LogInState extends State<LogIn> {
                               ),
                             ),
                             Padding(
+                              //contrasenya
                               padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
                               child: TextFormField(
                                 controller: passwordInputController,
@@ -169,91 +170,126 @@ class _LogInState extends State<LogIn> {
                     ),
                   ),
 
-                  //Contrasenya
+                  //Botons
+
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.teal[900],
-                          elevation: 5,
-                          padding: EdgeInsets.all(15),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                        ),
-                        onPressed: () async {
-                          //Funció per fer el login
-                          //Comprovem que tots els camps estan omplerts
+                      padding: const EdgeInsets.fromLTRB(24, 120, 24, 8),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary: Colors.teal[900],
+                                  elevation: 5,
+                                  padding: EdgeInsets.all(15),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                ),
+                                onPressed: () async {
+                                  //Funció per fer el login
+                                  //Comprovem que tots els camps estan omplerts
 
-                          if (_formKey.currentState.validate()) {
-                            //Retorna True si tots els camps obligatoris estan plens
-                            //Hem d'agafar la instancia de User manage
-                            UsersManager manager = UsersManager.getInstance();
-                            //Creem el nou usuari
-                            User loginUser = new User(
-                              userName: userInputController.text,
-                              password: passwordInputController.text,
-                            );
-                            print(loginUser.name);
-
-                            Map userLogged = await manager.loginUser(loginUser);
-                            print(userLogged);
-
-                            //Comprovem si ens retorna null (hi ha hagut error)
-
-                            if (userLogged == null) {
-                              showFlash(
-                                  context: context,
-                                  duration: const Duration(seconds: 3),
-                                  builder: (context, controller) {
-                                    return ErrorToast(
-                                      controller: controller,
-                                      textshow: "Error en el servidor",
+                                  if (_formKey.currentState.validate()) {
+                                    //Retorna True si tots els camps obligatoris estan plens
+                                    //Hem d'agafar la instancia de User manage
+                                    UsersManager manager =
+                                        UsersManager.getInstance();
+                                    //Creem el nou usuari
+                                    User loginUser = new User(
+                                      userName: userInputController.text,
+                                      password: passwordInputController.text,
                                     );
-                                  });
-                            } else {
-                              if (userLogged["code"] == 200) {
-                                SharedPreferences sharedPrefs =
-                                    await SharedPreferences.getInstance();
-                                sharedPrefs.setString("id", userLogged["id"]);
-                                //També recollir el token.....
+                                    print(loginUser.name);
 
-                                //Anar a la pàgina principal
-                                Navigator.pushReplacementNamed(
-                                    context, "/home");
-                              } else if (userLogged["code"] == 401) {
-                                //Error autenticació
-                                showFlash(
-                                    context: context,
-                                    duration: const Duration(seconds: 3),
-                                    builder: (context, controller) {
-                                      return ErrorToast(
-                                        controller: controller,
-                                        textshow: "Credencials incorrectes",
-                                      );
-                                    });
-                              } else {
-                                showFlash(
-                                    context: context,
-                                    duration: const Duration(seconds: 3),
-                                    builder: (context, controller) {
-                                      return ErrorToast(
-                                        controller: controller,
-                                        textshow: "Usuari no registrat",
-                                      );
-                                    });
-                              }
-                            }
-                          }
-                        },
-                        child: Text(
-                          'Inicia sessió',
-                          style: TextStyle(
-                            fontSize: 25,
-                            color: Colors.teal[50],
+                                    Map userLogged =
+                                        await manager.loginUser(loginUser);
+                                    print(userLogged);
+
+                                    //Comprovem si ens retorna null (hi ha hagut error)
+
+                                    if (userLogged == null) {
+                                      showFlash(
+                                          context: context,
+                                          duration: const Duration(seconds: 3),
+                                          builder: (context, controller) {
+                                            return ErrorToast(
+                                              controller: controller,
+                                              textshow: "Error en el servidor",
+                                            );
+                                          });
+                                    } else {
+                                      if (userLogged["code"] == "200") {
+                                        SharedPreferences sharedPrefs =
+                                            await SharedPreferences
+                                                .getInstance();
+                                        sharedPrefs.setString(
+                                            "id", userLogged["id"]);
+                                        //També recollir el token.....
+
+                                        //Anar a la pàgina principal
+                                        Navigator.pushReplacementNamed(
+                                            context, "/home");
+                                      } else if (userLogged["code"] == "401") {
+                                        //Error autenticació
+                                        showFlash(
+                                            context: context,
+                                            duration:
+                                                const Duration(seconds: 3),
+                                            builder: (context, controller) {
+                                              return ErrorToast(
+                                                controller: controller,
+                                                textshow:
+                                                    "Credencials incorrectes",
+                                              );
+                                            });
+                                      } else {
+                                        showFlash(
+                                            context: context,
+                                            duration:
+                                                const Duration(seconds: 3),
+                                            builder: (context, controller) {
+                                              return ErrorToast(
+                                                controller: controller,
+                                                textshow: "Usuari no registrat",
+                                              );
+                                            });
+                                      }
+                                    }
+                                  }
+                                },
+                                child: Text(
+                                  'Inicia sessió',
+                                  style: TextStyle(
+                                    fontSize: 25,
+                                    color: Colors.teal[50],
+                                  ),
+                                )),
                           ),
-                        )),
-                  ),
+                          //Botó registrar-se
+                          Expanded(
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary: Colors.teal[900],
+                                  elevation: 5,
+                                  padding: EdgeInsets.all(15),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                ),
+                                onPressed: () async {
+                                  Navigator.pushNamed(context, "/register");
+                                },
+                                child: Text(
+                                  "Registra't",
+                                  style: TextStyle(
+                                    fontSize: 25,
+                                    color: Colors.teal[50],
+                                  ),
+                                )),
+                          )
+                        ],
+                      )),
                 ],
               )
             ],
