@@ -3,6 +3,7 @@ import 'dart:html';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:repoblemapp/pages/fav_offers.dart';
 import 'package:repoblemapp/pages/login.dart';
 import 'package:repoblemapp/pages/profile.dart';
 import 'package:repoblemapp/pages/register.dart';
@@ -15,7 +16,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int selectedIndex = 0;
 
-  final screen = [Profile(),LogIn(),Profile(),LogIn(),Profile()];
+  final screen = [Profile(),Fav(),Profile(),LogIn(),Profile()];
 
   Widget build(BuildContext context) {
     return Scaffold(
