@@ -1,7 +1,9 @@
 import 'package:flash/flash.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:repoblemapp/models/Offer.dart';
 import 'package:repoblemapp/models/User.dart';
+import 'package:repoblemapp/services/offer_service.dart';
 import 'package:repoblemapp/services/user_service.dart';
 import 'package:repoblemapp/widgets/error_toast.dart';
 import 'package:repoblemapp/widgets/offerscard.dart';
@@ -12,8 +14,40 @@ class Fav extends StatefulWidget {
 }
 
 class _FavState extends State<Fav> {
-  //de momento pongo las url de la imagen aqui, una lista para ver si funciona 
-  //Jaume necesitare tu ayuda :(
+
+  int numberOfFavourite =0;
+  List<Offer> infoOffersFavourite;
+
+  @override
+  void initState()  {
+    super.initState();
+    //Recuperamos la info de la BBDD sobre el usario
+    getInfoOffersFavorite();
+
+  }
+
+  void getInfoOffersFavorite() async{
+    UsersManager manager = UsersManager.getInstance();
+
+    Map<String,dynamic> infoBBDD = await manager.getUser();
+
+    setState(() {
+      numberOfFavourite=infoBBDD['savedOffers'].length;
+      infoOffersFavourite= infoBBDD['savedOffers'];
+
+    });
+
+
+
+  }
+
+
+
+
+  //de momento pongo las url de la imagen aqui, una lista para ver si funciona
+
+
+
   List<String> urls = [
     "https://www.femturisme.cat/_fotos/pobles/main/santa-coloma-cervello.jpg",
     "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/S%C3%BAria_Bages_Catalonia.jpg/266px-S%C3%BAria_Bages_Catalonia.jpg",
@@ -32,9 +66,8 @@ class _FavState extends State<Fav> {
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(8, 8, 8, 2),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: ListView(
+
           children: [
             Text(
               "Molt bon gust!",
@@ -96,15 +129,17 @@ class _FavState extends State<Fav> {
                           //Ponemos ya las ofertas
                           Container(
                             //Apartado de ofertas 
-                            child: ListView(
+                            child: ListView.builder(
+                              itemCount: numberOfFavourite,
                               scrollDirection: Axis.horizontal,
-                              children:[
+                              itemBuilder: _itemBuilder,
+                              /*children:[
                                 //probamos la primera card
                                 //EXAMPLE: offerCard(imagen, title, location, rating(number)),
                                 offerCard(urls[1], "Panadero del pueblo", "Santa Coloma de Cervelló", 3),
                                 offerCard(urls[1], "Agricultor", "Mora", 2),
                                 offerCard(urls[2], "Herrero", "Delta de l'Ebre", 4),
-                              ],
+                              ],*/
                               ),
                             ),
                           Container(
@@ -125,32 +160,12 @@ class _FavState extends State<Fav> {
         ),
       ),
       
-      //Propuesta de Barra inferior
-      bottomNavigationBar: BottomNavigationBar(
-        unselectedItemColor: Color(0xFFB78787),
-        selectedItemColor: Color(0xFFFE8C68),
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.star),
-            title: Text("Fav"),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add),
-            title: Text("Add Offer"),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            title: Text("Home"),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.people),
-            title: Text("Social"),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            title: Text("Profile"),
-          ),
-        ],),
+
     );
+  }
+  
+  Widget _itemBuilder(BuildContext context, int index){
+    return offerCard(urls[index],infoOffersFavourite[index].title, infoOffersFavourite[index].village, 2);
+
   }
 }

@@ -91,8 +91,17 @@ class UsersManager {
           HttpHeaders.acceptHeader: 'application/json',
         },
       );
-      print(response.body);
-      return jsonDecode(response.body);
+
+      Map<String,dynamic> infoBBDD = jsonDecode(response.body);
+      print(infoBBDD);
+      if(infoBBDD['code']=="200"){
+        print('ENTRO');
+        return infoBBDD['user'];
+      }
+      else{
+        return null;
+      }
+
     } catch (error) {
       print(error);
       return null;

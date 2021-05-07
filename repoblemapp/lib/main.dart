@@ -22,7 +22,7 @@ class RepoblemAPP extends StatelessWidget {
 
         //Lletra de la app
       ),
-      initialRoute: '/profile',
+      initialRoute: '/login',
       routes: {
         //Es posen totes les rutes de la aplicació
         '/login': (context) => LogIn(),

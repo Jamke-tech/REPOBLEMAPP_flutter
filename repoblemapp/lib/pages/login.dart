@@ -95,6 +95,7 @@ class _LogInState extends State<LogIn> {
                         autovalidateMode: AutovalidateMode.disabled,
                         child: ListView(
                           children: [
+
                             Padding(
                               //Usuari
                               padding: const EdgeInsets.fromLTRB(8, 8, 8, 2),
@@ -156,7 +157,7 @@ class _LogInState extends State<LogIn> {
                                 // Formato del teclado de entrada
                                 keyboardType: TextInputType
                                     .text, //Formato de texto normal
-                                textInputAction: TextInputAction.next,
+                                textInputAction: TextInputAction.send,
 
                                 style: TextStyle(
                                   fontSize: 20,

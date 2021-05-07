@@ -48,6 +48,11 @@ class _RegisterState extends State<Register> {
                         padding: EdgeInsets.all(24),
                         height: 60,
                         decoration:BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(15),
+                              bottomRight: Radius.circular(15)
+
+                          ),
                           gradient: LinearGradient(
                               colors: [Colors.green,Colors.green[300]]
                           ),
@@ -64,6 +69,11 @@ class _RegisterState extends State<Register> {
                       padding: EdgeInsets.all(24),
                       height: 120,
                       decoration:BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(15),
+                          topRight: Radius.circular(15)
+                          
+                        ),
                         gradient: LinearGradient(
                             colors: [Colors.green,Colors.green[300]]
                         ),
@@ -156,6 +166,7 @@ class _RegisterState extends State<Register> {
                                   ),
                                 ),
                               ),
+
                               //NOM D'USUARI
                               Padding(
                               padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
@@ -533,10 +544,6 @@ class _RegisterState extends State<Register> {
 
                                     }
                                 );
-
-
-
-
 
                               }
 

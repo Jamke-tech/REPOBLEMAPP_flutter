@@ -12,5 +12,6 @@ class Endpoints {
   }
 
   //Valores de las API points
-  final String IpApi = '127.0.0.1:25000';
+  final String IpApi = '10.0.2.2:25000';
+  final String photoIP = '10.0.2.2:25000';
 }

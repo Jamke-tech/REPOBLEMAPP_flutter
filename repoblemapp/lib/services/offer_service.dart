@@ -24,6 +24,26 @@ class OffersManager{
   //Recuperem els endpoints de la clase
   Endpoints endpoints = Endpoints.getInstance();
 
+  Future<Map> getOffers() async {
+    try {
+
+      http.Response response = await http.get(
+        Uri.parse("http://${endpoints.IpApi}/api/offers"),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.acceptHeader: 'application/json',
+        },
+
+      );
+      return jsonDecode(response.body);
+    } catch (error) {
+      print(error);
+      return null;
+    }
+  }
+
+
+
   //Funció per crear una oferta
   Future<int> createOffer(Offer offer) async {
     try {
