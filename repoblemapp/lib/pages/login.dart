@@ -95,6 +95,7 @@ class _LogInState extends State<LogIn> {
                         autovalidateMode: AutovalidateMode.disabled,
                         child: ListView(
                           children: [
+
                             Padding(
                               //Usuari
                               padding: const EdgeInsets.fromLTRB(8, 8, 8, 2),

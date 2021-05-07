@@ -31,6 +31,33 @@ class _EditProfileState extends State<EditProfile> {
     //infoOfUser = data['map']; //Sacamos de los argumentos la información del usuario
     return Scaffold(
       //resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+
+        elevation: 10,
+        backgroundColor: Colors.teal[400],
+        title: Text(
+          "Modifica el teu perfil ",
+          style: TextStyle(
+            fontSize: 35,
+            fontFamily: "Hontana",
+
+            color: Colors.black,
+
+          ),),
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_outlined,
+            color: Colors.black,
+            size: 40,),
+          onPressed: (){
+            Navigator.pop(context);
+          },
+        ),
+
+
+
+      ),
       body: Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
         Expanded(
           child: Stack(
@@ -66,20 +93,6 @@ class _EditProfileState extends State<EditProfile> {
               ),
               ListView(
                 children: [
-                  //Titol de la pagina
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(24, 10, 24, 6),
-                    child: Center(
-                      child: Text(
-                        "Modificar usuari", //Intentar posar nom,
-                        style: TextStyle(
-                          fontSize: 45,
-                          fontFamily: 'Hontana',
-                          color: Colors.teal[900],
-                        ),
-                      ),
-                    ),
-                  ),
 
                   //Conatiner pels camps
                   Padding(
