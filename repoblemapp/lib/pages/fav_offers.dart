@@ -32,9 +32,8 @@ class _FavState extends State<Fav> {
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(8, 8, 8, 2),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: ListView(
+          
           children: [
             Text(
               "Molt bon gust!",
@@ -125,32 +124,7 @@ class _FavState extends State<Fav> {
         ),
       ),
       
-      //Propuesta de Barra inferior
-      bottomNavigationBar: BottomNavigationBar(
-        unselectedItemColor: Color(0xFFB78787),
-        selectedItemColor: Color(0xFFFE8C68),
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.star),
-            title: Text("Fav"),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add),
-            title: Text("Add Offer"),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            title: Text("Home"),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.people),
-            title: Text("Social"),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            title: Text("Profile"),
-          ),
-        ],),
+
     );
   }
 }

@@ -157,7 +157,7 @@ class _LogInState extends State<LogIn> {
                                 // Formato del teclado de entrada
                                 keyboardType: TextInputType
                                     .text, //Formato de texto normal
-                                textInputAction: TextInputAction.next,
+                                textInputAction: TextInputAction.send,
 
                                 style: TextStyle(
                                   fontSize: 20,

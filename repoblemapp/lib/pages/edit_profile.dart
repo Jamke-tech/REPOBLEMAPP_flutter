@@ -15,10 +15,8 @@ class _EditProfileState extends State<EditProfile> {
   final nameInputController = TextEditingController();
   final surnameInputController = TextEditingController();
   final emailInputController = TextEditingController();
-  final repeatedEmailInputController = TextEditingController();
   final phoneInputController = TextEditingController();
   final passwordInputController = TextEditingController();
-  final repeatedPasswordInputController = TextEditingController();
   final birthDayInputController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
@@ -26,11 +24,22 @@ class _EditProfileState extends State<EditProfile> {
 
   @override
   Widget build(BuildContext context) {
-   // Map<String, dynamic> infoOfUser;
-    //Map data = ModalRoute.of(context).settings.arguments;
-    //infoOfUser = data['map']; //Sacamos de los argumentos la información del usuario
+    Map<String, dynamic> infoOfUser;
+    Map data = ModalRoute.of(context).settings.arguments;
+    infoOfUser = data['map']; //Sacamos de los argumentos la información del usuario
+
+    //Establecemos los valores de ls campos a modificar
+    userNameInputController.text=infoOfUser['userName'];
+
+    DateTime aniversari = DateTime.parse(infoOfUser['birthDate']);
+
+
+
+
+
+
     return Scaffold(
-      //resizeToAvoidBottomInset: false,
+
       appBar: AppBar(
 
         elevation: 10,
@@ -114,6 +123,7 @@ class _EditProfileState extends State<EditProfile> {
                         autovalidateMode: AutovalidateMode.disabled,
                         child: ListView(
                           children: [
+
                             //NOM AVATAR
                             Padding(
                               padding: const EdgeInsets.fromLTRB(8, 8, 8, 20),
@@ -136,8 +146,7 @@ class _EditProfileState extends State<EditProfile> {
                                       size: 35,
                                     ),
                                   ),
-                                  //labelText: infoOfUser["userName"],
-                                  hintText: "Nom avatar",
+                                  hintText: infoOfUser["userName"],
                                   hintStyle: TextStyle(
                                     fontSize: 20,
                                     color: Colors.teal[900],
@@ -154,6 +163,7 @@ class _EditProfileState extends State<EditProfile> {
                                 ),
                               ),
                             ),
+
                             //NOM D'USUARI
                             Padding(
                               padding: const EdgeInsets.fromLTRB(8, 0, 8, 20),
