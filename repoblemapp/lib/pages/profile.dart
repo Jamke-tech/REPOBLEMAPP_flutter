@@ -19,26 +19,22 @@ class _ProfileState extends State<Profile> {
   Map<String, dynamic> userDetails;
 
   @override
-  void initState()  {
+  void initState() {
     super.initState();
     //Recuperamos la info de la BBDD sobre el usario
     getInfoUser();
-
   }
 
   void getInfoUser() async {
-    UsersManager manager =UsersManager.getInstance();
+    UsersManager manager = UsersManager.getInstance();
     Map infoget = await manager.getUser();
     setState(() {
       userDetails = infoget;
     });
     print(userDetails);
-
-
   }
+
   Endpoints endpoints = Endpoints.getInstance();
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -47,45 +43,40 @@ class _ProfileState extends State<Profile> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+          title: Text(
             'El meu perfil',
-        style: TextStyle(
-          fontFamily: 'Hontana',
-          fontSize: 35,
-          color: Colors.black,
-        ),),
-        centerTitle: true,
-        backgroundColor: Colors.green[300],
-        actions: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 8, 24, 8),
-            child: IconButton(
-                icon: Icon(
-                  Icons.edit
-                ),
-                onPressed: (){
-                  if (userDetails != null) {
+            style: TextStyle(
+              fontFamily: 'Hontana',
+              fontSize: 35,
+              color: Colors.black,
+            ),
+          ),
+          centerTitle: true,
+          backgroundColor: Colors.green[300],
+          actions: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 8, 24, 8),
+              child: IconButton(
+                  icon: Icon(Icons.edit),
+                  onPressed: () {
+                    if (userDetails != null) {
                       Navigator.pushNamed(context, '/edit_profile', arguments: {
-                                        'map': userDetails,
-                                      });
-                  }
-                  else {
-                    showFlash(
-                        context: context,
-                        duration: const Duration(seconds: 3),
-                        builder: (context, controller) {
+                        'map': userDetails,
+                      });
+                    } else {
+                      showFlash(
+                          context: context,
+                          duration: const Duration(seconds: 3),
+                          builder: (context, controller) {
                             return ErrorToast(
-                                controller: controller,
-                                textshow: "Servidor no disponible",
-                              );
+                              controller: controller,
+                              textshow: "Servidor no disponible",
+                            );
                           });
                     }
-
-                }),
-          )
-          ]
-
-      ),
+                  }),
+            )
+          ]),
       body: Column(
         children: <Widget>[
           Expanded(
@@ -110,8 +101,7 @@ class _ProfileState extends State<Profile> {
                         SizedBox(
                           height: 10.0,
                         ),
-                        Text(
-                            userDetails['name'],
+                        Text(userDetails['userName'],
                             style:
                                 TextStyle(fontSize: 22.0, color: Colors.white)),
                       ]),
@@ -120,35 +110,91 @@ class _ProfileState extends State<Profile> {
             ),
           ),
           Expanded(
-            flex:3,
+            flex: 3,
             child: Container(
               child: ListView(
+                padding: const EdgeInsets.all(8),
                 children: [
-                  Text(
-                    "User Name:",
-                    style: TextStyle(
-                        color: Colors.redAccent,
-                        fontStyle: FontStyle.normal,
-                        fontSize: 28.0),
+                  Container(
+                    height: 50,
+                    color: Colors.green[100],
+                    child: Text(
+                      "Name: ${userDetails['name']}",
+                      style: TextStyle(
+                          color: Colors.green[900],
+                          fontStyle: FontStyle.normal,
+                          fontSize: 28.0),
+                      textAlign: TextAlign.center,
+                    ),
                   ),
-                  SizedBox(
-                    height: 10.0,
+                  const Divider(
+                    height: 10,
+                    thickness: 5,
                   ),
-                  Text(
-                    "User Name:",
-                    style: TextStyle(
-                        color: Colors.redAccent,
-                        fontStyle: FontStyle.normal,
-                        fontSize: 28.0),
+                  Container(
+                    height: 50,
+                    color: Colors.green[100],
+                    child: Text(
+                      "Surname: ${userDetails['surname']}",
+                      style: TextStyle(
+                          color: Colors.green[900],
+                          fontStyle: FontStyle.normal,
+                          fontSize: 28.0),
+                      textAlign: TextAlign.center,
+                    ),
                   ),
-
+                  const Divider(
+                    height: 10,
+                    thickness: 5,
+                  ),
+                  Container(
+                    height: 50,
+                    color: Colors.green[100],
+                    child: Text(
+                      "Mail: ${userDetails['email']}",
+                      style: TextStyle(
+                          color: Colors.green[900],
+                          fontStyle: FontStyle.normal,
+                          fontSize: 28.0),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  const Divider(
+                    height: 10,
+                    thickness: 5,
+                  ),
+                  Container(
+                    height: 50,
+                    color: Colors.green[100],
+                    child: Text(
+                      "Phone: ${userDetails['phone']}",
+                      style: TextStyle(
+                          color: Colors.green[900],
+                          fontStyle: FontStyle.normal,
+                          fontSize: 28.0),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  const Divider(
+                    height: 10,
+                    thickness: 5,
+                  ),
+                  Container(
+                    height: 50,
+                    color: Colors.green[100],
+                    child: Text(
+                      "Birth Date: ${userDetails['birthDate']}",
+                      style: TextStyle(
+                          color: Colors.green[900],
+                          fontStyle: FontStyle.normal,
+                          fontSize: 28.0),
+                      textAlign: TextAlign.center,
+                    ),
+                  )
                 ],
-
               ),
             ),
           ),
-
-
 
           /*ListView(
             padding: const EdgeInsets.all(8),
