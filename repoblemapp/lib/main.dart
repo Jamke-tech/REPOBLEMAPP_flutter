@@ -4,6 +4,7 @@ import 'package:repoblemapp/pages/home.dart';
 import 'package:repoblemapp/pages/login.dart';
 import 'package:repoblemapp/pages/profile.dart';
 import 'package:repoblemapp/pages/register.dart';
+import 'package:repoblemapp/pages/fav_offers.dart';
 
 void main() => runApp(RepoblemAPP());
 
@@ -29,6 +30,7 @@ class RepoblemAPP extends StatelessWidget {
         '/home': (context) => Home(),
         '/profile': (context) => Profile(),
         '/edit_profile': (context) => EditProfile(),
+        '/fav_offers': (context) => Fav(),
       },
     );
   }
