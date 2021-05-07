@@ -26,9 +26,9 @@ class _EditProfileState extends State<EditProfile> {
 
   @override
   Widget build(BuildContext context) {
-    Map<String, dynamic> infoOfUser;
-    Map data = ModalRoute.of(context).settings.arguments;
-    infoOfUser = data['map']; //Sacamos de los argumentos la información del usuario
+   // Map<String, dynamic> infoOfUser;
+    //Map data = ModalRoute.of(context).settings.arguments;
+    //infoOfUser = data['map']; //Sacamos de los argumentos la información del usuario
     return Scaffold(
       //resizeToAvoidBottomInset: false,
       body: Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
@@ -36,23 +36,11 @@ class _EditProfileState extends State<EditProfile> {
           child: Stack(
             children: [
               Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Expanded(
                     flex: 2,
-                    child: Container(
-                      padding: EdgeInsets.all(24),
-                      height: 60,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                            colors: [Colors.green, Colors.green[300]]),
-                      ),
-                    ),
-                  ),
-                  Expanded(flex: 5, child: Container()),
-                  Expanded(
-                    flex: 1,
                     child: Container(
                       padding: EdgeInsets.all(24),
                       height: 120,
@@ -62,6 +50,18 @@ class _EditProfileState extends State<EditProfile> {
                       ),
                     ),
                   ),
+                  /*Expanded(flex: 2, child: Container()),
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      padding: EdgeInsets.all(24),
+                      height: 240,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            colors: [Colors.green, Colors.green[300]]),
+                      ),
+                    ),
+                  ),*/
                 ],
               ),
               ListView(
@@ -83,11 +83,11 @@ class _EditProfileState extends State<EditProfile> {
 
                   //Conatiner pels camps
                   Padding(
-                    padding: EdgeInsets.fromLTRB(24, 4, 24, 4),
+                    padding: EdgeInsets.fromLTRB(24, 40, 24, 80),
                     child: Container(
                       height: 500,
                       decoration: BoxDecoration(
-                          color: Colors.teal[50],
+                          color: Colors.green[100],
                           borderRadius: BorderRadius.circular(15),
                           boxShadow: [
                             BoxShadow(
@@ -103,7 +103,7 @@ class _EditProfileState extends State<EditProfile> {
                           children: [
                             //NOM AVATAR
                             Padding(
-                              padding: const EdgeInsets.fromLTRB(8, 8, 8, 2),
+                              padding: const EdgeInsets.fromLTRB(8, 8, 8, 20),
                               child: TextFormField(
                                 validator: (value) {
                                   if (value.isEmpty) {
@@ -123,7 +123,7 @@ class _EditProfileState extends State<EditProfile> {
                                       size: 35,
                                     ),
                                   ),
-                                  labelText: infoOfUser["userName"],
+                                  //labelText: infoOfUser["userName"],
                                   hintText: "Nom avatar",
                                   hintStyle: TextStyle(
                                     fontSize: 20,
@@ -143,7 +143,7 @@ class _EditProfileState extends State<EditProfile> {
                             ),
                             //NOM D'USUARI
                             Padding(
-                              padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                              padding: const EdgeInsets.fromLTRB(8, 0, 8, 20),
                               child: TextFormField(
                                 controller: nameInputController,
                                 decoration: InputDecoration(
@@ -156,7 +156,7 @@ class _EditProfileState extends State<EditProfile> {
                                       size: 35,
                                     ),
                                   ),
-                                  labelText: infoOfUser["name"],
+                                  //labelText: infoOfUser["name"],
                                   hintText: "Nom", //'Ingressa el teu nom',
                                   hintStyle: TextStyle(
                                     fontSize: 20,
@@ -177,7 +177,7 @@ class _EditProfileState extends State<EditProfile> {
 
                             //COGNOM
                             Padding(
-                              padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                              padding: const EdgeInsets.fromLTRB(8, 0, 8, 20),
                               child: TextFormField(
                                 controller: surnameInputController,
                                 decoration: InputDecoration(
@@ -190,7 +190,7 @@ class _EditProfileState extends State<EditProfile> {
                                       size: 35,
                                     ),
                                   ),
-                                  labelText: infoOfUser["surname"],
+                                  //labelText: infoOfUser["surname"],
                                   hintText: "Cognom", //'Ingressa el teu nom',
                                   hintStyle: TextStyle(
                                     fontSize: 20,
@@ -211,7 +211,7 @@ class _EditProfileState extends State<EditProfile> {
 
                             //ANIVERSARI
                             Padding(
-                              padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                              padding: const EdgeInsets.fromLTRB(8, 0, 8, 20),
                               child: TextFormField(
                                 validator: (value) {
                                   try {
@@ -233,7 +233,7 @@ class _EditProfileState extends State<EditProfile> {
                                       size: 35,
                                     ),
                                   ),
-                                  labelText: infoOfUser["date"],
+                                  //labelText: infoOfUser["date"],
                                   hintText:
                                       "Aniversari (YYYY-MM-DD)", //'Ingressa el teu nom',
                                   hintStyle: TextStyle(
@@ -255,7 +255,7 @@ class _EditProfileState extends State<EditProfile> {
 
                             //NUMERO DE TELEFON
                             Padding(
-                              padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                              padding: const EdgeInsets.fromLTRB(8, 0, 8, 20),
                               child: TextFormField(
                                 controller: phoneInputController,
                                 decoration: InputDecoration(
@@ -268,7 +268,7 @@ class _EditProfileState extends State<EditProfile> {
                                       size: 35,
                                     ),
                                   ),
-                                  labelText: infoOfUser["phone"],
+                                  //labelText: infoOfUser["phone"],
                                   hintText: "Telèfon", //'Ingressa el teu nom',
                                   hintStyle: TextStyle(
                                     fontSize: 20,
@@ -289,7 +289,7 @@ class _EditProfileState extends State<EditProfile> {
 
                             //Correu
                             Padding(
-                              padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                              padding: const EdgeInsets.fromLTRB(8, 0, 8, 20),
                               child: TextFormField(
                                 validator: (value) {
                                   if (value.isEmpty) {
@@ -310,7 +310,7 @@ class _EditProfileState extends State<EditProfile> {
                                       size: 35,
                                     ),
                                   ),
-                                  labelText: infoOfUser["email"],
+                                  //labelText: infoOfUser["email"],
                                   hintText: "Correu Electrònic",
                                   hintStyle: TextStyle(
                                     fontSize: 20,
@@ -331,7 +331,7 @@ class _EditProfileState extends State<EditProfile> {
 
                             //Contrasenya
                             Padding(
-                              padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                              padding: const EdgeInsets.fromLTRB(8, 0, 8, 20),
                               child: TextFormField(
                                 validator: (value) {
                                   if (value.isEmpty) {
@@ -351,7 +351,7 @@ class _EditProfileState extends State<EditProfile> {
                                       size: 35,
                                     ),
                                   ),
-                                  labelText: infoOfUser["password"],
+                                  //labelText: infoOfUser["password"],
                                   hintText: "Contrasenya",
                                   hintStyle: TextStyle(
                                     fontSize: 20,
