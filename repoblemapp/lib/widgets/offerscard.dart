@@ -14,7 +14,13 @@ Widget offerCard(String imgUrl, String title, String ubication, int rating){
       elevation: 5.0,
       shadowColor: Color(0x55434343),
       child: InkWell(
-        onTap: (){},
+        onTap: (){
+
+
+
+
+
+        },
         child: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
