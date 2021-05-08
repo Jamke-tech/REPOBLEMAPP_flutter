@@ -164,8 +164,8 @@ class _FavState extends State<Fav> {
     );
   }
   
+  //Nos permite crear tantas de cards como ofertas haya
   Widget _itemBuilder(BuildContext context, int index){
     return offerCard(urls[index],infoOffersFavourite[index].title, infoOffersFavourite[index].village, 2);
-
   }
 }
