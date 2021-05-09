@@ -61,12 +61,12 @@ class _LogInState extends State<LogIn> {
                 children: [
                   //titol
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(24, 10, 24, 6),
+                    padding: const EdgeInsets.fromLTRB(24, 34, 24, 6),
                     child: Center(
                       child: Text(
                         "Log in",
                         style: TextStyle(
-                          fontSize: 45,
+                          fontSize: 60,
                           fontFamily: 'Hontana',
                           color: Colors.teal[900],
                         ),
@@ -77,7 +77,7 @@ class _LogInState extends State<LogIn> {
                   //Container perls camps
 
                   Padding(
-                    padding: EdgeInsets.fromLTRB(24, 250, 24, 4),
+                    padding: EdgeInsets.fromLTRB(24, 60, 24, 4),
                     child: Container(
                       height: 120,
                       decoration: BoxDecoration(
@@ -173,124 +173,182 @@ class _LogInState extends State<LogIn> {
 
                   //Botons
 
-                  Padding(
-                      padding: const EdgeInsets.fromLTRB(24, 120, 24, 8),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  primary: Colors.teal[900],
-                                  elevation: 5,
-                                  padding: EdgeInsets.all(15),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                ),
-                                onPressed: () async {
-                                  //Funció per fer el login
-                                  //Comprovem que tots els camps estan omplerts
-
-                                  if (_formKey.currentState.validate()) {
-                                    //Retorna True si tots els camps obligatoris estan plens
-                                    //Hem d'agafar la instancia de User manage
-                                    UsersManager manager =
-                                        UsersManager.getInstance();
-                                    //Creem el nou usuari
-                                    User loginUser = new User(
-                                      userName: userInputController.text,
-                                      password: passwordInputController.text,
-                                    );
-                                    print(loginUser.name);
-
-                                    Map userLogged =
-                                        await manager.loginUser(loginUser);
-                                    print(userLogged);
-
-                                    //Comprovem si ens retorna null (hi ha hagut error)
-
-                                    if (userLogged == null) {
-                                      showFlash(
-                                          context: context,
-                                          duration: const Duration(seconds: 3),
-                                          builder: (context, controller) {
-                                            return ErrorToast(
-                                              controller: controller,
-                                              textshow: "Error en el servidor",
-                                            );
-                                          });
-                                    } else {
-                                      if (userLogged["code"] == "200") {
-                                        SharedPreferences sharedPrefs =
-                                            await SharedPreferences
-                                                .getInstance();
-                                        sharedPrefs.setString(
-                                            "id", userLogged["id"]);
-                                        //També recollir el token.....
-
-                                        //Anar a la pàgina principal
-                                        Navigator.pushReplacementNamed(
-                                            context, "/home");
-                                      } else if (userLogged["code"] == "401") {
-                                        //Error autenticació
-                                        showFlash(
-                                            context: context,
-                                            duration:
-                                                const Duration(seconds: 3),
-                                            builder: (context, controller) {
-                                              return ErrorToast(
-                                                controller: controller,
-                                                textshow:
-                                                    "Credencials incorrectes",
-                                              );
-                                            });
-                                      } else {
-                                        showFlash(
-                                            context: context,
-                                            duration:
-                                                const Duration(seconds: 3),
-                                            builder: (context, controller) {
-                                              return ErrorToast(
-                                                controller: controller,
-                                                textshow: "Usuari no registrat",
-                                              );
-                                            });
-                                      }
-                                    }
-                                  }
-                                },
-                                child: Text(
-                                  'Inicia sessió',
-                                  style: TextStyle(
-                                    fontSize: 25,
-                                    color: Colors.teal[50],
-                                  ),
-                                )),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(24, 24, 24, 4),
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.teal[900],
+                            elevation: 5,
+                            padding: EdgeInsets.all(15),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
                           ),
-                          //Botó registrar-se
-                          Expanded(
-                            child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  primary: Colors.teal[900],
-                                  elevation: 5,
-                                  padding: EdgeInsets.all(15),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                ),
-                                onPressed: () async {
-                                  Navigator.pushNamed(context, "/register");
-                                },
-                                child: Text(
-                                  "Registra't",
-                                  style: TextStyle(
-                                    fontSize: 25,
-                                    color: Colors.teal[50],
-                                  ),
-                                )),
-                          )
-                        ],
-                      )),
+                          onPressed: () async {
+                            //Funció per fer el login
+                            //Comprovem que tots els camps estan omplerts
+
+                            if (_formKey.currentState.validate()) {
+                              //Retorna True si tots els camps obligatoris estan plens
+                              //Hem d'agafar la instancia de User manage
+                              UsersManager manager =
+                                  UsersManager.getInstance();
+                              //Creem el nou usuari
+                              User loginUser = new User(
+                                userName: userInputController.text,
+                                password: passwordInputController.text,
+                              );
+                              print(loginUser.name);
+
+                              Map userLogged =
+                                  await manager.loginUser(loginUser);
+                              print(userLogged);
+
+                              //Comprovem si ens retorna null (hi ha hagut error)
+
+                              if (userLogged == null) {
+                                showFlash(
+                                    context: context,
+                                    duration: const Duration(seconds: 3),
+                                    builder: (context, controller) {
+                                      return ErrorToast(
+                                        controller: controller,
+                                        textshow: "Error en el servidor",
+                                      );
+                                    });
+                              } else {
+                                if (userLogged["code"] == "200") {
+                                  SharedPreferences sharedPrefs =
+                                      await SharedPreferences
+                                          .getInstance();
+                                  sharedPrefs.setString(
+                                      "id", userLogged["id"]);
+                                  //També recollir el token.....
+
+                                  //Anar a la pàgina principal
+                                  Navigator.pushReplacementNamed(
+                                      context, "/home");
+                                } else if (userLogged["code"] == "401") {
+                                  //Error autenticació
+                                  showFlash(
+                                      context: context,
+                                      duration:
+                                          const Duration(seconds: 3),
+                                      builder: (context, controller) {
+                                        return ErrorToast(
+                                          controller: controller,
+                                          textshow:
+                                              "Credencials incorrectes",
+                                        );
+                                      });
+                                } else {
+                                  showFlash(
+                                      context: context,
+                                      duration:
+                                          const Duration(seconds: 3),
+                                      builder: (context, controller) {
+                                        return ErrorToast(
+                                          controller: controller,
+                                          textshow: "Usuari no registrat",
+                                        );
+                                      });
+                                }
+                              }
+                            }
+                          },
+                          child: Text(
+                            'Inicia sessió',
+                            style: TextStyle(
+                              fontSize: 25,
+                              color: Colors.teal[50],
+                            ),
+                          )),
+                    ),
+                  ),
+                  //Botó registrar-se
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(24, 4, 24, 4),
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.teal[900],
+                            elevation: 5,
+                            padding: EdgeInsets.all(15),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                          ),
+                          onPressed: () async {
+                            Navigator.pushNamed(context, "/register");
+                          },
+                          child: Text(
+                            "Registra't",
+                            style: TextStyle(
+                              fontSize: 25,
+                              color: Colors.teal[50],
+                            ),
+                          )),
+                    ),
+                  ),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ClipOval(
+                        child: InkWell(
+                          onTap: (){
+                            print('HOLA');
+                          },
+                          child: CircleAvatar(
+                              radius: 35,
+                              backgroundImage:NetworkImage(
+                              'http://assets.stickpng.com/images/584ac2d03ac3a570f94a666d.png',
+                              ) ,
+                          ),
+                        ),
+                        ),
+                      ),
+                      SizedBox(width: 40,),
+                      ClipOval(
+                        child: InkWell(
+                          onTap: (){
+                            print('Hello');
+                          },
+                          child: CircleAvatar(
+                            radius: 35,
+                            backgroundImage:NetworkImage(
+
+                              'https://foroalfa.org/imagenes/ilustraciones/g-1.jpg',
+                            ) ,
+                          ),
+                        ),
+                      ),
+
+
+                      /*ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.teal[900],
+                            elevation: 5,
+                            padding: EdgeInsets.all(15),
+                            shape:
+                            ),),
+                        onPressed: (){},
+
+                        child: CircleAvatar(
+                          radius: 30,
+                          backgroundImage:NetworkImage(
+                            'http://assets.stickpng.com/images/584ac2d03ac3a570f94a666d.png',
+                          ) ,
+                      )*/
+
+
+
+
+                    ],
+                  )
                 ],
               )
             ],

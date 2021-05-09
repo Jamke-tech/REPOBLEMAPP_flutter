@@ -165,7 +165,14 @@ class _FavState extends State<Fav> {
   }
   
   Widget _itemBuilder(BuildContext context, int index){
-    return offerCard(urls[index],infoOffersFavourite[index].title, infoOffersFavourite[index].village, 2);
+    return offerCard(
+      imgUrl: urls[index],
+      infoOffer: infoOffersFavourite[index],
+      rating: 2,
+    );
+
+
+
 
   }
 }
