@@ -6,6 +6,7 @@ import 'package:repoblemapp/pages/login.dart';
 import 'package:repoblemapp/pages/profile.dart';
 import 'package:repoblemapp/pages/register.dart';
 import 'package:repoblemapp/pages/fav_offers.dart';
+import 'package:repoblemapp/pages/socialdashboard.dart';
 
 void main() => runApp(RepoblemAPP());
 
@@ -23,7 +24,7 @@ class RepoblemAPP extends StatelessWidget {
 
         //Lletra de la app
       ),
-      initialRoute: '/infoActivity',
+      initialRoute: '/login',
       routes: {
         //Es posen totes les rutes de la aplicació
         '/login': (context) => LogIn(),
@@ -32,7 +33,8 @@ class RepoblemAPP extends StatelessWidget {
         '/profile': (context) => Profile(),
         '/edit_profile': (context) => EditProfile(),
         '/fav_offers': (context) => Fav(),
-        '/infoActivity':(context)=>InfoActivity(),
+        '/infoActivity':(context)=>InfoOffer(),
+        '/social':(context)=>Social()
       },
     );
   }

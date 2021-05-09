@@ -7,14 +7,14 @@ import 'package:latlong/latlong.dart' as Location;
 
 
 
-class InfoActivity extends StatefulWidget {
-  const InfoActivity({Key key}) : super(key: key);
+class InfoOffer extends StatefulWidget {
+  const InfoOffer({Key key}) : super(key: key);
 
   @override
-  _InfoActivityState createState() => _InfoActivityState();
+  _InfoOfferState createState() => _InfoOfferState();
 }
 
-class _InfoActivityState extends State<InfoActivity> {
+class _InfoOfferState extends State<InfoOffer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
