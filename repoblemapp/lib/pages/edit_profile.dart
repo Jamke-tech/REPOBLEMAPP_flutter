@@ -41,7 +41,7 @@ class _EditProfileState extends State<EditProfile> {
     nameInputController.text = infoOfUser['name'];
     surnameInputController.text = infoOfUser['surame'];
     emailInputController.text = infoOfUser['email'];
-    phoneInputController.text = infoOfUser['phone'];
+    phoneInputController.text = infoOfUser['phone'].toString();
     passwordInputController.text = infoOfUser['password'];
 
     var aniversari = DateTime.parse(infoOfUser['birthDate']);
