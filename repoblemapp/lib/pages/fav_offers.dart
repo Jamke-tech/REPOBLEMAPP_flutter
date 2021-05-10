@@ -60,7 +60,7 @@ class _FavState extends State<Fav> {
       backgroundColor: Colors.green[300],
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: Colors.green[600],
+        //backgroundColor: Colors.green[600],
         title: Text('Ofertes Preferides'),
         centerTitle: true,
       ),
@@ -166,6 +166,12 @@ class _FavState extends State<Fav> {
   
   //Nos permite crear tantas de cards como ofertas haya
   Widget _itemBuilder(BuildContext context, int index){
-    return offerCard(urls[index],infoOffersFavourite[index].title, infoOffersFavourite[index].village, 2);
+
+    return offerCard(
+      imgUrl: urls[index],
+      infoOffer: infoOffersFavourite[index],
+      rating: 2,
+    );
+
   }
 }
