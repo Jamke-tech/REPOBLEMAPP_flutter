@@ -60,14 +60,14 @@ class _EditProfileState extends State<EditProfile> {
             style: TextStyle(
               fontSize: 35,
               fontFamily: "Hontana",
-              color: Colors.black,
+              color: Colors.white,
             ),
           ),
           centerTitle: true,
           leading: IconButton(
             icon: Icon(
               Icons.arrow_back_outlined,
-              color: Colors.black,
+              color: Colors.white,
               size: 40,
             ),
             onPressed: () {

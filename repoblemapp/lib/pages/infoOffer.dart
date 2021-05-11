@@ -29,10 +29,11 @@ class _InfoOfferState extends State<InfoOffer> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.teal[400],
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_outlined,
-            color: Colors.teal[700],
+            color: Colors.white,
             size: 40,
           ),
           onPressed: () {
@@ -51,7 +52,7 @@ class _InfoOfferState extends State<InfoOffer> {
                     },
                     icon: Icon(
                       Icons.star_border_outlined,
-                      color: Colors.teal[700],
+                      color: Colors.white,
                       size: 45,)
                 ),
           ),

@@ -48,11 +48,11 @@ class _ProfileState extends State<Profile> {
             style: TextStyle(
               fontFamily: 'Hontana',
               fontSize: 35,
-              color: Colors.black,
+              color: Colors.white,
             ),
           ),
           centerTitle: true,
-          backgroundColor: Colors.green[300],
+          backgroundColor: Colors.teal[400],
           actions: [
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 8, 24, 8),
