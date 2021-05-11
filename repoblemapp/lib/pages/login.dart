@@ -61,10 +61,10 @@ class _LogInState extends State<LogIn> {
                 children: [
                   //titol
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(24, 34, 24, 6),
+                    padding: const EdgeInsets.fromLTRB(24, 34, 24, 2),
                     child: Center(
                       child: Text(
-                        "Log in",
+                        "Repoblem",
                         style: TextStyle(
                           fontSize: 60,
                           fontFamily: 'Hontana',
@@ -73,11 +73,24 @@ class _LogInState extends State<LogIn> {
                       ),
                     ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(24, 0, 24, 6),
+                    child: Center(
+                      child: Text(
+                        "Un Poble, una nova vida",
+                        style: TextStyle(
+                          fontSize: 25,
+                          color: Colors.teal[900],
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
 
                   //Container perls camps
 
                   Padding(
-                    padding: EdgeInsets.fromLTRB(24, 60, 24, 4),
+                    padding: EdgeInsets.fromLTRB(24, 15, 24, 4),
                     child: Container(
                       height: 120,
                       decoration: BoxDecoration(
