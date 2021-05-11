@@ -40,6 +40,13 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     //Map userData = ModalRoute.of(context).settings.arguments;
     //userDetails = userData["map"];
+    var aniversari = DateTime.parse(userDetails['birthDate']);
+    String stringDate = aniversari.year.toString() +
+        "-0" +
+        aniversari.month.toString() +
+        "-" +
+        aniversari.day.toString();
+    String phoneString = userDetails['phone'].toString();
 
     return Scaffold(
       appBar: AppBar(
@@ -113,84 +120,199 @@ class _ProfileState extends State<Profile> {
             flex: 3,
             child: Container(
               child: ListView(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.fromLTRB(8, 8, 8, 20),
                 children: [
                   Container(
-                    height: 50,
-                    color: Colors.green[100],
-                    child: Text(
-                      "Name: ${userDetails['name']}",
-                      style: TextStyle(
-                          color: Colors.green[900],
-                          fontStyle: FontStyle.normal,
-                          fontSize: 28.0),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: Colors.green[100].withOpacity(0.5),
+                        borderRadius: BorderRadius.only(
+                            bottomRight: Radius.circular(50),
+                            bottomLeft: Radius.circular(50),
+                            topLeft: Radius.circular(50),
+                            topRight: Radius.circular(50)),
+                        border: Border.all(
+                          color: Colors.green,
+                          width: 1,
+                        ),
+                      ),
+                      child: new Row(children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(8),
+                        ),
+                        Icon(
+                          Icons.person_outline_outlined,
+                          color: Colors.green,
+                          size: 35,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8),
+                        ),
+                        Text(
+                          userDetails['name'],
+                          style: TextStyle(
+                              color: Colors.green[900],
+                              fontStyle: FontStyle.normal,
+                              fontSize: 20.0),
+                          textAlign: TextAlign.left,
+                        ),
+                      ])),
                   const Divider(
                     height: 10,
                     thickness: 5,
                   ),
                   Container(
-                    height: 50,
-                    color: Colors.green[100],
-                    child: Text(
-                      "Surname: ${userDetails['surname']}",
-                      style: TextStyle(
-                          color: Colors.green[900],
-                          fontStyle: FontStyle.normal,
-                          fontSize: 28.0),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: Colors.green[100].withOpacity(0.5),
+                        borderRadius: BorderRadius.only(
+                            bottomRight: Radius.circular(50),
+                            bottomLeft: Radius.circular(50),
+                            topLeft: Radius.circular(50),
+                            topRight: Radius.circular(50)),
+                        border: Border.all(
+                          color: Colors.green,
+                          width: 1,
+                        ),
+                      ),
+                      child: new Row(children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(8),
+                        ),
+                        Icon(
+                          Icons.people_outline_outlined,
+                          color: Colors.green,
+                          size: 35,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8),
+                        ),
+                        Text(
+                          userDetails['surname'],
+                          style: TextStyle(
+                              color: Colors.green[900],
+                              fontStyle: FontStyle.normal,
+                              fontSize: 20.0),
+                          textAlign: TextAlign.left,
+                        ),
+                      ])),
                   const Divider(
                     height: 10,
                     thickness: 5,
                   ),
                   Container(
-                    height: 50,
-                    color: Colors.green[100],
-                    child: Text(
-                      "Mail: ${userDetails['email']}",
-                      style: TextStyle(
-                          color: Colors.green[900],
-                          fontStyle: FontStyle.normal,
-                          fontSize: 28.0),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: Colors.green[100].withOpacity(0.5),
+                        borderRadius: BorderRadius.only(
+                            bottomRight: Radius.circular(50),
+                            bottomLeft: Radius.circular(50),
+                            topLeft: Radius.circular(50),
+                            topRight: Radius.circular(50)),
+                        border: Border.all(
+                          color: Colors.green,
+                          width: 1,
+                        ),
+                      ),
+                      child: new Row(children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(8),
+                        ),
+                        Icon(
+                          Icons.alternate_email_outlined,
+                          color: Colors.green,
+                          size: 35,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8),
+                        ),
+                        Text(
+                          userDetails['email'],
+                          style: TextStyle(
+                              color: Colors.green[900],
+                              fontStyle: FontStyle.normal,
+                              fontSize: 20.0),
+                          textAlign: TextAlign.left,
+                        ),
+                      ])),
                   const Divider(
                     height: 10,
                     thickness: 5,
                   ),
                   Container(
-                    height: 50,
-                    color: Colors.green[100],
-                    child: Text(
-                      "Phone: ${userDetails['phone']}",
-                      style: TextStyle(
-                          color: Colors.green[900],
-                          fontStyle: FontStyle.normal,
-                          fontSize: 28.0),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: Colors.green[100].withOpacity(0.5),
+                        borderRadius: BorderRadius.only(
+                            bottomRight: Radius.circular(50),
+                            bottomLeft: Radius.circular(50),
+                            topLeft: Radius.circular(50),
+                            topRight: Radius.circular(50)),
+                        border: Border.all(
+                          color: Colors.green,
+                          width: 1,
+                        ),
+                      ),
+                      child: new Row(children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(8),
+                        ),
+                        Icon(
+                          Icons.contact_phone_outlined,
+                          color: Colors.green,
+                          size: 35,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8),
+                        ),
+                        Text(
+                          phoneString,
+                          style: TextStyle(
+                              color: Colors.green[900],
+                              fontStyle: FontStyle.normal,
+                              fontSize: 20.0),
+                          textAlign: TextAlign.left,
+                        ),
+                      ])),
                   const Divider(
                     height: 10,
                     thickness: 5,
                   ),
                   Container(
-                    height: 50,
-                    color: Colors.green[100],
-                    child: Text(
-                      "Birth Date: ${userDetails['birthDate']}",
-                      style: TextStyle(
-                          color: Colors.green[900],
-                          fontStyle: FontStyle.normal,
-                          fontSize: 28.0),
-                      textAlign: TextAlign.center,
-                    ),
-                  )
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: Colors.green[100].withOpacity(0.5),
+                        borderRadius: BorderRadius.only(
+                            bottomRight: Radius.circular(50),
+                            bottomLeft: Radius.circular(50),
+                            topLeft: Radius.circular(50),
+                            topRight: Radius.circular(50)),
+                        border: Border.all(
+                          color: Colors.green,
+                          width: 1,
+                        ),
+                      ),
+                      child: new Row(children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(8),
+                        ),
+                        Icon(
+                          Icons.cake_outlined,
+                          color: Colors.green,
+                          size: 35,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8),
+                        ),
+                        Text(
+                          stringDate,
+                          style: TextStyle(
+                              color: Colors.green[900],
+                              fontStyle: FontStyle.normal,
+                              fontSize: 20.0),
+                          textAlign: TextAlign.left,
+                        ),
+                      ])),
                 ],
               ),
             ),
