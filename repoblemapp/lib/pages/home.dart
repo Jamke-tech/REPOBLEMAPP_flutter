@@ -4,9 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:repoblemapp/pages/fav_offers.dart';
 import 'package:repoblemapp/pages/infoOffer.dart';
-import 'package:repoblemapp/pages/login.dart';
+import 'package:repoblemapp/pages/inicio.dart';
 import 'package:repoblemapp/pages/profile.dart';
-import 'package:repoblemapp/pages/register.dart';
 import 'package:repoblemapp/pages/socialdashboard.dart';
 
 class Home extends StatefulWidget {
@@ -17,7 +16,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int selectedIndex = 2;
 
-  final screen = [InfoOffer(),Fav(),Profile(),Social(),Profile()];
+  final screen = [InfoOffer(),Fav(),Inicio(),Social(),Profile()];
 
   Widget build(BuildContext context) {
     return Scaffold(
