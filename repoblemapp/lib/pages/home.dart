@@ -21,14 +21,30 @@ class _HomeState extends State<Home> {
     return Scaffold(
       bottomNavigationBar: CurvedNavigationBar(
         backgroundColor: Colors.lightGreen[200],
+        color: Colors.teal[400],
 
         index: selectedIndex,
         items: [
-          Icon(Icons.search, size: 30,),
-          Icon(Icons.star, size: 30),
-          Icon(Icons.home, size: 30),
-          Icon(Icons.messenger, size: 30),
-          Icon(Icons.person, size: 30)
+          Icon(
+            Icons.search,
+            size: 30,
+            color: Colors.white,),
+          Icon(
+              Icons.star,
+              size: 30,
+              color: Colors.white,),
+          Icon(
+            Icons.home,
+            size: 30,
+            color: Colors.white,),
+          Icon(
+            Icons.messenger,
+            size: 30,
+            color: Colors.white,),
+          Icon(
+            Icons.person,
+            size: 30,
+            color: Colors.white,)
         ],
         onTap: (index) {
           setState(() {
