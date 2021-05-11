@@ -129,6 +129,7 @@ class UsersManager {
           "email": user.email,
           "password": user.password,
           "phone": user.phone,
+          "profilePhoto":user.profilePhoto,
           "birthDate": user.birthDate.toString(),
         }),
       );
@@ -139,5 +140,35 @@ class UsersManager {
       print(error);
       return 505;
     }
+  }
+
+  Future<Map> getOwner(idOwner) async {
+    try {
+      http.Response response = await http.get(
+        Uri.parse("http://${endpoints.IpApi}/api/user/$idOwner"),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.acceptHeader: 'application/json',
+        },
+      );
+
+      Map<String,dynamic> infoBBDD = jsonDecode(response.body);
+      print(infoBBDD);
+      if(infoBBDD['code']=="200"){
+        print('ENTRO');
+        return infoBBDD['user'];
+      }
+      else{
+        return null;
+      }
+
+    } catch (error) {
+      print(error);
+      return null;
+    }
+
+
+
+
   }
 }

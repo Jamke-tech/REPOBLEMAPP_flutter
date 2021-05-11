@@ -28,40 +28,54 @@ class _InicioState extends State<Inicio> {
     });
 
     return Scaffold(
-      body: Container(
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(
-                  left: 12.0, right: 12.0, top: 30, bottom: 8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[Text("RepoblemApp",
-                style: TextStyle(fontSize: 40.0)),
-                Icon(Icons.home, size: 40.0,)], 
+      body: SafeArea(
+        child: Container(
+          child: ListView(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                    left: 12.0, right: 12.0, top: 30, bottom: 8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                        "RepoblemApp",
+                        style: TextStyle(
+                            fontSize: 40.0,
+                            fontFamily: "Hontana",),
+                    ),
+                    Icon(
+                      Icons.home,
+                      size: 40.0,)
+                  ],
 
-              ), //Row
-            ),
-            Stack(
-              children: <Widget>[
-                CardScrollWidget(currentPage),
-                Positioned.fill(
-                    child: PageView.builder(
-                        itemCount: images.length,
-                        controller: controller,
-                        reverse: true,
-                        itemBuilder: (context, index) {
-                          return Container();
-                        }))
-              ],
-            ),
-            Container(
-              child: Text("Encara estem a temps de repoblar",
-              style: TextStyle(
-                fontSize: 25.0 
-              ),),
-            )
-          ],
+                ), //Row
+              ),
+              Stack(
+                children: [
+                  CardScrollWidget(currentPage),
+                  Positioned.fill(
+                      child: PageView.builder(
+                          itemCount: images.length,
+                          controller: controller,
+                          reverse: true,
+                          itemBuilder: (context, index) {
+                            return Container();
+                          }))
+                ],
+              ),
+              Container(
+                child: Text(
+                  "Encara estem a temps de repoblar",
+                  style: TextStyle(
+                    fontSize: 25.0
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

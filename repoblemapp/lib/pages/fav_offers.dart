@@ -16,7 +16,7 @@ class Fav extends StatefulWidget {
 class _FavState extends State<Fav> {
 
   int numberOfFavourite =0;
-  List<Offer> infoOffersFavourite;
+  List<dynamic> infoOffersFavourite;
 
   @override
   void initState()  {
@@ -33,7 +33,10 @@ class _FavState extends State<Fav> {
 
     setState(() {
       numberOfFavourite=infoBBDD['savedOffers'].length;
-      infoOffersFavourite= infoBBDD['savedOffers'];
+      print(numberOfFavourite);
+      print(infoBBDD['savedOffers']);
+      infoOffersFavourite= infoBBDD['savedOffers'] ;
+      print(infoOffersFavourite);
 
     });
 
@@ -166,9 +169,9 @@ class _FavState extends State<Fav> {
   
   Widget _itemBuilder(BuildContext context, int index){
     return offerCard(
-      imgUrl: urls[index],
-      infoOffer: infoOffersFavourite[index],
-      rating: 2,
+      imgUrl: urls[2],
+      infoOffer:infoOffersFavourite[index],
+      rating: 1,
     );
 
 

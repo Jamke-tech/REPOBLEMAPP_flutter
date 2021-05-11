@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:repoblemapp/pages/edit_profile.dart';
 import 'package:repoblemapp/pages/home.dart';
 import 'package:repoblemapp/pages/infoOffer.dart';
-import 'package:repoblemapp/pages/inicio.dart';
 import 'package:repoblemapp/pages/login.dart';
 import 'package:repoblemapp/pages/profile.dart';
 import 'package:repoblemapp/pages/register.dart';
@@ -20,12 +19,12 @@ class RepoblemAPP extends StatelessWidget {
       theme: ThemeData(
         //Colors Primaris de la APP
         primarySwatch: Colors.green,
-        fontFamily: 'Brokenbrush',
+        fontFamily: 'Snidane',
         scaffoldBackgroundColor: Colors.lightGreen[200],
 
         //Lletra de la app
       ),
-      initialRoute: '/home',
+      initialRoute: '/login',
       routes: {
         //Es posen totes les rutes de la aplicació
         '/login': (context) => LogIn(),
@@ -35,8 +34,7 @@ class RepoblemAPP extends StatelessWidget {
         '/edit_profile': (context) => EditProfile(),
         '/fav_offers': (context) => Fav(),
         '/infoActivity':(context)=>InfoOffer(),
-        '/social':(context)=>Social(),
-        '/inicio':(context)=>Inicio()
+        '/social':(context)=>Social()
       },
     );
   }

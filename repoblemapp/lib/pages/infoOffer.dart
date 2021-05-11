@@ -15,10 +15,30 @@ class InfoOffer extends StatefulWidget {
 }
 
 class _InfoOfferState extends State<InfoOffer> {
+
+
+
   @override
   Widget build(BuildContext context) {
+    //Recollim la info de la Offer per mostrarla per pantalla
+    Map<String, dynamic> infoOfOffer;
+    Map<String, dynamic> infoOfOwner;
+    Map data = ModalRoute.of(context).settings.arguments;
+    infoOfOffer =  data['mapOffer'];
+    infoOfOwner = data['mapOwner'];
+
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_outlined,
+            color: Colors.teal[700],
+            size: 40,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         actions: [
           Padding(
             padding: const EdgeInsets.fromLTRB(8, 0, 20, 16),
@@ -31,7 +51,7 @@ class _InfoOfferState extends State<InfoOffer> {
                     },
                     icon: Icon(
                       Icons.star_border_outlined,
-                      color: Colors.teal,
+                      color: Colors.teal[700],
                       size: 45,)
                 ),
           ),
@@ -127,7 +147,7 @@ class _InfoOfferState extends State<InfoOffer> {
           Padding(
             padding: const EdgeInsets.only(top: 16),
             child: Text(
-              "Casa de Ferrador",
+              infoOfOffer["title"],
               style: TextStyle(
                 fontSize: 45,
                 color: Colors.black,
@@ -176,6 +196,7 @@ class _InfoOfferState extends State<InfoOffer> {
               ],
             ),
           ),
+          SizedBox(height: 10,),
 
           //Preu + nom + telefon + foto
           Container(
@@ -199,7 +220,7 @@ class _InfoOfferState extends State<InfoOffer> {
                 Expanded(
                   flex: 1,
                   child: Text(
-                    '25.560',
+                    infoOfOffer["price"].toString(),
                     style: TextStyle(
                       fontSize: 20,
                       color: Colors.black,
@@ -219,16 +240,16 @@ class _InfoOfferState extends State<InfoOffer> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
-                          "Jaume Tabernero",
+                          infoOfOwner['name'] +' '+ infoOfOwner['surname'],
                           style: TextStyle(
-                            fontSize: 14,
+                            fontSize: 15,
                             color: Colors.black,
 
                           ),
                           textAlign: TextAlign.end,
                         ),
                         Text(
-                          '683110113',
+                          infoOfOwner['phone'].toString(),
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.white,
@@ -255,7 +276,7 @@ class _InfoOfferState extends State<InfoOffer> {
           ),
 
 
-
+          SizedBox(height: 20,),
           Padding(
             padding: const EdgeInsets.fromLTRB(14, 2, 0, 0),
             child: Text(
@@ -276,10 +297,10 @@ class _InfoOfferState extends State<InfoOffer> {
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
             child: Text(
-              "S'Ofereix una casa totalemnt equipada a la vila de Móra d'Ebre, te tots els electrodomestics així com aigua corrent i electricitat generada per plaques fotovoltàiques. LLigat a la casa hi ha la feina de ferrador del poble, disposa d'un taller adjacent a la vivenda",
+              infoOfOffer["description"],
               textAlign: TextAlign.justify,
               style: TextStyle(
-                fontSize: 16,
+                fontSize: 18,
                 color: Colors.black,
 
               ),
@@ -287,6 +308,7 @@ class _InfoOfferState extends State<InfoOffer> {
 
             ),
           ),
+          SizedBox(height: 20,),
           Padding(
             padding: const EdgeInsets.fromLTRB(14, 2, 0, 0),
             child: Text(
@@ -306,10 +328,10 @@ class _InfoOfferState extends State<InfoOffer> {
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
             child: Text(
-              "Carrer Dr. Peris, 11 , Móra d'Ebre",
+              infoOfOffer["place"],
               textAlign: TextAlign.justify,
               style: TextStyle(
-                fontSize: 16,
+                fontSize: 18,
                 color: Colors.black,
 
               ),
@@ -337,7 +359,7 @@ class _InfoOfferState extends State<InfoOffer> {
                   child: FlutterMap(
                     options: MapOptions(
                       //Donde estarà el mapa centrado
-                      center: Location.LatLng(41.091377,0.641612),
+                      center: Location.LatLng(infoOfOffer["point"]["coordinates"][0],infoOfOffer["point"]["coordinates"][1]),
                       minZoom: 5,
                       zoom: 14,
                     ),
@@ -352,7 +374,7 @@ class _InfoOfferState extends State<InfoOffer> {
                             Marker(
                                 width: 30,
                                 height: 30,
-                                point: Location.LatLng(41.091377,0.641612),
+                                point: Location.LatLng(infoOfOffer["point"]["coordinates"][0],infoOfOffer["point"]["coordinates"][1]),
                                 builder: (context) => Icon(
                                   Icons.location_on_outlined,
                                   color: Colors.deepOrange,
@@ -369,7 +391,8 @@ class _InfoOfferState extends State<InfoOffer> {
 
 
             ),
-          )
+          ),
+          SizedBox(height: 40,),
 
 
 
