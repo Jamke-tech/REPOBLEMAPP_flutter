@@ -1,12 +1,10 @@
-
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:repoblemapp/pages/fav_offers.dart';
-import 'package:repoblemapp/pages/infoOffer.dart';
-import 'package:repoblemapp/pages/login.dart';
+import 'package:repoblemapp/pages/inicio.dart';
 import 'package:repoblemapp/pages/profile.dart';
-import 'package:repoblemapp/pages/register.dart';
+import 'package:repoblemapp/pages/searchPage.dart';
 import 'package:repoblemapp/pages/socialdashboard.dart';
 
 class Home extends StatefulWidget {
@@ -17,20 +15,36 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int selectedIndex = 2;
 
-  final screen = [InfoOffer(),Fav(),Profile(),Social(),Profile()];
+  final screen = [Search(),Fav(),Inicio(),Social(),Profile()];
 
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: CurvedNavigationBar(
         backgroundColor: Colors.lightGreen[200],
+        color: Colors.teal[400],
 
         index: selectedIndex,
         items: [
-          Icon(Icons.search, size: 30,),
-          Icon(Icons.star, size: 30),
-          Icon(Icons.home, size: 30),
-          Icon(Icons.messenger, size: 30),
-          Icon(Icons.person, size: 30)
+          Icon(
+            Icons.search,
+            size: 30,
+            color: Colors.white,),
+          Icon(
+              Icons.star,
+              size: 30,
+              color: Colors.white,),
+          Icon(
+            Icons.home,
+            size: 30,
+            color: Colors.white,),
+          Icon(
+            Icons.messenger,
+            size: 30,
+            color: Colors.white,),
+          Icon(
+            Icons.person,
+            size: 30,
+            color: Colors.white,)
         ],
         onTap: (index) {
           setState(() {

@@ -4,11 +4,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:repoblemapp/models/Offer.dart';
 import 'package:repoblemapp/services/offer_service.dart';
+import 'package:repoblemapp/services/user_service.dart';
 
 class offerCard extends StatelessWidget {
 
   //Declaramos las variables
-  Offer infoOffer;
+  Map infoOffer;
   String imgUrl;
   int rating;
 
@@ -26,12 +27,19 @@ class offerCard extends StatelessWidget {
       elevation: 5.0,
       shadowColor: Color(0x55434343),
       child: InkWell(
-        onTap: (){
+        onTap: () async{
           //Fem funció per anar a la info de una oferta
           //Li pasem el mapa de la oferta completa a la ruta per mostrar l'oferta
+          //Hem de recollir qui es el owner de la oferta per passar a la info de la oferta
+
+          UsersManager manager = UsersManager.getInstance();
+          Map infoOfOwner = await manager.getOwner(infoOffer['owner']);
+
+
 
           Navigator.pushNamed(context, '/infoActivity',arguments: {
-            'map':infoOffer,
+            'mapOffer':infoOffer,
+            'mapOwner':infoOfOwner,
 
           });
 
@@ -71,7 +79,7 @@ class offerCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        infoOffer.title,
+                        infoOffer["title"],
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 22.0,
@@ -80,7 +88,8 @@ class offerCard extends StatelessWidget {
                       ),
                       SizedBox(height: 3.0),
                       Text(
-                        infoOffer.village,
+                        infoOffer["village"],
+                        textAlign: TextAlign.end,
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 17.0,

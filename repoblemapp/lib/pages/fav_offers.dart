@@ -16,7 +16,7 @@ class Fav extends StatefulWidget {
 class _FavState extends State<Fav> {
 
   int numberOfFavourite =0;
-  List<Offer> infoOffersFavourite;
+  List<dynamic> infoOffersFavourite;
 
   @override
   void initState()  {
@@ -33,7 +33,10 @@ class _FavState extends State<Fav> {
 
     setState(() {
       numberOfFavourite=infoBBDD['savedOffers'].length;
-      infoOffersFavourite= infoBBDD['savedOffers'];
+      print(numberOfFavourite);
+      print(infoBBDD['savedOffers']);
+      infoOffersFavourite= infoBBDD['savedOffers'] ;
+      print(infoOffersFavourite);
 
     });
 
@@ -57,10 +60,10 @@ class _FavState extends State<Fav> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.green[300],
+      //backgroundColor: Colors.green[300],
       appBar: AppBar(
         elevation: 0.0,
-        //backgroundColor: Colors.green[600],
+        backgroundColor: Colors.teal[400],
         title: Text('Ofertes Preferides'),
         centerTitle: true,
       ),
@@ -72,7 +75,7 @@ class _FavState extends State<Fav> {
             Text(
               "Molt bon gust!",
               style: TextStyle(
-                color: Colors.white,
+                color: Colors.black,
                 fontSize: 25.0,
                 fontWeight: FontWeight.w600,
               ),
@@ -109,9 +112,9 @@ class _FavState extends State<Fav> {
                 child: Column(
                   children: [
                     TabBar(
-                      indicatorColor: Colors.white,
-                      unselectedLabelColor: Color(0xFF555555),
-                      labelColor: Colors.white,
+                      indicatorColor: Colors.black,
+                      unselectedLabelColor: Colors.grey[700],
+                      labelColor: Colors.black,
                       tabs: [
                         Tab(
                           text: "Ofertes",
@@ -168,9 +171,9 @@ class _FavState extends State<Fav> {
   Widget _itemBuilder(BuildContext context, int index){
 
     return offerCard(
-      imgUrl: urls[index],
-      infoOffer: infoOffersFavourite[index],
-      rating: 2,
+      imgUrl: urls[2],
+      infoOffer:infoOffersFavourite[index],
+      rating: 1,
     );
 
   }

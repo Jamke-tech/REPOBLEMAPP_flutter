@@ -81,6 +81,7 @@ class _LogInState extends State<LogIn> {
                         style: TextStyle(
                           fontSize: 25,
                           color: Colors.teal[900],
+                          fontFamily: "Brokenbrush"
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -305,62 +306,66 @@ class _LogInState extends State<LogIn> {
                     ),
                   ),
 
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ClipOval(
-                        child: InkWell(
-                          onTap: (){
-                            print('HOLA');
-                          },
-                          child: CircleAvatar(
+                  //Botones de facebook i google
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ClipOval(
+                          child: InkWell(
+                            onTap: (){
+                              print('HOLA');
+                            },
+                            child: CircleAvatar(
+                                radius: 35,
+                                backgroundImage:NetworkImage(
+                                'http://assets.stickpng.com/images/584ac2d03ac3a570f94a666d.png',
+                                ) ,
+                            ),
+                          ),
+                          ),
+                        ),
+                        SizedBox(width: 40,),
+                        ClipOval(
+                          child: InkWell(
+                            onTap: (){
+                              print('Hello');
+                            },
+                            child: CircleAvatar(
                               radius: 35,
                               backgroundImage:NetworkImage(
-                              'http://assets.stickpng.com/images/584ac2d03ac3a570f94a666d.png',
+
+                                'https://foroalfa.org/imagenes/ilustraciones/g-1.jpg',
                               ) ,
+                            ),
                           ),
                         ),
-                        ),
-                      ),
-                      SizedBox(width: 40,),
-                      ClipOval(
-                        child: InkWell(
-                          onTap: (){
-                            print('Hello');
-                          },
+
+
+                        /*ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.teal[900],
+                              elevation: 5,
+                              padding: EdgeInsets.all(15),
+                              shape:
+                              ),),
+                          onPressed: (){},
+
                           child: CircleAvatar(
-                            radius: 35,
+                            radius: 30,
                             backgroundImage:NetworkImage(
-
-                              'https://foroalfa.org/imagenes/ilustraciones/g-1.jpg',
+                              'http://assets.stickpng.com/images/584ac2d03ac3a570f94a666d.png',
                             ) ,
-                          ),
-                        ),
-                      ),
-
-
-                      /*ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.teal[900],
-                            elevation: 5,
-                            padding: EdgeInsets.all(15),
-                            shape:
-                            ),),
-                        onPressed: (){},
-
-                        child: CircleAvatar(
-                          radius: 30,
-                          backgroundImage:NetworkImage(
-                            'http://assets.stickpng.com/images/584ac2d03ac3a570f94a666d.png',
-                          ) ,
-                      )*/
+                        )*/
 
 
 
 
-                    ],
+                      ],
+                    ),
                   )
                 ],
               )
