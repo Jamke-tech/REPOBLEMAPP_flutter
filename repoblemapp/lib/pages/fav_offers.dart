@@ -64,7 +64,13 @@ class _FavState extends State<Fav> {
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: Colors.teal[400],
-        title: Text('Ofertes Preferides'),
+        
+        title: Text('Ofertes Preferides',
+          style: TextStyle(
+                fontSize: 35,
+                fontFamily: "Hontana",
+                color: Colors.white,)),
+        
         centerTitle: true,
       ),
       body: Padding(
