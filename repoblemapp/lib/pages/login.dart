@@ -233,12 +233,10 @@ class _LogInState extends State<LogIn> {
                                     });
                               } else {
                                 if (userLogged["code"] == "200") {
-                                  SharedPreferences sharedPrefs =
-                                      await SharedPreferences
-                                          .getInstance();
-                                  sharedPrefs.setString(
-                                      "id", userLogged["id"]);
+                                  SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+                                  sharedPrefs.setString("id", userLogged["id"]);
                                   //També recollir el token.....
+                                  sharedPrefs.setString("token", userLogged["token"]);
 
                                   //Anar a la pàgina principal
                                   Navigator.pushReplacementNamed(

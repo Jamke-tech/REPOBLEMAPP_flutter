@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart' as Location;
+import 'package:repoblemapp/http_services/endpoints.dart';
 
 
 
@@ -15,6 +16,8 @@ class InfoOffer extends StatefulWidget {
 }
 
 class _InfoOfferState extends State<InfoOffer> {
+
+  Endpoints endpoints = Endpoints.getInstance();
 
 
 
@@ -265,7 +268,7 @@ class _InfoOfferState extends State<InfoOffer> {
                   flex:1,
                   child: CircleAvatar(
                     backgroundImage: NetworkImage(
-                      'https://media-exp1.licdn.com/dms/image/C4D03AQEjyrrAilxfcQ/profile-displayphoto-shrink_800_800/0/1601141659061?e=1626307200&v=beta&t=v8fMkiYh3y8KRHHf0LJAjizjdalCBxpGGk77tAeYULQ'
+                      'http://${endpoints.photoIP}/${infoOfOwner['profilePhoto']}'
                     ),
                     radius: 35,
                   ),
