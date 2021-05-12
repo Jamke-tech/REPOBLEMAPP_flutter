@@ -315,6 +315,8 @@ class _LogInState extends State<LogIn> {
                           child: ClipOval(
                           child: InkWell(
                             onTap: (){
+                              //Funció per inicar sessió en facebook
+
                               print('HOLA');
                             },
                             child: CircleAvatar(
@@ -330,6 +332,8 @@ class _LogInState extends State<LogIn> {
                         ClipOval(
                           child: InkWell(
                             onTap: (){
+                              //FUnció per inscriure't en google
+
                               print('Hello');
                             },
                             child: CircleAvatar(
