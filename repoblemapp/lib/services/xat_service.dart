@@ -35,7 +35,7 @@ class XatManager {
         },
         body: jsonEncode({
           "message": xat.message,
-          "nameOffer": xat.nameOffer,
+          "nameUserOffer": xat.nameUserOffer,
           "nameUser": xat.nameUser,
         }),
       );

@@ -1,9 +1,11 @@
+import 'package:repoblemapp/models/User.dart';
+
 class Xat {
   //Variables del Usuari
 
   String message;
-  String nameOffer;
-  String nameUser;
+  User nameUserOffer;
+  User nameUser;
 
-  Xat({this.message, this.nameOffer, this.nameUser});
+  Xat({this.message, this.nameUserOffer, this.nameUser});
 }
