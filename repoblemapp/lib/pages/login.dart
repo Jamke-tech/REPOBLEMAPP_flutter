@@ -236,7 +236,7 @@ class _LogInState extends State<LogIn> {
                                   SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
                                   sharedPrefs.setString("id", userLogged["id"]);
                                   //També recollir el token.....
-                                  sharedPrefs.setString("token", userLogged["token"]);
+                                  //sharedPrefs.setString("token", userLogged["token"]);
 
                                   //Anar a la pàgina principal
                                   Navigator.pushReplacementNamed(
