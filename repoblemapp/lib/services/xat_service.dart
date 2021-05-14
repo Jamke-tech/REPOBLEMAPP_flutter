@@ -22,7 +22,7 @@ class XatManager {
   Endpoints endpoints = Endpoints.getInstance();
 
   //Funció per crear xat si no existeix
-  Future<int> createOffer(Xat xat) async {
+  Future<int> createXat(Xat xat) async {
     try {
       //Hacemos el PUT a la dirección /offer con los datos de una oferta
       print("Creating xat...");
