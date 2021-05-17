@@ -8,6 +8,10 @@ import 'package:flash/flash.dart';
 import 'package:repoblemapp/widgets/error_toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+
 class LogIn extends StatefulWidget {
   @override
   _LogInState createState() => _LogInState();
@@ -19,6 +23,7 @@ class _LogInState extends State<LogIn> {
 
   final _formKey = GlobalKey<FormState>();
 
+  final FacebookLogin facebookSignIn = new FacebookLogin();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,10 +84,9 @@ class _LogInState extends State<LogIn> {
                       child: Text(
                         "Un Poble, una nova vida",
                         style: TextStyle(
-                          fontSize: 25,
-                          color: Colors.teal[900],
-                          fontFamily: "Brokenbrush"
-                        ),
+                            fontSize: 25,
+                            color: Colors.teal[900],
+                            fontFamily: "Brokenbrush"),
                         textAlign: TextAlign.center,
                       ),
                     ),
@@ -109,7 +113,6 @@ class _LogInState extends State<LogIn> {
                         autovalidateMode: AutovalidateMode.disabled,
                         child: ListView(
                           children: [
-
                             Padding(
                               //Usuari
                               padding: const EdgeInsets.fromLTRB(8, 8, 8, 2),
@@ -206,8 +209,7 @@ class _LogInState extends State<LogIn> {
                             if (_formKey.currentState.validate()) {
                               //Retorna True si tots els camps obligatoris estan plens
                               //Hem d'agafar la instancia de User manage
-                              UsersManager manager =
-                                  UsersManager.getInstance();
+                              UsersManager manager = UsersManager.getInstance();
                               //Creem el nou usuari
                               User loginUser = new User(
                                 userName: userInputController.text,
@@ -233,10 +235,12 @@ class _LogInState extends State<LogIn> {
                                     });
                               } else {
                                 if (userLogged["code"] == "200") {
-                                  SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+                                  SharedPreferences sharedPrefs =
+                                      await SharedPreferences.getInstance();
                                   sharedPrefs.setString("id", userLogged["id"]);
                                   //També recollir el token.....
-                                  sharedPrefs.setString("token", userLogged["token"]);
+                                  sharedPrefs.setString(
+                                      "token", userLogged["token"]);
 
                                   //Anar a la pàgina principal
                                   Navigator.pushReplacementNamed(
@@ -245,20 +249,17 @@ class _LogInState extends State<LogIn> {
                                   //Error autenticació
                                   showFlash(
                                       context: context,
-                                      duration:
-                                          const Duration(seconds: 3),
+                                      duration: const Duration(seconds: 3),
                                       builder: (context, controller) {
                                         return ErrorToast(
                                           controller: controller,
-                                          textshow:
-                                              "Credencials incorrectes",
+                                          textshow: "Credencials incorrectes",
                                         );
                                       });
                                 } else {
                                   showFlash(
                                       context: context,
-                                      duration:
-                                          const Duration(seconds: 3),
+                                      duration: const Duration(seconds: 3),
                                       builder: (context, controller) {
                                         return ErrorToast(
                                           controller: controller,
@@ -313,39 +314,37 @@ class _LogInState extends State<LogIn> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: ClipOval(
-                          child: InkWell(
-                            onTap: (){
-                              //Funció per inicar sessió en facebook
+                            child: InkWell(
+                              onTap: () {
+                                //Funció per inicar sessió en facebook
 
-                              print('HOLA');
-                            },
-                            child: CircleAvatar(
+                                print('HOLA');
+                              },
+                              child: CircleAvatar(
                                 radius: 35,
-                                backgroundImage:NetworkImage(
-                                'http://assets.stickpng.com/images/584ac2d03ac3a570f94a666d.png',
-                                ) ,
+                                backgroundImage: NetworkImage(
+                                  'http://assets.stickpng.com/images/584ac2d03ac3a570f94a666d.png',
+                                ),
+                              ),
                             ),
                           ),
-                          ),
                         ),
-                        SizedBox(width: 40,),
+                        SizedBox(
+                          width: 40,
+                        ),
                         ClipOval(
                           child: InkWell(
-                            onTap: (){
+                            onTap: () {
                               //FUnció per inscriure't en google
-
-                              print('Hello');
                             },
                             child: CircleAvatar(
                               radius: 35,
-                              backgroundImage:NetworkImage(
-
+                              backgroundImage: NetworkImage(
                                 'https://foroalfa.org/imagenes/ilustraciones/g-1.jpg',
-                              ) ,
+                              ),
                             ),
                           ),
                         ),
-
 
                         /*ElevatedButton(
                             style: ElevatedButton.styleFrom(
@@ -362,10 +361,6 @@ class _LogInState extends State<LogIn> {
                               'http://assets.stickpng.com/images/584ac2d03ac3a570f94a666d.png',
                             ) ,
                         )*/
-
-
-
-
                       ],
                     ),
                   )
