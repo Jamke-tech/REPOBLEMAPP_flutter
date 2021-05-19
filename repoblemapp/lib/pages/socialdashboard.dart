@@ -21,7 +21,11 @@ class _SocialState extends State<Social> {
             child:ListView.builder(
               itemCount: chatsData.length,
               itemBuilder: (context, index) => InkWell(
-                onTap: () {},
+                onTap: () {
+                  //hacer la función aqui para entrar al chat 
+                  //pasandole todos los mensajes a la siguiente xat_page.dart
+                  
+                },
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 7.5),
                   child: Row(
@@ -87,7 +91,20 @@ class _SocialState extends State<Social> {
               ),
             ),
           ),
-        ],),
+        ],
+      ),
+      /* //por si queremos añadir el chat desde esta pantalla también
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          //hacer aqui la función de añadir chat
+        },
+        backgroundColor: Colors.teal[400],
+        child: Icon(
+          Icons.person_add_alt_1,
+          color: Colors.white,
+        ),
+      ),*/
+      
     );
   }
 
