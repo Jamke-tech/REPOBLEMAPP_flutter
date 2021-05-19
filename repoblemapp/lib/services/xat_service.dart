@@ -34,7 +34,7 @@ class XatManager {
           HttpHeaders.acceptHeader: 'application/json',
         },
         body: jsonEncode({
-          "message": xat.message,
+          //"message": xat.message,
           "nameUserOffer": xat.nameUserOffer,
           "nameUser": xat.nameUser,
         }),

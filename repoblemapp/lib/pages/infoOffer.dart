@@ -247,6 +247,7 @@ class _InfoOfferState extends State<InfoOffer> {
                 ],
               )),
 
+          //Botó de contacte
           Container(
             margin: EdgeInsets.all(6),
             padding: EdgeInsets.all(2),
