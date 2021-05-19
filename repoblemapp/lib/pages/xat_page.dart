@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_socket_io/socket_io_manager.dart';
 import 'package:repoblemapp/models/User.dart';
 import 'package:flutter_socket_io/flutter_socket_io.dart';
-import 'package:socket_io/socket_io.dart';
-import 'package:socket_io_client/socket_io_client.dart';
+
 
 
 
