@@ -335,7 +335,8 @@ class _LogInState extends State<LogIn> {
                         ClipOval(
                           child: InkWell(
                             onTap: () {
-                              //FUnció per inscriure't en google
+                              UsersManager manager = UsersManager.getInstance();
+                              manager.signInWithGoogle();
                             },
                             child: CircleAvatar(
                               radius: 35,

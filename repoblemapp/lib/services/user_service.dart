@@ -1,9 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 import 'package:repoblemapp/http_services/endpoints.dart';
 import 'package:repoblemapp/models/User.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class UsersManager {
   //Fem un Singleton per asegurar idem dades en totes les busquedes
@@ -79,6 +83,26 @@ class UsersManager {
     }
   }
 
+  Future<AuthResult> signInWithGoogle() async {
+    // Trigger the authentication flow
+    final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
+
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser.authentication;
+
+    // Create a new credential
+    final AuthCredential credential = GoogleAuthProvider.getCredential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    // Once signed in, return the FirebaseUser
+    final AuthResult user =
+        await FirebaseAuth.instance.signInWithCredential(credential);
+    return user;
+  }
+
 //Funció per mostrar un usuari
   Future<Map> getUser() async {
     try {
@@ -92,16 +116,14 @@ class UsersManager {
         },
       );
 
-      Map<String,dynamic> infoBBDD = jsonDecode(response.body);
+      Map<String, dynamic> infoBBDD = jsonDecode(response.body);
       print(infoBBDD);
-      if(infoBBDD['code']=="200"){
+      if (infoBBDD['code'] == "200") {
         print('ENTRO');
         return infoBBDD['user'];
-      }
-      else{
+      } else {
         return null;
       }
-
     } catch (error) {
       print(error);
       return null;
@@ -129,7 +151,7 @@ class UsersManager {
           "email": user.email,
           "password": user.password,
           "phone": user.phone,
-          "profilePhoto":user.profilePhoto,
+          "profilePhoto": user.profilePhoto,
           "birthDate": user.birthDate.toString(),
         }),
       );
@@ -152,23 +174,17 @@ class UsersManager {
         },
       );
 
-      Map<String,dynamic> infoBBDD = jsonDecode(response.body);
+      Map<String, dynamic> infoBBDD = jsonDecode(response.body);
       print(infoBBDD);
-      if(infoBBDD['code']=="200"){
+      if (infoBBDD['code'] == "200") {
         print('ENTRO');
         return infoBBDD['user'];
-      }
-      else{
+      } else {
         return null;
       }
-
     } catch (error) {
       print(error);
       return null;
     }
-
-
-
-
   }
 }
