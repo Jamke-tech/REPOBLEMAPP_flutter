@@ -87,7 +87,17 @@ class _SocialState extends State<Social> {
               ),
             ),
           ),
-        ],),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        backgroundColor: Colors.teal[400],
+        child: Icon(
+          Icons.person_add_alt_1,
+          color: Colors.white,
+        ),
+      ),
+      
     );
   }
 
