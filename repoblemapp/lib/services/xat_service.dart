@@ -28,15 +28,17 @@ class XatManager {
       print("Creating xat...");
 
       http.Response response = await http.put(
-        Uri.parse("http://${endpoints.IpApi}/api/xat"),
+        Uri.parse("http://${endpoints.IpApi}/api/newChat"),
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
           HttpHeaders.acceptHeader: 'application/json',
         },
         body: jsonEncode({
           //"message": xat.message,
-          "nameUserOffer": xat.nameUserOffer,
-          "nameUser": xat.nameUser,
+          "owner": xat.ownerID,
+          "user": xat.myID,
+          "offerRelated": xat.offerID,
+          "messages": xat.messages,
         }),
       );
 
@@ -49,7 +51,72 @@ class XatManager {
   }
 
   //Funció per buscar si existeix el xat
+  Future<Map> findChat() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String idOffer = prefs.getString('offerID');
+      String idUser = prefs.getString('myID');
 
-  //Funció per entrar al xat
+      http.Response response = await http.get(
+        Uri.parse("http://${endpoints.IpApi}/api/Chat/$idOffer/$idUser"),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.acceptHeader: 'application/json',
+        },
+      );
 
+      Map<String, dynamic> infoBBDD = jsonDecode(response.body);
+      print(infoBBDD);
+      if (infoBBDD['code'] == "200") {
+        print('ENTRO');
+        return infoBBDD['xat'];
+      } else {
+        return null;
+      }
+    } catch (error) {
+      print(error);
+      return null;
+    }
+  }
+
+  //GetMessages
+
+  Future<Map> getMessages() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String id = prefs.getString('id');
+
+      http.Response response = await http.get(
+        Uri.parse("http://${endpoints.IpApi}/api/Messages/$id"),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.acceptHeader: 'application/json',
+        },
+      );
+      return jsonDecode(response.body);
+    } catch (error) {
+      print(error);
+      return null;
+    }
+  }
+
+//GetChats
+  Future<Map> getChats() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String idUser = prefs.getString('myID');
+
+      http.Response response = await http.get(
+        Uri.parse("http://${endpoints.IpApi}/api/Chat/$idUser"),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.acceptHeader: 'application/json',
+        },
+      );
+      return jsonDecode(response.body);
+    } catch (error) {
+      print(error);
+      return null;
+    }
+  }
 }
