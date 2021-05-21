@@ -1,5 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'package:repoblemapp/http_services/endpoints.dart';
+
 import 'package:repoblemapp/models/Xat.dart';
 import 'dart:convert';
 import 'dart:io';
@@ -22,12 +23,12 @@ class XatManager {
   Endpoints endpoints = Endpoints.getInstance();
 
   //Funció per crear xat si no existeix
-  Future<int> createXat(Xat xat) async {
+  Future<Map> createXat(Xat xat) async {
     try {
       //Hacemos el PUT a la dirección /offer con los datos de una oferta
       print("Creating xat...");
 
-      http.Response response = await http.put(
+      http.Response response = await http.post(
         Uri.parse("http://${endpoints.IpApi}/api/newChat"),
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
@@ -35,27 +36,31 @@ class XatManager {
         },
         body: jsonEncode({
           //"message": xat.message,
-          "owner": xat.ownerID,
-          "user": xat.myID,
-          "offerRelated": xat.offerID,
-          "messages": xat.messages,
+          "owner": xat.owner,
+          "user": xat.user,
+          "offerRelated": xat.offerRelated,
         }),
       );
 
-      print(response.body);
-      return int.parse(jsonDecode(response.body)["code"]);
+      Map<String, dynamic> infoBBDD = jsonDecode(response.body);
+      print(infoBBDD);
+      if (infoBBDD['code'] == "200") {
+        print('ENTRO');
+        return infoBBDD['Chat'];
+      } else {
+        return null;
+      }
     } catch (error) {
       print(error);
-      return 505;
+      return null;
     }
   }
 
   //Funció per buscar si existeix el xat
-  Future<Map> findChat() async {
+  Future<Map> findChat(String idOffer) async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      String idOffer = prefs.getString('offerID');
-      String idUser = prefs.getString('myID');
+      String idUser = prefs.getString('id');
 
       http.Response response = await http.get(
         Uri.parse("http://${endpoints.IpApi}/api/Chat/$idOffer/$idUser"),
@@ -69,7 +74,7 @@ class XatManager {
       print(infoBBDD);
       if (infoBBDD['code'] == "200") {
         print('ENTRO');
-        return infoBBDD['xat'];
+        return infoBBDD['Chat'];
       } else {
         return null;
       }
@@ -80,14 +85,11 @@ class XatManager {
   }
 
   //GetMessages
-
-  Future<Map> getMessages() async {
+  Future<Map> getMessages(String idChat) async {
     try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      String id = prefs.getString('id');
 
       http.Response response = await http.get(
-        Uri.parse("http://${endpoints.IpApi}/api/Messages/$id"),
+        Uri.parse("http://${endpoints.IpApi}/api/Messages/$idChat"),
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
           HttpHeaders.acceptHeader: 'application/json',
@@ -101,10 +103,10 @@ class XatManager {
   }
 
 //GetChats
-  Future<Map> getChats() async {
+  Future<List<dynamic>> getChats() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      String idUser = prefs.getString('myID');
+      String idUser = prefs.getString('id');
 
       http.Response response = await http.get(
         Uri.parse("http://${endpoints.IpApi}/api/Chat/$idUser"),
@@ -113,7 +115,8 @@ class XatManager {
           HttpHeaders.acceptHeader: 'application/json',
         },
       );
-      return jsonDecode(response.body);
+      print(jsonDecode(response.body)['activeChats']);
+      return jsonDecode(response.body)['activeChats'];
     } catch (error) {
       print(error);
       return null;
@@ -148,4 +151,9 @@ class XatManager {
       return null;
     }
   }
+
+
+
+
+
 }

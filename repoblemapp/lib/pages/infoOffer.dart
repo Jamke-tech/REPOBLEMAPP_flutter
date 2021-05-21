@@ -1,8 +1,13 @@
+import 'package:flash/flash.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart' as Location;
 import 'package:repoblemapp/http_services/endpoints.dart';
+import 'package:repoblemapp/models/Xat.dart';
+import 'package:repoblemapp/services/xat_service.dart';
+import 'package:repoblemapp/widgets/error_toast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class InfoOffer extends StatefulWidget {
   const InfoOffer({Key key}) : super(key: key);
@@ -247,42 +252,7 @@ class _InfoOfferState extends State<InfoOffer> {
                 ],
               )),
 
-          //Botó de contacte
-          Container(
-            margin: EdgeInsets.all(6),
-            padding: EdgeInsets.all(2),
-            decoration: BoxDecoration(
-              color: Colors.transparent,
-              borderRadius: BorderRadius.all(Radius.circular(15)),
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: Text(
-                    "Contacta amb " + infoOfOwner["name"],
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.teal[800],
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.right,
-                  ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: FloatingActionButton(
-                    child: Icon(
-                      Icons.message,
-                      size: 45,
-                      color: Colors.teal[200],
-                    ),
-                    onPressed: () {},
-                  ),
-                ),
-              ],
-            ),
-          ),
+
 
           SizedBox(
             height: 20,
@@ -394,8 +364,123 @@ class _InfoOfferState extends State<InfoOffer> {
             ),
           ),
           SizedBox(
-            height: 40,
+            height: 20,
           ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(14, 2, 0, 0),
+            child: Text(
+              'Contacte',
+              style: TextStyle(
+                fontSize: 25,
+                color: Colors.teal,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Hontana',
+              ),
+            ),
+          ),
+          Divider(
+            color: Colors.teal,
+            thickness: 4,
+          ),
+
+          //Botó de contacte
+          Container(
+            margin: EdgeInsets.all(6),
+            padding: EdgeInsets.all(2),
+            decoration: BoxDecoration(
+              color: Colors.transparent,
+              borderRadius: BorderRadius.all(Radius.circular(15)),
+            ),
+            child: Row(
+
+              children: [
+                Expanded(
+                  flex:2,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(16,4,16,4),
+                    child: Text(
+                      "Contacta amb " + infoOfOwner["name"],
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex:1,
+                  child: FloatingActionButton(
+                    backgroundColor: Colors.teal,
+                    child: Icon(
+                      Icons.message,
+                      size: 30,
+                      color: Colors.white,
+                    ),
+                    onPressed: () async {
+                      //Tenemos que mirar si existe si no existe pues creamos el chat
+
+                      XatManager manager = XatManager.getInstance();
+
+                      Map infoChat = await manager.findChat(infoOfOffer['_id']);
+                      //Retorna null si no existe i un chat lleno si existeix
+
+                      if(infoChat==null){
+                        //hem de crear un chat nou pq no exiteix un ja creat
+                        //Tenim que fer una nou objecte de chat
+                        SharedPreferences prefs = await SharedPreferences.getInstance();
+
+
+
+                        Xat newXat = new Xat(
+                          owner: infoOfOwner['_id'] ,
+                          user: prefs.getString('id'),
+                          offerRelated: infoOfOffer['_id'],
+                        );
+                        Map infoChatCreated = await manager.createXat(newXat);
+
+                        if(infoChatCreated==null){
+                          showFlash(
+                              context: context,
+                              duration:
+                              const Duration(seconds: 3),
+                              builder: (context, controller) {
+                                return ErrorToast(
+                                  controller: controller,
+                                  textshow: "No s'ha pogut crear el Xat",
+                                );
+                              });
+                        }
+                        else{
+                          //Hem d'anar a la pantalla de chat passant la info del chat creat
+
+                          Navigator.pushReplacementNamed(context, '/xat', arguments: {
+                            'map': infoChatCreated,
+                          });
+                      }
+                      }
+                      else{
+                        //Ja existeix i enviem direcamament el chat
+                        Navigator.pushReplacementNamed(context, '/xat', arguments: {
+                          'map': infoChat,
+
+                        });
+
+                      }
+                    },
+                  ),
+                ),
+
+
+              ],
+            ),
+          ),
+
+          SizedBox(height: 40,)
+
+
+
         ],
       ),
     );

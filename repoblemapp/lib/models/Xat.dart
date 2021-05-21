@@ -4,10 +4,10 @@ class Xat {
   //Variables del Usuari
 
   List<Message> messages;
-  String ownerID;
-  String myID;
-  String offerID;
+  String owner;
+  String user;
+  String offerRelated;
 
-  Xat({this.messages, this.ownerID, this.myID, this.offerID});
+  Xat({this.messages, this.owner, this.user, this.offerRelated});
   //Hello
 }

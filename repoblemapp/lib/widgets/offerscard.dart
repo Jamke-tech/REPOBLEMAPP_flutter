@@ -37,7 +37,7 @@ class offerCard extends StatelessWidget {
 
 
 
-          Navigator.pushNamed(context, '/infoActivity',arguments: {
+          Navigator.pushNamed(context, '/infoOffer',arguments: {
             'mapOffer':infoOffer,
             'mapOwner':infoOfOwner,
 

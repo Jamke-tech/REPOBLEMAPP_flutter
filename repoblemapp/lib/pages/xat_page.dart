@@ -1,4 +1,4 @@
-import 'dart:convert';
+/*import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_socket_io/socket_io_manager.dart';
@@ -25,8 +25,7 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     Map<String, dynamic> infoOfChat;
     Map data = ModalRoute.of(context).settings.arguments;
-    infoOfChat =
-        data['map']; 
+    infoOfChat = data['map'];
     //Sacamos de los argumentos la información del usuario
     var currentUser = infoOfChat['talkers'][];
 
@@ -38,7 +37,7 @@ class _ChatPageState extends State<ChatPage> {
     socketIO.subscribe('receive_message', (jsonData) {
       Map<String, dynamic> data = json.decode(jsonData);
       messages.add(data['content']);
-      notifyListeners();
+      //notifyListeners();
     });
 
     socketIO.connect();
@@ -150,11 +149,11 @@ class _ChatPageState extends State<ChatPage> {
     socketIO.sendMessage(
       'send_message',
       json.encode({
-        'senderChatID': senderChatId,
+        'sender': senderChatId,
         'content': text,
       }),
     );
-    notifyListeners();
+    //notifyListeners();
   }
   List<String> getMessagesForChat(String chatID) {
     return messages
@@ -167,7 +166,7 @@ class Message extends StatelessWidget {
     Key key,
     @required this.message,
   }) : super(key: key);
-  final ChatMessage message;
+  //final ChatMessage message;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -192,4 +191,4 @@ class Message extends StatelessWidget {
     );
   }
    
-}
+}*/

@@ -33,8 +33,9 @@ class RepoblemAPP extends StatelessWidget {
         '/profile': (context) => Profile(),
         '/edit_profile': (context) => EditProfile(),
         '/fav_offers': (context) => Fav(),
-        '/infoActivity':(context)=>InfoOffer(),
-        '/social':(context)=>Social()
+        '/infoOffer':(context)=>InfoOffer(),
+        '/social':(context)=>Social(),
+        //'/xat':(context)=>ChatPage(),
       },
     );
   }

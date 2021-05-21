@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:repoblemapp/models/Chat.dart';
+import 'package:repoblemapp/models/Xat.dart';
+import 'package:repoblemapp/services/xat_service.dart';
 
 class Social extends StatefulWidget {
   const Social({Key key}) : super(key: key);
@@ -10,6 +12,28 @@ class Social extends StatefulWidget {
 }
 
 class _SocialState extends State<Social> {
+
+
+  List<dynamic> XatsData;
+
+  @override
+  void initState() {
+    super.initState();
+    //Recuperamos la info de la BBDD sobre el usario
+    getInfoXatsUser();
+  }
+
+  void getInfoXatsUser() async {
+    //Hem de demanar els xats que te l'usuari que estigui actius
+    XatManager manager = XatManager.getInstance();
+    List<dynamic> infoXatsUser =await manager.getChats();
+    print(infoXatsUser);
+    setState(() {
+      XatsData = infoXatsUser;
+    });
+    print(XatsData);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,13 +43,16 @@ class _SocialState extends State<Social> {
           Expanded(
             //construir todos los chats
             child:ListView.builder(
-              itemCount: chatsData.length,
+              itemCount: XatsData.length,
               itemBuilder: (context, index) => InkWell(
                 onTap: () {
                   //hacer la función aqui para entrar al chat 
                   //pasandole todos los mensajes a la siguiente xat_page.dart
-                  
-                },
+
+                    Navigator.pushReplacementNamed(context, '/xat', arguments: {
+                    'map': XatsData[index],
+                    });
+                  },
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 7.5),
                   child: Row(
@@ -34,7 +61,7 @@ class _SocialState extends State<Social> {
                         children: [
                           CircleAvatar(
                             radius: 24,
-                            backgroundImage: AssetImage(chatsData[index].image),
+                            backgroundImage: AssetImage("assets/images/Repoblem.png"),
                           ),
                           //si esta activo, enciende la lucecita
                           if(chatsData[index].isActive)
@@ -62,7 +89,7 @@ class _SocialState extends State<Social> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  chatsData[index].offerName,
+                                  XatsData[index]['offerRelated']['title'],
                                   style: TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.w500
@@ -72,7 +99,7 @@ class _SocialState extends State<Social> {
                                 Opacity(
                                   opacity: 0.64,
                                   child: Text(
-                                    chatsData[index].lastMessage,
+                                    'Click per obrir el Xat',//getLastMessage(index),//XatsData[index]['messages'][-1]['content'],
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                   ),
@@ -81,10 +108,10 @@ class _SocialState extends State<Social> {
                             ),
                           ),
                         ),
-                        Opacity(
+                        /*Opacity(
                           opacity: 0.64,
                           child: Text(chatsData[index].time),
-                        ),
+                        ),*/
                     ]
                   ),
                 ),
@@ -107,9 +134,22 @@ class _SocialState extends State<Social> {
       
     );
   }
+  String getLastMessage(int index){
+    List Messages = XatsData[index]['messages'];
+    print(Messages);
+    int last = Messages.length - 1;
+    String lastMessage = Messages[last]['content'];
+    if(lastMessage == null){
+      lastMessage='';
+    }
+    return lastMessage;
+
+
+  }
 
   AppBar buildAppBar() {
     return AppBar(
+      backgroundColor: Colors.teal[400],
       automaticallyImplyLeading: false,
       title: Text("RepoblemAPP Chats"),
       actions: [
