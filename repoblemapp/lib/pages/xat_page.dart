@@ -26,26 +26,34 @@ class _ChatPageState extends State<ChatPage> {
   
   @override
   Widget build(BuildContext context) {
+
+    //Pasamos un mapa con toda la informacion
     Map<String, dynamic> infoOfChat;
     Map data = ModalRoute.of(context).settings.arguments;
-    infoOfChat =
-        data['map']; 
+    infoOfChat =data['map'];
+    print(infoOfChat);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.teal[400],
         automaticallyImplyLeading: false,
         title: Row(
           children: [
-            BackButton(),
+            BackButton(
+              onPressed: (){
+                Navigator.pop(context);
+              },
+
+            ),
             CircleAvatar(
-              backgroundImage: AssetImage(infoOfChat['Photo']),
+              backgroundImage: AssetImage("assets/images/Repoblem.png"),
             ),
             SizedBox(),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(infoOfChat['OfferID']['name'], style: TextStyle(fontSize: 16)),
-                Text(infoOfChat['OfferID']['owner']['name'], style: TextStyle(fontSize: 12))
+                Text(infoOfChat['offerRelated']['title'], style: TextStyle(fontSize: 16)),
+                Text(infoOfChat['owner']['name'], style: TextStyle(fontSize: 12)) //TODO: Fer funcio per selccionar el owner i el user
               ],
             )
           ],
@@ -57,10 +65,10 @@ class _ChatPageState extends State<ChatPage> {
       ),
       body: Column(
         children: [
-          Spacer(),
           Expanded(
               child: ListView.builder(
-            itemBuilder: (context, index) => MessageBox(message: infoOfChat['messages'][index],),
+                itemCount: infoOfChat['messages'].length,
+              itemBuilder: (context, index) => MessageBox(message: infoOfChat['messages'][index]['content'],),
           )),
           Container(
             padding: EdgeInsets.symmetric(
@@ -144,28 +152,33 @@ class MessageBox extends StatelessWidget {
     Key key,
     @required this.message,
   }) : super(key: key);
-  final Message message;
+  final String message;
+
+
   @override
   Widget build(BuildContext context) {
-    return Row(
-      //mainAxisAlignment: message.isSender ? MainAxisAlignment.end : MainAxisAlignment.start,
-      children: [
-        Container(
-          margin: EdgeInsets.only(top: 20),
-          padding: EdgeInsets.symmetric(
-            horizontal: 15,
-            vertical: 10,
+    return Padding(
+      padding: const EdgeInsets.only(left: 8),
+      child: Row(
+        //mainAxisAlignment: message.isSender ? MainAxisAlignment.end : MainAxisAlignment.start,
+        children: [
+          Container(
+            margin: EdgeInsets.only(top: 20),
+            padding: EdgeInsets.symmetric(
+              horizontal: 15,
+              vertical: 10,
+            ),
+            decoration: BoxDecoration(
+              color: Colors.teal[400],
+              borderRadius: BorderRadius.circular(30)
+            ),
+            child: Text(
+              message,
+              style: TextStyle(
+                color: Colors.white),),
           ),
-          decoration: BoxDecoration(
-            color: Colors.teal[400],
-            borderRadius: BorderRadius.circular(30)
-          ),
-          child: Text(
-            "Chat Text",
-            style: TextStyle( 
-              color: Colors.white),),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }  

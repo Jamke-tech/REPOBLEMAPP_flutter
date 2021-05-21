@@ -23,10 +23,13 @@ class XatManager {
   Endpoints endpoints = Endpoints.getInstance();
 
   //Funció per crear xat si no existeix
-  Future<Map> createXat(Xat xat) async {
+  Future<Map> createXat(String idOwner, String idOffer) async {
     try {
       //Hacemos el PUT a la dirección /offer con los datos de una oferta
       print("Creating xat...");
+      print(idOwner);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String idUser = prefs.getString('id');
 
       http.Response response = await http.post(
         Uri.parse("http://${endpoints.IpApi}/api/newChat"),
@@ -36,9 +39,9 @@ class XatManager {
         },
         body: jsonEncode({
           //"message": xat.message,
-          "owner": xat.owner,
-          "user": xat.user,
-          "offerRelated": xat.offerRelated,
+          "ownerID": idOwner,
+          "myID": idUser,
+          "offerID": idOffer,
         }),
       );
 

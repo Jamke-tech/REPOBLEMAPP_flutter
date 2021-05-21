@@ -49,7 +49,7 @@ class _SocialState extends State<Social> {
                   //hacer la función aqui para entrar al chat 
                   //pasandole todos los mensajes a la siguiente xat_page.dart
 
-                    Navigator.pushReplacementNamed(context, '/xat', arguments: {
+                    Navigator.pushNamed(context, '/xat', arguments: {
                     'map': XatsData[index],
                     });
                   },
@@ -99,7 +99,7 @@ class _SocialState extends State<Social> {
                                 Opacity(
                                   opacity: 0.64,
                                   child: Text(
-                                    'Click per obrir el Xat',//getLastMessage(index),//XatsData[index]['messages'][-1]['content'],
+                                    getLastMessage(index),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                   ),

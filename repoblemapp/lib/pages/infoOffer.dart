@@ -433,12 +433,16 @@ class _InfoOfferState extends State<InfoOffer> {
 
 
 
-                        Xat newXat = new Xat(
+                        /*Xat newXat = new Xat(
                           owner: infoOfOwner['_id'] ,
                           user: prefs.getString('id'),
                           offerRelated: infoOfOffer['_id'],
-                        );
-                        Map infoChatCreated = await manager.createXat(newXat);
+                        );*/
+
+
+
+
+                        Map infoChatCreated = await manager.createXat(infoOfOwner['_id'],infoOfOffer['_id']);
 
                         if(infoChatCreated==null){
                           showFlash(
@@ -455,14 +459,14 @@ class _InfoOfferState extends State<InfoOffer> {
                         else{
                           //Hem d'anar a la pantalla de chat passant la info del chat creat
 
-                          Navigator.pushReplacementNamed(context, '/xat', arguments: {
+                          Navigator.pushNamed(context, '/xat', arguments: {
                             'map': infoChatCreated,
                           });
                       }
                       }
                       else{
                         //Ja existeix i enviem direcamament el chat
-                        Navigator.pushReplacementNamed(context, '/xat', arguments: {
+                        Navigator.pushNamed(context, '/xat', arguments: {
                           'map': infoChat,
 
                         });
