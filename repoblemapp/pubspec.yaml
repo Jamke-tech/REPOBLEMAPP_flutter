@@ -32,6 +32,7 @@ dependencies:
   flutter_secure_storage: ^3.3.1+1
   scoped_model: ^1.0.1
   flutter_socket_io: ^0.6.0
+  provider: ^4.3.3
 
   latlong: ^0.6.1
 
