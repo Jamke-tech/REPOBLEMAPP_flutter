@@ -1,10 +1,13 @@
-/*import 'dart:convert';
+import 'dart:collection';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_socket_io/socket_io_manager.dart';
+import 'package:repoblemapp/models/Message.dart';
 import 'package:repoblemapp/models/User.dart';
 import 'package:flutter_socket_io/flutter_socket_io.dart';
-
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 
@@ -25,23 +28,8 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     Map<String, dynamic> infoOfChat;
     Map data = ModalRoute.of(context).settings.arguments;
-    infoOfChat = data['map'];
-    //Sacamos de los argumentos la información del usuario
-    var currentUser = infoOfChat['talkers'][];
-
-    socketIO = SocketIOManager().createSocketIO(
-        '<ENTER_YOUR_SERVER_URL_HERE>', '/',
-        query: 'chatID=${infoOfChat['chatId']}');
-    socketIO.init();
-
-    socketIO.subscribe('receive_message', (jsonData) {
-      Map<String, dynamic> data = json.decode(jsonData);
-      messages.add(data['content']);
-      //notifyListeners();
-    });
-
-    socketIO.connect();
-
+    infoOfChat =
+        data['map']; 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.teal[400],
@@ -56,8 +44,8 @@ class _ChatPageState extends State<ChatPage> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(infoOfChat['Offer'], style: TextStyle(fontSize: 16)),
-                Text(infoOfChat['Offer']['owner'], style: TextStyle(fontSize: 12))
+                Text(infoOfChat['OfferID']['name'], style: TextStyle(fontSize: 16)),
+                Text(infoOfChat['OfferID']['owner']['name'], style: TextStyle(fontSize: 12))
               ],
             )
           ],
@@ -72,7 +60,7 @@ class _ChatPageState extends State<ChatPage> {
           Spacer(),
           Expanded(
               child: ListView.builder(
-            itemBuilder: (context, index) => Message(message: infoOfChat['messages'][index],),
+            itemBuilder: (context, index) => MessageBox(message: infoOfChat['messages'][index],),
           )),
           Container(
             padding: EdgeInsets.symmetric(
@@ -144,33 +132,23 @@ class _ChatPageState extends State<ChatPage> {
       ),
     );
   }
-  void sendMessage(String text, String senderChatId) {
-    messages.add(text);
-    socketIO.sendMessage(
-      'send_message',
-      json.encode({
-        'sender': senderChatId,
-        'content': text,
-      }),
-    );
-    //notifyListeners();
-  }
+  
   List<String> getMessagesForChat(String chatID) {
     return messages
         .toList();
   }
 }
 
-class Message extends StatelessWidget {
-  const Message({
+class MessageBox extends StatelessWidget {
+  const MessageBox({
     Key key,
     @required this.message,
   }) : super(key: key);
-  //final ChatMessage message;
+  final Message message;
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: message.isSender ? MainAxisAlignment.end : MainAxisAlignment.start,
+      //mainAxisAlignment: message.isSender ? MainAxisAlignment.end : MainAxisAlignment.start,
       children: [
         Container(
           margin: EdgeInsets.only(top: 20),
@@ -190,5 +168,39 @@ class Message extends StatelessWidget {
       ],
     );
   }
-   
-}*/
+}  
+class RenuevaChat extends ChangeNotifier{
+
+  final List<Message> _messages = [];
+  UnmodifiableListView<Message> get messages => UnmodifiableListView(_messages);
+  SocketIO socketIO;
+
+  void sendMessage(String text, String senderChatId) {
+    Message mensaje = Message(sender: senderChatId, content: text);
+    messages.add(mensaje);
+    socketIO.sendMessage(
+      'send_message',
+      json.encode({
+        'senderChatID': senderChatId,
+        'content': mensaje.content,
+      }),
+    );
+    notifyListeners();
+  }
+
+  void init( Map infoOfChat) async{
+
+    socketIO = SocketIOManager().createSocketIO(
+        '<ENTER_YOUR_SERVER_URL_HERE>', '/',
+        query: 'chatID=${infoOfChat['chatId']}');
+    socketIO.init();
+    socketIO.subscribe('receive_message', (jsonData) {
+      Map<String, dynamic> data = json.decode(jsonData);
+      messages.add(Message(sender: data['sender'],content:data['content'] ));
+      notifyListeners();
+    });
+    socketIO.connect();
+  }
+  
+
+}
