@@ -119,4 +119,33 @@ class XatManager {
       return null;
     }
   }
+
+  //DeleteChat
+
+  Future<Map> deleteChat(String idChat) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String idUser = prefs.getString('id');
+
+      http.Response response = await http.delete(
+        Uri.parse("http://${endpoints.IpApi}/api/Chat/$idChat/$idUser"),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.acceptHeader: 'application/json',
+        },
+      );
+
+      Map<String, dynamic> infoBBDD = jsonDecode(response.body);
+      print(infoBBDD);
+      if (infoBBDD['code'] == "200") {
+        print('ENTRO');
+        return infoBBDD;
+      } else {
+        return null;
+      }
+    } catch (error) {
+      print(error);
+      return null;
+    }
+  }
 }
