@@ -83,11 +83,23 @@ class UsersManager {
     }
   }
 
-  Future<AuthResult> signInWithGoogle() async {
-    // Trigger the authentication flow
-    final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
+  Future<int> signInWithGoogle() async {
 
-    // Obtain the auth details from the request
+    print('SIGNING with google');
+    final clientIDWeb = "117441791789-ap8ddcqtua09klrn3mfb9laqqstmthj3.apps.googleusercontent.com";
+    //final clientIDandroid = "117441791789-nac8i3tnns5jok16age2uovasub9a96f.apps.googleusercontent.com";
+    final googleSignIn = GoogleSignIn(clientId: clientIDWeb);
+
+
+
+
+    // Trigger the authentication flow
+    final GoogleSignInAccount googleUser = await googleSignIn.signIn();
+
+    print(googleUser.displayName);
+    print(googleUser.email);
+
+    /*// Obtain the auth details from the request
     final GoogleSignInAuthentication googleAuth =
         await googleUser.authentication;
 
@@ -99,8 +111,10 @@ class UsersManager {
 
     // Once signed in, return the FirebaseUser
     final AuthResult user =
-        await FirebaseAuth.instance.signInWithCredential(credential);
-    return user;
+        await FirebaseAuth.instance.signInWithCredential(credential);*/
+
+
+    return 0;
   }
 
 //Funció per mostrar un usuari

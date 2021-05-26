@@ -10,7 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+//import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 class LogIn extends StatefulWidget {
   @override
@@ -23,7 +23,7 @@ class _LogInState extends State<LogIn> {
 
   final _formKey = GlobalKey<FormState>();
 
-  final FacebookLogin facebookSignIn = new FacebookLogin();
+  //final FacebookLogin facebookSignIn = new FacebookLogin();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -323,7 +323,7 @@ class _LogInState extends State<LogIn> {
                               child: CircleAvatar(
                                 radius: 35,
                                 backgroundImage: NetworkImage(
-                                  'http://assets.stickpng.com/images/584ac2d03ac3a570f94a666d.png',
+                                  'https://assets.stickpng.com/images/584ac2d03ac3a570f94a666d.png',
                                 ),
                               ),
                             ),
