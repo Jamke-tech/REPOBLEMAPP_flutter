@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'dart:convert';
+import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_socket_io/socket_io_manager.dart';
@@ -10,32 +11,28 @@ import 'package:flutter_socket_io/flutter_socket_io.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
-
 class ChatPage extends StatefulWidget {
   @override
   _ChatPageState createState() => _ChatPageState();
 }
 
 class _ChatPageState extends State<ChatPage> {
-  
   final messageController = TextEditingController();
   User currentUser;
-  List<String> messages;
+  List<Message> messages;
   SocketIO socketIO;
-  RenuevaChat chatInstance;
+  RenuevaChat chatInstance = RenuevaChat();
 
-  
   @override
   Widget build(BuildContext context) {
-
     //Pasamos un mapa con toda la informacion
     Map<String, dynamic> infoOfChat;
     Map data = ModalRoute.of(context).settings.arguments;
-    infoOfChat =data['map'];
+    infoOfChat = data['map'];
+    print('se printea');
     print(infoOfChat);
+    print(chatInstance);
     chatInstance.init(infoOfChat);
-
 
     return Scaffold(
       appBar: AppBar(
@@ -44,10 +41,9 @@ class _ChatPageState extends State<ChatPage> {
         title: Row(
           children: [
             BackButton(
-              onPressed: (){
+              onPressed: () {
                 Navigator.pop(context);
               },
-
             ),
             CircleAvatar(
               backgroundImage: AssetImage("assets/images/Repoblem.png"),
@@ -56,8 +52,12 @@ class _ChatPageState extends State<ChatPage> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(infoOfChat['offerRelated']['title'], style: TextStyle(fontSize: 16)),
-                Text(infoOfChat['owner']['name'], style: TextStyle(fontSize: 12)) //TODO: Fer funcio per selccionar el owner i el user
+                Text(infoOfChat['offerRelated']['title'],
+                    style: TextStyle(fontSize: 16)),
+                Text(infoOfChat['owner']['name'],
+                    style: TextStyle(
+                        fontSize:
+                            12)) //TODO: Fer funcio per selccionar el owner i el user
               ],
             )
           ],
@@ -71,8 +71,10 @@ class _ChatPageState extends State<ChatPage> {
         children: [
           Expanded(
               child: ListView.builder(
-                itemCount: infoOfChat['messages'].length,
-              itemBuilder: (context, index) => MessageBox(message: infoOfChat['messages'][index]['content'],),
+            itemCount: infoOfChat['messages'].length,
+            itemBuilder: (context, index) => MessageBox(
+              message: infoOfChat['messages'][index]['content'],
+            ),
           )),
           Container(
             padding: EdgeInsets.symmetric(
@@ -111,7 +113,6 @@ class _ChatPageState extends State<ChatPage> {
                             child: TextField(
                                 controller: messageController,
                                 decoration: InputDecoration(
-
                                     hintText: "Escriu un missatge",
                                     border: InputBorder.none))),
                         Icon(
@@ -144,10 +145,9 @@ class _ChatPageState extends State<ChatPage> {
       ),
     );
   }
-  
-  List<String> getMessagesForChat(String chatID) {
-    return messages
-        .toList();
+
+  List<Message> getMessagesForChat(String chatID) {
+    return messages.toList();
   }
 }
 
@@ -157,7 +157,6 @@ class MessageBox extends StatelessWidget {
     @required this.message,
   }) : super(key: key);
   final String message;
-
 
   @override
   Widget build(BuildContext context) {
@@ -173,21 +172,20 @@ class MessageBox extends StatelessWidget {
               vertical: 10,
             ),
             decoration: BoxDecoration(
-              color: Colors.teal[400],
-              borderRadius: BorderRadius.circular(30)
-            ),
+                color: Colors.teal[400],
+                borderRadius: BorderRadius.circular(30)),
             child: Text(
               message,
-              style: TextStyle(
-                color: Colors.white),),
+              style: TextStyle(color: Colors.white),
+            ),
           ),
         ],
       ),
     );
   }
-}  
-class RenuevaChat extends ChangeNotifier{
+}
 
+class RenuevaChat extends ChangeNotifier {
   final List<Message> _messages = [];
   UnmodifiableListView<Message> get messages => UnmodifiableListView(_messages);
   SocketIO socketIO;
@@ -205,20 +203,23 @@ class RenuevaChat extends ChangeNotifier{
     notifyListeners();
   }
 
-  void init(Map infoOfChat) async{
+  void init(Map<String, dynamic> infoOfChat) async {
     Endpoints endpoints = Endpoints.getInstance();
+    print(infoOfChat['_id']);
 
+    print("separacion");
+    print(infoOfChat['chatId']);
     socketIO = SocketIOManager().createSocketIO(
         'http://${endpoints.IpApi}', '/',
-        query: 'chatID=${infoOfChat['chatId']}');
+        query: 'chatID=${infoOfChat['_id']}');
+
     socketIO.init();
+    print("hace init");
+    socketIO.connect();
     socketIO.subscribe('receive_message', (jsonData) {
       Map<String, dynamic> data = json.decode(jsonData);
-      messages.add(Message(sender: data['sender'],content:data['content'] ));
+      messages.add(Message(sender: data['sender'], content: data['content']));
       notifyListeners();
     });
-    socketIO.connect();
   }
-  
-
 }
