@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_socket_io/socket_io_manager.dart';
+import 'package:repoblemapp/http_services/endpoints.dart';
 import 'package:repoblemapp/models/Message.dart';
 import 'package:repoblemapp/models/User.dart';
 import 'package:flutter_socket_io/flutter_socket_io.dart';
@@ -22,6 +23,7 @@ class _ChatPageState extends State<ChatPage> {
   User currentUser;
   List<String> messages;
   SocketIO socketIO;
+  RenuevaChat chatInstance;
 
   
   @override
@@ -32,6 +34,8 @@ class _ChatPageState extends State<ChatPage> {
     Map data = ModalRoute.of(context).settings.arguments;
     infoOfChat =data['map'];
     print(infoOfChat);
+    chatInstance.init(infoOfChat);
+
 
     return Scaffold(
       appBar: AppBar(
@@ -194,17 +198,18 @@ class RenuevaChat extends ChangeNotifier{
     socketIO.sendMessage(
       'send_message',
       json.encode({
-        'senderChatID': senderChatId,
+        'sender': senderChatId,
         'content': mensaje.content,
       }),
     );
     notifyListeners();
   }
 
-  void init( Map infoOfChat) async{
+  void init(Map infoOfChat) async{
+    Endpoints endpoints = Endpoints.getInstance();
 
     socketIO = SocketIOManager().createSocketIO(
-        '<ENTER_YOUR_SERVER_URL_HERE>', '/',
+        'http://${endpoints.IpApi}', '/',
         query: 'chatID=${infoOfChat['chatId']}');
     socketIO.init();
     socketIO.subscribe('receive_message', (jsonData) {
