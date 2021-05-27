@@ -8,8 +8,7 @@ import 'package:flash/flash.dart';
 import 'package:repoblemapp/widgets/error_toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
 //import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 class LogIn extends StatefulWidget {
@@ -305,10 +304,37 @@ class _LogInState extends State<LogIn> {
                     ),
                   ),
 
-                  //Botones de facebook i google
+                  //Boton de google
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
-                    child: Row(
+                      padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
+                      child: SignInButton(
+                        Buttons.Google,
+                        text: "Registra't amb Google",
+                        onPressed: () async {
+                          UsersManager manager = UsersManager.getInstance();
+                          Map userRegistered = await manager.signInWithGoogle();
+                          if (userRegistered == null) {
+                            showFlash(
+                                context: context,
+                                duration: const Duration(seconds: 3),
+                                builder: (context, controller) {
+                                  return ErrorToast(
+                                    controller: controller,
+                                    textshow: "Error",
+                                  );
+                                });
+                          } else {
+                            if (userRegistered["code"] == "200") {
+                              SharedPreferences sharedPrefs =
+                                  await SharedPreferences.getInstance();
+                              sharedPrefs.setString("id", userRegistered["id"]);
+                              //Anar a la pàgina principal
+                              Navigator.pushReplacementNamed(context, "/home");
+                            }
+                          }
+                        },
+                      )
+                      /*child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Padding(
@@ -363,8 +389,8 @@ class _LogInState extends State<LogIn> {
                             ) ,
                         )*/
                       ],
-                    ),
-                  )
+                    ), */
+                      )
                 ],
               )
             ],

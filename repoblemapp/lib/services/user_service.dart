@@ -83,38 +83,46 @@ class UsersManager {
     }
   }
 
-  Future<int> signInWithGoogle() async {
-
+  Future<Map> signInWithGoogle() async {
     print('SIGNING with google');
-    final clientIDWeb = "117441791789-ap8ddcqtua09klrn3mfb9laqqstmthj3.apps.googleusercontent.com";
+    final clientIDWeb =
+        "117441791789-ap8ddcqtua09klrn3mfb9laqqstmthj3.apps.googleusercontent.com";
     //final clientIDandroid = "117441791789-nac8i3tnns5jok16age2uovasub9a96f.apps.googleusercontent.com";
     final googleSignIn = GoogleSignIn(clientId: clientIDWeb);
 
-
-
-
     // Trigger the authentication flow
     final GoogleSignInAccount googleUser = await googleSignIn.signIn();
-
     print(googleUser.displayName);
     print(googleUser.email);
+    print(googleUser.id);
 
-    /*// Obtain the auth details from the request
-    final GoogleSignInAuthentication googleAuth =
-        await googleUser.authentication;
+    try {
+      //Hacemos el PUT a la dirección /user con los datos de un usuario
+      print("Registering user...");
 
-    // Create a new credential
-    final AuthCredential credential = GoogleAuthProvider.getCredential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
+      http.Response response = await http.put(
+        Uri.parse("http://${endpoints.IpApi}/api/user"),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.acceptHeader: 'application/json',
+        },
+        body: jsonEncode({
+          "userName": googleUser.displayName,
+          "name": "",
+          "surname": "",
+          "email": googleUser.email,
+          "password": "",
+          "phone": "",
+          "birthDate": "",
+        }),
+      );
 
-    // Once signed in, return the FirebaseUser
-    final AuthResult user =
-        await FirebaseAuth.instance.signInWithCredential(credential);*/
-
-
-    return 0;
+      print(response.body);
+      return jsonDecode(response.body);
+    } catch (error) {
+      print(error);
+      return null;
+    }
   }
 
 //Funció per mostrar un usuari
