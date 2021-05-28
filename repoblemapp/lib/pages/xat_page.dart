@@ -11,6 +11,10 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
+import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:socket_io_client/socket_io_client.dart';
+
+
 
 class ChatPage extends StatefulWidget {
   @override
@@ -21,20 +25,38 @@ class _ChatPageState extends State<ChatPage> {
   
   final messageController = TextEditingController();
   User currentUser;
-  List<String> messages;
+  List<Message> messages = [];
   SocketIO socketIO;
-  RenuevaChat chatInstance;
+  RenuevaChat chatInstance= RenuevaChat();
 
   
   @override
   Widget build(BuildContext context) {
+
 
     //Pasamos un mapa con toda la informacion
     Map<String, dynamic> infoOfChat;
     Map data = ModalRoute.of(context).settings.arguments;
     infoOfChat =data['map'];
     print(infoOfChat);
-    chatInstance.init(infoOfChat);
+    chatInstance.init(infoOfChat,messages);
+
+    //Inicalizamos la lista de mensajes
+    print(infoOfChat['messages']);
+
+
+    infoOfChat['messages'].forEach((m) {
+        print(m);
+
+        messages.add(
+          Message(
+              sender: m['sender'],
+              content: m['content'])
+        );
+      }
+    );
+
+
 
 
     return Scaffold(
@@ -45,6 +67,8 @@ class _ChatPageState extends State<ChatPage> {
           children: [
             BackButton(
               onPressed: (){
+                //Desconnectamos el cleinte del chat
+                chatInstance.disconnect();
                 Navigator.pop(context);
               },
 
@@ -71,8 +95,8 @@ class _ChatPageState extends State<ChatPage> {
         children: [
           Expanded(
               child: ListView.builder(
-                itemCount: infoOfChat['messages'].length,
-              itemBuilder: (context, index) => MessageBox(message: infoOfChat['messages'][index]['content'],),
+                itemCount: messages.length,
+                itemBuilder: (context, index) => MessageBox(message: messages[index].content,),
           )),
           Container(
             padding: EdgeInsets.symmetric(
@@ -114,13 +138,29 @@ class _ChatPageState extends State<ChatPage> {
 
                                     hintText: "Escriu un missatge",
                                     border: InputBorder.none))),
-                        Icon(
-                          Icons.attach_file,
+                        IconButton(
+                          onPressed: () async{
+                            //Enviamos mensaje al websocket
+                            SharedPreferences prefs = await SharedPreferences.getInstance();
+                            List<Message> newMessages = chatInstance.sendMessage(messageController.text, prefs.getString('id'), messages);
+
+
+                            setState(() {
+                              messages=newMessages;
+                            });
+                            print(messages.toString());
+
+
+                          },
+
+                          icon: Icon(
+                            Icons.send,
                           color: Theme.of(context)
                               .textTheme
                               .bodyText1
                               .color
                               .withOpacity(0.64),
+                          )
                         ),
                         SizedBox(
                           width: 5,
@@ -145,10 +185,10 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
   
-  List<String> getMessagesForChat(String chatID) {
+  /*List<Message> getMessagesForChat(String chatID) {
     return messages
         .toList();
-  }
+  }*/
 }
 
 class MessageBox extends StatelessWidget {
@@ -188,11 +228,11 @@ class MessageBox extends StatelessWidget {
 }  
 class RenuevaChat extends ChangeNotifier{
 
-  final List<Message> _messages = [];
-  UnmodifiableListView<Message> get messages => UnmodifiableListView(_messages);
+  /*List<Message> _messages = [];
+  UnmodifiableListView<Message> get messages => UnmodifiableListView(_messages);*/
   SocketIO socketIO;
 
-  void sendMessage(String text, String senderChatId) {
+  List<Message> sendMessage(String text, String senderChatId, List<Message> messages) {
     Message mensaje = Message(sender: senderChatId, content: text);
     messages.add(mensaje);
     socketIO.sendMessage(
@@ -203,21 +243,52 @@ class RenuevaChat extends ChangeNotifier{
       }),
     );
     notifyListeners();
+    print (messages);
+    return messages;
+  }
+  void disconnect(){
+    socketIO.disconnect();
+
   }
 
-  void init(Map infoOfChat) async{
+  void init(Map infoOfChat, List<Message> messages) async{
     Endpoints endpoints = Endpoints.getInstance();
+    print("ID of chat is = " + infoOfChat['_id']);
 
     socketIO = SocketIOManager().createSocketIO(
-        'http://${endpoints.IpApi}', '/',
-        query: 'chatID=${infoOfChat['chatId']}');
+        'http://${endpoints.chatIP}', '/chat',
+        query: "chatID=${infoOfChat['_id']}",
+    socketStatusCallback: _socketStatus);
+
     socketIO.init();
+    socketIO.connect();
+
     socketIO.subscribe('receive_message', (jsonData) {
       Map<String, dynamic> data = json.decode(jsonData);
-      messages.add(Message(sender: data['sender'],content:data['content'] ));
+      messages.add(
+          Message(
+              sender: data['sender'],
+              content:data['content'] ));
       notifyListeners();
     });
-    socketIO.connect();
+
+    /*Socket socket = io('http://${endpoints.chatIP}',<String, dynamic>{
+      'transports': ['websocket'],
+      'autoConnect': false,
+      }
+    );
+    socket.connect();*/
+
+    //socket.on('connection',)
+
+
+
+
+
+  }
+
+  _socketStatus(dynamic data) {
+    print("Socket status: " + data);
   }
   
 

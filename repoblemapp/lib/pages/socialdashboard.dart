@@ -27,7 +27,7 @@ class _SocialState extends State<Social> {
     //Hem de demanar els xats que te l'usuari que estigui actius
     XatManager manager = XatManager.getInstance();
     List<dynamic> infoXatsUser =await manager.getChats();
-    print(infoXatsUser);
+
     setState(() {
       XatsData = infoXatsUser;
     });

@@ -17,4 +17,7 @@ class Endpoints {
   //final String IpApi = '147.83.7.158:25000'; // per docker
   final String photoIP = '10.0.2.2:25000';
   //final String photoIP = '147.83.7.158:25000';
+  final String chatIP = '10.0.2.2:30000';
+
+
 }
