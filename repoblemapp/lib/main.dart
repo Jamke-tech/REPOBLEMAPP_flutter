@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:repoblemapp/pages/delete_profile.dart';
 import 'package:repoblemapp/pages/edit_profile.dart';
 import 'package:repoblemapp/pages/home.dart';
 import 'package:repoblemapp/pages/infoOffer.dart';
@@ -34,7 +35,8 @@ class RepoblemAPP extends StatelessWidget {
         '/edit_profile': (context) => EditProfile(),
         '/fav_offers': (context) => Fav(),
         '/infoActivity':(context)=>InfoOffer(),
-        '/social':(context)=>Social()
+        '/social':(context)=>Social(),
+        '/delete_profile':(context)=>Delete()
       },
     );
   }

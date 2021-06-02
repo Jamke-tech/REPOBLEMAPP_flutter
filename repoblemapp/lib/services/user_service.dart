@@ -166,9 +166,34 @@ class UsersManager {
       print(error);
       return null;
     }
+  }
 
+  //Funció per eliminar un usuari (Minim2)
+  Future<int> deleteUser() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String id = prefs.getString('id');
+      http.Response response = await http.delete(
+        Uri.parse("http://${endpoints.IpApi}/api/user/$id"),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.acceptHeader: 'application/json',
+        },
+      );
 
+      Map<String,dynamic> infoBBDD = jsonDecode(response.body);
+      print(infoBBDD);
+      if(infoBBDD['code']=="200"){
+        print('Elimino');
+        return infoBBDD['code'];
+      }
+      else{
+        return null;
+      }
 
-
+    } catch (error) {
+      print(error);
+      return null;
+    }
   }
 }

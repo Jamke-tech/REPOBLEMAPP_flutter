@@ -464,8 +464,30 @@ class _EditProfileState extends State<EditProfile> {
                                   fontSize: 25,
                                   color: Colors.teal[50],
                                 ),
-                              )))
-                  ]),
+                              ))),
+                      //Funcionalitat minim2 botó per anar a la vista
+                              Padding(
+                          padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
+                          child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.teal[900],
+                                elevation: 5,
+                                padding: EdgeInsets.all(15),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                              ),
+                              onPressed: () async {
+                                //Funció per eliminar l'usuari
+                      Navigator.pushNamed(context, '/delete_profile');
+                    },
+                        child: Text(
+                                'Eliminar',
+                                style: TextStyle(
+                                  fontSize: 25,
+                                  color: Colors.teal[50],
+                                ))
+                              ))]),
                       )))
             ]));
   }
