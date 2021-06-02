@@ -40,16 +40,17 @@ class _InicioState extends State<Inicio> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                        "RepoblemApp",
-                        style: TextStyle(
-                            fontSize: 40.0,
-                            fontFamily: "Hontana",),
+                      "RepoblemApp",
+                      style: TextStyle(
+                        fontSize: 40.0,
+                        fontFamily: "Hontana",
+                      ),
                     ),
                     Icon(
                       Icons.home,
-                      size: 40.0,)
+                      size: 40.0,
+                    )
                   ],
-
                 ), //Row
               ),
               Stack(
@@ -66,12 +67,11 @@ class _InicioState extends State<Inicio> {
                 ],
               ),
               Container(
-                child: Text(
-                  "Encara estem a temps de repoblar",
-                  style: TextStyle(
-                    fontSize: 25.0
-                  ),
-                  textAlign: TextAlign.center,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/faqs');
+                  },
+                  child: Text('FAQs'),
                 ),
               )
             ],

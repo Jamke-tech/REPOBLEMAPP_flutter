@@ -9,20 +9,23 @@
             "request": "launch",
             "type": "pwa-chrome",
             "url": "http://localhost:8080",
-            "webRoot": "${workspaceFolder}"
+            "webRoot": "${workspaceFolder}",
+            "args": ["--web-port", "5000"]
         },
         {
             "name": "Dart",
             "type": "dart",
             "request": "launch",
-            "program": "bin/main.dart"
+            "program": "bin/main.dart",
+            "args": ["--web-port", "5000"]
         },
 
         {
             "name": "repoblemapp",
             "cwd": "repoblemapp",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            "args": ["--web-port", "5000"]
         }
     ]
 }
