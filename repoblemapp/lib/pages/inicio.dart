@@ -40,16 +40,17 @@ class _InicioState extends State<Inicio> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                        "RepoblemApp",
-                        style: TextStyle(
-                            fontSize: 40.0,
-                            fontFamily: "Hontana",),
+                      "RepoblemApp",
+                      style: TextStyle(
+                        fontSize: 40.0,
+                        fontFamily: "Hontana",
+                      ),
                     ),
                     Icon(
                       Icons.home,
-                      size: 40.0,)
+                      size: 40.0,
+                    )
                   ],
-
                 ), //Row
               ),
               Stack(
@@ -68,15 +69,53 @@ class _InicioState extends State<Inicio> {
               Container(
                 child: Text(
                   "Encara estem a temps de repoblar",
-                  style: TextStyle(
-                    fontSize: 25.0
-                  ),
+                  style: TextStyle(fontSize: 25.0),
                   textAlign: TextAlign.center,
                 ),
-              )
+              ),
             ],
           ),
         ),
+      ),
+    );
+
+    Container(
+      margin: EdgeInsets.all(6),
+      padding: EdgeInsets.all(2),
+      decoration: BoxDecoration(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.all(Radius.circular(15)),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            flex: 2,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 4, 16, 4),
+              child: Text(
+                "Contacta amb nosaltres",
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.start,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: FloatingActionButton(
+              backgroundColor: Colors.teal,
+              child: Icon(
+                Icons.message,
+                size: 30,
+                color: Colors.white,
+              ),
+              onPressed: () async {},
+            ),
+          ),
+        ],
       ),
     );
   }

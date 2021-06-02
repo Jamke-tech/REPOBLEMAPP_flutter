@@ -313,6 +313,50 @@ class _ProfileState extends State<Profile> {
                           textAlign: TextAlign.left,
                         ),
                       ])),
+                  Container(
+                    margin: EdgeInsets.all(6),
+                    padding: EdgeInsets.all(2),
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 2,
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(16, 4, 16, 4),
+                            child: Text(
+                              "Ajudans a Millorar",
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              textAlign: TextAlign.start,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: FloatingActionButton(
+                            backgroundColor: Colors.teal,
+                            child: Icon(
+                              Icons.help_center,
+                              size: 30,
+                              color: Colors.white,
+                            ),
+                            onPressed: () async {
+                              Navigator.pushNamed(context, '/ajuda',
+                                  arguments: {
+                                    'map': userDetails,
+                                  });
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),

@@ -8,6 +8,7 @@ import 'package:repoblemapp/pages/register.dart';
 import 'package:repoblemapp/pages/fav_offers.dart';
 import 'package:repoblemapp/pages/socialdashboard.dart';
 import 'package:repoblemapp/pages/xat_page.dart';
+import 'package:repoblemapp/pages/ajuda.dart';
 
 void main() => runApp(RepoblemAPP());
 
@@ -34,9 +35,10 @@ class RepoblemAPP extends StatelessWidget {
         '/profile': (context) => Profile(),
         '/edit_profile': (context) => EditProfile(),
         '/fav_offers': (context) => Fav(),
-        '/infoOffer':(context)=>InfoOffer(),
-        '/social':(context)=>Social(),
-        '/xat':(context)=>ChatPage(),
+        '/infoOffer': (context) => InfoOffer(),
+        '/social': (context) => Social(),
+        '/xat': (context) => ChatPage(),
+        '/ajuda': (context) => Ajuda(),
       },
     );
   }
