@@ -1,6 +1,7 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:repoblemapp/pages/estadisticas.dart';
 import 'package:repoblemapp/pages/fav_offers.dart';
 import 'package:repoblemapp/pages/inicio.dart';
 import 'package:repoblemapp/pages/profile.dart';
@@ -15,7 +16,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int selectedIndex = 2;
 
-  final screen = [Search(),Fav(),Inicio(),Social(),Profile()];
+  final screen = [Search(),Fav(),Inicio(),Social(),Profile(),Estadisticas()];
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,7 +45,12 @@ class _HomeState extends State<Home> {
           Icon(
             Icons.person,
             size: 30,
-            color: Colors.white,)
+            color: Colors.white,),
+          Icon(
+            Icons.trending_up_outlined ,
+            size: 30,
+            color: Colors.white,
+          )
         ],
         onTap: (index) {
           setState(() {

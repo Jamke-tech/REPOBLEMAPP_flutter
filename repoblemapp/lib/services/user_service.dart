@@ -171,4 +171,23 @@ class UsersManager {
 
 
   }
+
+  Future<List<dynamic>> getUsers() async {
+    try {
+      http.Response response = await http.get(
+        Uri.parse("http://${endpoints.IpApi}/api/users"),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.acceptHeader: 'application/json',
+        },
+      );
+      print(jsonDecode(response.body)["usersList"]);
+      return jsonDecode(response.body)["usersList"];
+    } catch (error) {
+      print(error);
+      return null;
+    }
+  }
+
+
 }

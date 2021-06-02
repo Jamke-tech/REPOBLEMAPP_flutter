@@ -24,7 +24,7 @@ class OffersManager{
   //Recuperem els endpoints de la clase
   Endpoints endpoints = Endpoints.getInstance();
 
-  Future<Map> getOffers() async {
+  Future<List<dynamic>> getOffers() async {
     try {
 
       http.Response response = await http.get(
@@ -35,7 +35,7 @@ class OffersManager{
         },
 
       );
-      return jsonDecode(response.body);
+      return jsonDecode(response.body)["offersList"];
     } catch (error) {
       print(error);
       return null;
