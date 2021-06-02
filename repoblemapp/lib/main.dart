@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:repoblemapp/pages/edit_config_user.dart';
 import 'package:repoblemapp/pages/edit_profile.dart';
 import 'package:repoblemapp/pages/home.dart';
 import 'package:repoblemapp/pages/infoOffer.dart';
@@ -8,6 +9,7 @@ import 'package:repoblemapp/pages/register.dart';
 import 'package:repoblemapp/pages/fav_offers.dart';
 import 'package:repoblemapp/pages/socialdashboard.dart';
 import 'package:repoblemapp/pages/xat_page.dart';
+import 'package:repoblemapp/pages/edit_config_user.dart';
 
 void main() => runApp(RepoblemAPP());
 
@@ -37,6 +39,7 @@ class RepoblemAPP extends StatelessWidget {
         '/infoOffer':(context)=>InfoOffer(),
         '/social':(context)=>Social(),
         '/xat':(context)=>ChatPage(),
+        '/edit_config_user':(context)=>EditConfiguration(),
       },
     );
   }

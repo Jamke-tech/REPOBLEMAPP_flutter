@@ -82,6 +82,30 @@ class _ProfileState extends State<Profile> {
                           });
                     }
                   }),
+                  
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 8, 24, 8),
+              child: IconButton(
+                  icon: Icon(Icons.settings),
+                  onPressed: () {
+                    if (userDetails != null) {
+                      Navigator.pushNamed(context, '/edit_config_user', arguments: {
+                        'map': userDetails,
+                      });
+                    } else {
+                      showFlash(
+                          context: context,
+                          duration: const Duration(seconds: 3),
+                          builder: (context, controller) {
+                            return ErrorToast(
+                              controller: controller,
+                              textshow: "Servidor no disponible",
+                            );
+                          });
+                    }
+                  }),
+                  
             )
           ]),
       body: Column(

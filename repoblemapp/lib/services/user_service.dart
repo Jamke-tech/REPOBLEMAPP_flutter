@@ -131,6 +131,9 @@ class UsersManager {
           "phone": user.phone,
           "profilePhoto":user.profilePhoto,
           "birthDate": user.birthDate.toString(),
+          "notifications": user.notifications,
+          "privacity": user.privacity,
+          "security": user.security,
         }),
       );
 
