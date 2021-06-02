@@ -9,6 +9,7 @@ import 'package:repoblemapp/models/User.dart';
 import 'package:repoblemapp/services/user_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:repoblemapp/widgets/error_toast.dart';
+import 'package:intl/intl.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -41,21 +42,22 @@ class _ProfileState extends State<Profile> {
     //Map userData = ModalRoute.of(context).settings.arguments;
     //userDetails = userData["map"];
     var aniversari = DateTime.parse(userDetails['birthDate']);
-    String stringDate = aniversari.year.toString() +
-        "-0" +
-        aniversari.month.toString() +
-        "-" +
-        aniversari.day.toString();
+
+    var newFormat = DateFormat("dd - MM - yyyy");
+    String stringDate = newFormat.format(aniversari);
     String phoneString = userDetails['phone'].toString();
 
     return Scaffold(
       appBar: AppBar(
-          title: Text(
-            'El meu perfil',
-            style: TextStyle(
-              fontFamily: 'Hontana',
-              fontSize: 35,
-              color: Colors.white,
+          title: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'El meu perfil',
+              style: TextStyle(
+                fontFamily: 'Hontana',
+                fontSize: 35,
+                color: Colors.white,
+              ),
             ),
           ),
           centerTitle: true,
@@ -117,202 +119,306 @@ class _ProfileState extends State<Profile> {
             ),
           ),
           Expanded(
-            flex: 3,
+            flex: 5,
             child: Container(
               child: ListView(
                 padding: const EdgeInsets.fromLTRB(8, 8, 8, 20),
                 children: [
-                  Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: Colors.green[100].withOpacity(0.5),
-                        borderRadius: BorderRadius.only(
-                            bottomRight: Radius.circular(50),
-                            bottomLeft: Radius.circular(50),
-                            topLeft: Radius.circular(50),
-                            topRight: Radius.circular(50)),
-                        border: Border.all(
-                          color: Colors.green,
-                          width: 1,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: Colors.green[100].withOpacity(0.5),
+                          borderRadius: BorderRadius.only(
+                              bottomRight: Radius.circular(50),
+                              bottomLeft: Radius.circular(50),
+                              topLeft: Radius.circular(50),
+                              topRight: Radius.circular(50)),
+                          border: Border.all(
+                            color: Colors.green,
+                            width: 1,
+                          ),
                         ),
-                      ),
-                      child: new Row(children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(8),
-                        ),
-                        Icon(
-                          Icons.person_outline_outlined,
-                          color: Colors.green,
-                          size: 35,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8),
-                        ),
-                        Text(
-                          userDetails['name'],
-                          style: TextStyle(
-                              color: Colors.green[900],
-                              fontStyle: FontStyle.normal,
-                              fontSize: 20.0),
-                          textAlign: TextAlign.left,
-                        ),
-                      ])),
-                  const Divider(
-                    height: 10,
-                    thickness: 5,
+                        child: new Row(children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(8),
+                          ),
+                          Icon(
+                            Icons.person_outline_outlined,
+                            color: Colors.green,
+                            size: 35,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8),
+                          ),
+                          Text(
+                            userDetails['name'],
+                            style: TextStyle(
+                                color: Colors.green[900],
+                                fontStyle: FontStyle.normal,
+                                fontSize: 20.0),
+                            textAlign: TextAlign.left,
+                          ),
+                        ])),
                   ),
-                  Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: Colors.green[100].withOpacity(0.5),
-                        borderRadius: BorderRadius.only(
-                            bottomRight: Radius.circular(50),
-                            bottomLeft: Radius.circular(50),
-                            topLeft: Radius.circular(50),
-                            topRight: Radius.circular(50)),
-                        border: Border.all(
-                          color: Colors.green,
-                          width: 1,
-                        ),
-                      ),
-                      child: new Row(children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(8),
-                        ),
-                        Icon(
-                          Icons.people_outline_outlined,
-                          color: Colors.green,
-                          size: 35,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8),
-                        ),
-                        Text(
-                          userDetails['surname'],
-                          style: TextStyle(
-                              color: Colors.green[900],
-                              fontStyle: FontStyle.normal,
-                              fontSize: 20.0),
-                          textAlign: TextAlign.left,
-                        ),
-                      ])),
-                  const Divider(
+                  Divider(
                     height: 10,
-                    thickness: 5,
+                    thickness: 2,
+                    color: Colors.teal[400],
                   ),
-                  Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: Colors.green[100].withOpacity(0.5),
-                        borderRadius: BorderRadius.only(
-                            bottomRight: Radius.circular(50),
-                            bottomLeft: Radius.circular(50),
-                            topLeft: Radius.circular(50),
-                            topRight: Radius.circular(50)),
-                        border: Border.all(
-                          color: Colors.green,
-                          width: 1,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: Colors.green[100].withOpacity(0.5),
+                          borderRadius: BorderRadius.only(
+                              bottomRight: Radius.circular(50),
+                              bottomLeft: Radius.circular(50),
+                              topLeft: Radius.circular(50),
+                              topRight: Radius.circular(50)),
+                          border: Border.all(
+                            color: Colors.green,
+                            width: 1,
+                          ),
                         ),
-                      ),
-                      child: new Row(children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(8),
-                        ),
-                        Icon(
-                          Icons.alternate_email_outlined,
-                          color: Colors.green,
-                          size: 35,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8),
-                        ),
-                        Text(
-                          userDetails['email'],
-                          style: TextStyle(
-                              color: Colors.green[900],
-                              fontStyle: FontStyle.normal,
-                              fontSize: 20.0),
-                          textAlign: TextAlign.left,
-                        ),
-                      ])),
-                  const Divider(
+                        child: new Row(children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(8),
+                          ),
+                          Icon(
+                            Icons.people_outline_outlined,
+                            color: Colors.green,
+                            size: 35,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8),
+                          ),
+                          Text(
+                            userDetails['surname'],
+                            style: TextStyle(
+                                color: Colors.green[900],
+                                fontStyle: FontStyle.normal,
+                                fontSize: 20.0),
+                            textAlign: TextAlign.left,
+                          ),
+                        ])),
+                  ),
+                  Divider(
                     height: 10,
-                    thickness: 5,
+                    thickness: 2,
+                    color: Colors.teal[400],
                   ),
-                  Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: Colors.green[100].withOpacity(0.5),
-                        borderRadius: BorderRadius.only(
-                            bottomRight: Radius.circular(50),
-                            bottomLeft: Radius.circular(50),
-                            topLeft: Radius.circular(50),
-                            topRight: Radius.circular(50)),
-                        border: Border.all(
-                          color: Colors.green,
-                          width: 1,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: Colors.green[100].withOpacity(0.5),
+                          borderRadius: BorderRadius.only(
+                              bottomRight: Radius.circular(50),
+                              bottomLeft: Radius.circular(50),
+                              topLeft: Radius.circular(50),
+                              topRight: Radius.circular(50)),
+                          border: Border.all(
+                            color: Colors.green,
+                            width: 1,
+                          ),
                         ),
-                      ),
-                      child: new Row(children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(8),
-                        ),
-                        Icon(
-                          Icons.contact_phone_outlined,
-                          color: Colors.green,
-                          size: 35,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8),
-                        ),
-                        Text(
-                          phoneString,
-                          style: TextStyle(
-                              color: Colors.green[900],
-                              fontStyle: FontStyle.normal,
-                              fontSize: 20.0),
-                          textAlign: TextAlign.left,
-                        ),
-                      ])),
-                  const Divider(
+                        child: new Row(children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(8),
+                          ),
+                          Icon(
+                            Icons.alternate_email_outlined,
+                            color: Colors.green,
+                            size: 35,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8),
+                          ),
+                          Text(
+                            userDetails['email'],
+                            style: TextStyle(
+                                color: Colors.green[900],
+                                fontStyle: FontStyle.normal,
+                                fontSize: 20.0),
+                            textAlign: TextAlign.left,
+                          ),
+                        ])),
+                  ),
+                  Divider(
                     height: 10,
-                    thickness: 5,
+                    thickness: 2,
+                    color: Colors.teal[400],
                   ),
-                  Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: Colors.green[100].withOpacity(0.5),
-                        borderRadius: BorderRadius.only(
-                            bottomRight: Radius.circular(50),
-                            bottomLeft: Radius.circular(50),
-                            topLeft: Radius.circular(50),
-                            topRight: Radius.circular(50)),
-                        border: Border.all(
-                          color: Colors.green,
-                          width: 1,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: Colors.green[100].withOpacity(0.5),
+                          borderRadius: BorderRadius.only(
+                              bottomRight: Radius.circular(50),
+                              bottomLeft: Radius.circular(50),
+                              topLeft: Radius.circular(50),
+                              topRight: Radius.circular(50)),
+                          border: Border.all(
+                            color: Colors.green,
+                            width: 1,
+                          ),
+                        ),
+                        child: new Row(children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(8),
+                          ),
+                          Icon(
+                            Icons.contact_phone_outlined,
+                            color: Colors.green,
+                            size: 35,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8),
+                          ),
+                          Text(
+                            phoneString,
+                            style: TextStyle(
+                                color: Colors.green[900],
+                                fontStyle: FontStyle.normal,
+                                fontSize: 20.0),
+                            textAlign: TextAlign.left,
+                          ),
+                        ])),
+                  ),
+                  Divider(
+                    height: 10,
+                    thickness: 2,
+                    color: Colors.teal[400],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: Colors.green[100].withOpacity(0.5),
+                          borderRadius: BorderRadius.only(
+                              bottomRight: Radius.circular(50),
+                              bottomLeft: Radius.circular(50),
+                              topLeft: Radius.circular(50),
+                              topRight: Radius.circular(50)),
+                          border: Border.all(
+                            color: Colors.green,
+                            width: 1,
+                          ),
+                        ),
+                        child: new Row(children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(8),
+                          ),
+                          Icon(
+                            Icons.cake_outlined,
+                            color: Colors.green,
+                            size: 35,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8),
+                          ),
+                          Text(
+                            stringDate,
+                            style: TextStyle(
+                                color: Colors.green[900],
+                                fontStyle: FontStyle.normal,
+                                fontSize: 20.0),
+                            textAlign: TextAlign.left,
+                          ),
+                        ])),
+                  ),
+                  Divider(
+                    height: 10,
+                    thickness: 2,
+                    color: Colors.teal[400],
+                  ),
+                  SizedBox(height: 10,),
+
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.teal[400],
+                        elevation: 5,
+                        padding: EdgeInsets.all(15),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
                         ),
                       ),
-                      child: new Row(children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(8),
-                        ),
-                        Icon(
-                          Icons.cake_outlined,
-                          color: Colors.green,
-                          size: 35,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8),
-                        ),
-                        Text(
-                          stringDate,
-                          style: TextStyle(
-                              color: Colors.green[900],
-                              fontStyle: FontStyle.normal,
-                              fontSize: 20.0),
-                          textAlign: TextAlign.left,
-                        ),
-                      ])),
+                      onPressed: (){
+                        //Haurem de fer una mica de treball a la llista que ens passin de galardons i enviar la quantitat que tenim
+                        //de cadascun
+
+                        List<dynamic> insignies = userDetails['insignias'];
+                        print(insignies);
+
+                        List<dynamic> mapaInsignies = [];// = [["Friendly",3],["MoreActive",4]];
+                        List<String> insigniesDisponibles = ["BestBuyer", "MoreActive","Friendly","MoreOffers"];
+                        int i =0;
+
+                        while (i<insigniesDisponibles.length){
+                          //Tenemos que mirar cada insignia quantas repeticiones tiene i sumar
+                          int rep=0;
+                          int mygalardons=0;
+                          while(mygalardons<insignies.length){
+                            if(insignies[mygalardons]==insigniesDisponibles[i]){
+                              rep++;
+                            }
+                            mygalardons++;
+
+                          }
+                          if(rep!=0){
+                            mapaInsignies.add([insigniesDisponibles[i],rep]);
+                          }
+                          i++;
+                        }
+                        print(mapaInsignies);
+
+                        //Fem loop per contar quantes tenim de cadascuna
+                        Navigator.pushNamed(context, '/galardons',
+                            arguments:{
+                              "map": mapaInsignies,
+                            });
+
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.military_tech_outlined,
+                            size: 25,
+
+
+                          ),
+                          SizedBox(width: 16,),
+                          Text(
+                            "Els meus galardons",
+                            style: TextStyle(
+                              fontSize: 25,
+                              color: Colors.white,
+
+                            ),
+                          ),
+                          SizedBox(width: 16,),
+                          Icon(
+                            Icons.military_tech_outlined,
+                            size: 25,
+
+                          ),
+                        ],
+                      )),
+                  SizedBox(height: 24,),
+
+
+
+
+
+
                 ],
               ),
             ),
