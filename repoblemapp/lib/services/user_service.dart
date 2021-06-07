@@ -205,6 +205,7 @@ class UsersManager {
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String idUser = prefs.getString('id');
+      print(idUser);
       http.Response response = await http.delete(
         Uri.parse("http://${endpoints.IpApi}/api/user/deleteFavourite"),
         headers: {

@@ -77,9 +77,10 @@ class _SearchState extends State<Search> {
                       child: Card(
                         child: InkWell(
                           onTap: () {
+                            print(offers[index]);
                             Navigator.pushNamed(context, '/infoOffer',
                                 arguments: {
-                                  'mapOffer': offers[index],
+                                  'mapOffer': offers[index] ,
                                   'mapOwner': offers[index]["owner"]
                                 });
                           },
@@ -176,6 +177,7 @@ class _SearchState extends State<Search> {
 
   void _deleteFavourites(String id) async {
     UsersManager delOfer = UsersManager.getInstance();
+    print(id);
     int code = await delOfer.deleteFavourite(id);
 
     if (code == 200) {

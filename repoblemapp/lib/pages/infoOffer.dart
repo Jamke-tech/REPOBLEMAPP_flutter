@@ -245,7 +245,7 @@ class _InfoOfferState extends State<InfoOffer> {
                     flex: 1,
                     child: CircleAvatar(
                       backgroundImage: NetworkImage(
-                          'http://${endpoints.photoIP}/${infoOfOwner['profilePhoto']}'),
+                          infoOfOwner['profilePhoto']),
                       radius: 35,
                     ),
                   )

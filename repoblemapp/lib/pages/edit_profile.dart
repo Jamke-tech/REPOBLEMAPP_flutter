@@ -94,7 +94,7 @@ class _EditProfileState extends State<EditProfile> {
                           children: <Widget>[
                             CircleAvatar(
                               backgroundImage: NetworkImage(
-                                  'http://${endpoints.photoIP}/${infoOfUser['profilePhoto']}'),
+                                  infoOfUser['profilePhoto']),
                               radius: 65.0,
                             ),
                             SizedBox(

@@ -13,10 +13,12 @@ class offerCard extends StatelessWidget {
   String imgUrl;
   int rating;
 
+
   offerCard({this.imgUrl,this.infoOffer,this.rating});
 
   @override
   Widget build(BuildContext context) {
+
     return Card(
       margin: EdgeInsets.only(right: 22.0),
       clipBehavior: Clip.antiAlias,

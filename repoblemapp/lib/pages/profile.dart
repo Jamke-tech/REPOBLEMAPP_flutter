@@ -101,8 +101,7 @@ class _ProfileState extends State<Profile> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         CircleAvatar(
-                          backgroundImage: NetworkImage(
-                              'http://${endpoints.photoIP}/${userDetails['profilePhoto']}'),
+                          backgroundImage: NetworkImage( userDetails['profilePhoto']),
                           radius: 65.0,
                         ),
                         SizedBox(
