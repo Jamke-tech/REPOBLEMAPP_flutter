@@ -16,30 +16,35 @@ class MapOffers extends StatefulWidget {
 class _MapOffersState extends State<MapOffers> {
   @override
   Widget build(BuildContext context) {
+    List < dynamic> infoOfOffers;
+    Map data = ModalRoute.of(context).settings.arguments;
+    infoOfOffers = data['mapOffers'];
+
     return Padding(
           padding: const EdgeInsets.all(6.0),
           child: FlutterMap(
             options: MapOptions(
               //Donde estarà el mapa centrado
               center: Location.LatLng(
-                  41.589431,
-                  2.317380 ),
+                  infoOfOffers[0]['point']['coordinates'][0],
+                  infoOfOffers[0]['point']['coordinates'][1]),
               minZoom: 5,
               zoom: 14,
             ),
             layers: [
               TileLayerOptions(
                   urlTemplate:
-                  "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                  'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
                   subdomains: ['a', 'b', 'c']),
-              MarkerLayerOptions(markers: [
+              MarkerLayerOptions(
+                  markers: [
                 //Posem tots els marcadors de la activitat on esta situat
                 Marker(
                     width: 30,
                     height: 30,
                     point: Location.LatLng(
-                        41.589431,
-                        2.317380),
+                        infoOfOffers[0]['point']['coordinates'][0],
+                        infoOfOffers[0]['point']['coordinates'][1]),
                     builder: (context) => Icon(
                       Icons.location_on_outlined,
                       color: Colors.deepOrange,

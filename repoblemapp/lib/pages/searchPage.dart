@@ -23,7 +23,7 @@ class _SearchState extends State<Search> {
         child: Column(
           children: [
             Padding(
-              padding: EdgeInsets.only(top: 10.0, left: 30.0, right: 30.0),
+              padding: EdgeInsets.only(top: 10.0, left: 16.0, right: 16.0),
               child: Container(
                 alignment: Alignment.center,
                 padding: EdgeInsets.only(left: 8.0, right: 8.0),
@@ -33,32 +33,44 @@ class _SearchState extends State<Search> {
                     color: Colors.white),
                 child: Row(
                   children: [
-                    IconButton(
-                        icon: Icon(
-                          Icons.search,
-                          size: 40,
+                    Expanded(
+                      flex:1,
+                      child: IconButton(
+                          icon: Icon(
+                            Icons.search,
+                            size: 40,
+                          ),
+                          onPressed: () {
+                            _searchOffers();
+                          }),
+                    ),
+                    Expanded(
+                      flex:4,
+                      child: TextField(
+                        controller: buscador,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'Cerca una oferta',
+                          hintStyle: TextStyle(
+                              fontFamily: 'Hontana', color: Colors.teal),
                         ),
-                        onPressed: () {
-                          _searchOffers();
-                        }),
-                    TextField(
-                      controller: buscador,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Cerca una oferta',
-                        hintStyle: TextStyle(
-                            fontFamily: 'Hontana', color: Colors.teal),
                       ),
                     ),
-                    IconButton(
-                        icon: Icon(
-                          Icons.map,
-                          size: 40,
-                        ),
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/mapOffers',
-                              arguments: offers);
-                        })
+                    Expanded(
+                    flex:1,
+                      child: IconButton(
+                          icon: Icon(
+                            Icons.map,
+                            size: 40,
+                            color: Colors.teal,
+                          ),
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/mapOffers',
+                                arguments: {
+                               "mapOffers":offers});
+                            }
+                          ),
+                    )
                   ],
                 ),
               ),
