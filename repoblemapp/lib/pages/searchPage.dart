@@ -31,25 +31,35 @@ class _SearchState extends State<Search> {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12.0),
                     color: Colors.white),
-                child: TextField(
-                  controller: buscador,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(
-                      Icons.search,
-                      size: 40.0,
-                    ),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        Icons.map,
-                        size: 40.0,
+                child: Row(
+                  children: [
+                    IconButton(
+                        icon: Icon(
+                          Icons.search,
+                          size: 40,
+                        ),
+                        onPressed: () {
+                          _searchOffers();
+                        }),
+                    TextField(
+                      controller: buscador,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Cerca una oferta',
+                        hintStyle: TextStyle(
+                            fontFamily: 'Hontana', color: Colors.teal),
                       ),
-                      onPressed: () {},
                     ),
-                    border: InputBorder.none,
-                    hintText: 'Cerca una oferta',
-                    hintStyle:
-                        TextStyle(fontFamily: 'Hontana', color: Colors.teal),
-                  ),
+                    IconButton(
+                        icon: Icon(
+                          Icons.map,
+                          size: 40,
+                        ),
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/mapOffers',
+                              arguments: offers);
+                        })
+                  ],
                 ),
               ),
             ),
@@ -59,7 +69,7 @@ class _SearchState extends State<Search> {
                   itemBuilder: (context, index) {
                     bool favourite = false;
                     print(offers.length);
-                    if (favourites.isNotEmpty){
+                    if (favourites.isNotEmpty) {
                       for (int i = 0; i < favourites.length; i++) {
                         if (offers[index]["_id"] == favourites[i]["_id"]) {
                           favourite = true;
@@ -82,7 +92,7 @@ class _SearchState extends State<Search> {
                               print(offers[index]);
                               Navigator.pushNamed(context, '/infoOffer',
                                   arguments: {
-                                    'mapOffer': offers[index] ,
+                                    'mapOffer': offers[index],
                                     'mapOwner': offers[index]["owner"]
                                   });
                             },
@@ -91,8 +101,8 @@ class _SearchState extends State<Search> {
                               width: double.infinity,
                               decoration: BoxDecoration(
                                   image: DecorationImage(
-                                image: NetworkImage(
-                                    offers[index]['pictures'][0]),
+                                image:
+                                    NetworkImage(offers[index]['pictures'][0]),
                                 fit: BoxFit.cover,
                               )),
                               alignment: Alignment.bottomLeft,
@@ -200,5 +210,9 @@ class _SearchState extends State<Search> {
     setState(() {
       favourites = listaFavoritas;
     });
+  }
+
+  void _searchOffers() {
+    
   }
 }
