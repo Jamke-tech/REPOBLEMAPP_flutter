@@ -313,6 +313,28 @@ class _ProfileState extends State<Profile> {
                           textAlign: TextAlign.left,
                         ),
                       ])),
+                      Container(
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
+                          child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                              primary: Colors.teal[900],
+                              elevation: 5,
+                              padding: EdgeInsets.all(15),
+                              shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                              ),
+                              ),
+                              onPressed: () async {},
+                              child: Text(
+                                  'Mis ofertas',
+                                  style: TextStyle(
+                                    fontSize: 25,
+                                    color: Colors.teal[50],
+                                  ),
+                                )
+                        ))
+                      )
                 ],
               ),
             ),
