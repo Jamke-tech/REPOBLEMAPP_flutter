@@ -67,11 +67,12 @@ class _InfoOfferState extends State<InfoOffer> {
             //margin: EdgeInsets.all(4),
             height: 350,
 
-            child: ListView(
+            child: ListView.builder(
+              itemCount: infoOfOffer['pictures'].length,
+
               scrollDirection: Axis.horizontal,
-              children: [
-                //Totes les card de les fotos
-                Card(
+              itemBuilder: (context,index) {
+                return Card(
                   margin: EdgeInsets.fromLTRB(0, 8, 22, 8),
                   clipBehavior: Clip.antiAlias,
                   shape: RoundedRectangleBorder(
@@ -82,53 +83,17 @@ class _InfoOfferState extends State<InfoOffer> {
                   child: Container(
                     decoration: BoxDecoration(
                         image: DecorationImage(
-                      image: NetworkImage(
-                          'https://media.timeout.com/images/101623899/630/472/image.jpg'),
-                      fit: BoxFit.cover,
-                      scale: 2.0,
-                    )),
+                          image: NetworkImage(
+                              infoOfOffer['pictures'][index]),
+                          fit: BoxFit.cover,
+                          scale: 2.0,
+                        )),
                     width: 200.0,
                   ),
-                ),
-                Card(
-                  margin: EdgeInsets.fromLTRB(0, 8, 22, 8),
-                  clipBehavior: Clip.antiAlias,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0)),
-                  //para darle un poco de profundidad
-                  elevation: 5.0,
-                  shadowColor: Colors.teal,
-                  child: Container(
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                      image: NetworkImage(
-                          'https://static1.ara.cat/clip/e8527055-f53c-4d8a-8fd7-8519714bda5b_16-9-aspect-ratio_default_0.jpg'),
-                      fit: BoxFit.cover,
-                      scale: 2.0,
-                    )),
-                    width: 200.0,
-                  ),
-                ),
-                Card(
-                  margin: EdgeInsets.fromLTRB(0, 8, 22, 8),
-                  clipBehavior: Clip.antiAlias,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0)),
-                  //para darle un poco de profundidad
-                  elevation: 5.0,
-                  shadowColor: Colors.teal,
-                  child: Container(
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                      image: NetworkImage(
-                          'https://www.monapart.com/sites/default/files/styles/lazy_full/public/apartment/photos2/1-casa_de_poble-venta-carrer_cases_noves-la_nou_de_gaia-tarragona.jpg?itok=thmfEwLk'),
-                      fit: BoxFit.cover,
-                      scale: 2.0,
-                    )),
-                    width: 200.0,
-                  ),
-                ),
-              ],
+                );
+
+              },
+
             ),
           ),
 
@@ -335,8 +300,8 @@ class _InfoOfferState extends State<InfoOffer> {
                     options: MapOptions(
                       //Donde estarà el mapa centrado
                       center: Location.LatLng(
-                          infoOfOffer["point"]["coordinates"][0],
-                          infoOfOffer["point"]["coordinates"][1]),
+                          infoOfOffer["point"]["coordinates"][0] as double,
+                          infoOfOffer["point"]["coordinates"][1] as double ),
                       minZoom: 5,
                       zoom: 14,
                     ),

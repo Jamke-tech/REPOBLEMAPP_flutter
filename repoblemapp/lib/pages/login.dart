@@ -122,6 +122,7 @@ class _LogInState extends State<LogIn> {
                                   }
                                 },
                                 controller: userInputController,
+
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
                                   prefixIcon: Padding(
@@ -152,6 +153,7 @@ class _LogInState extends State<LogIn> {
                               padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
                               child: TextFormField(
                                 controller: passwordInputController,
+                                obscureText: true,
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
                                   prefixIcon: Padding(

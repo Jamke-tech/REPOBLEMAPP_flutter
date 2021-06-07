@@ -19,121 +19,124 @@ class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.only(top: 40.0, left: 30.0, right: 30.0),
-            child: Container(
-              alignment: Alignment.center,
-              padding: EdgeInsets.only(left: 8.0, right: 8.0),
-              height: 50.0,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12.0),
-                  color: Colors.white),
-              child: TextField(
-                controller: buscador,
-                decoration: InputDecoration(
-                  prefixIcon: Icon(
-                    Icons.search,
-                    size: 40.0,
-                  ),
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      Icons.map,
+      body: SafeArea(
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(top: 10.0, left: 30.0, right: 30.0),
+              child: Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.only(left: 8.0, right: 8.0),
+                height: 50.0,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12.0),
+                    color: Colors.white),
+                child: TextField(
+                  controller: buscador,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(
+                      Icons.search,
                       size: 40.0,
                     ),
-                    onPressed: () {},
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        Icons.map,
+                        size: 40.0,
+                      ),
+                      onPressed: () {},
+                    ),
+                    border: InputBorder.none,
+                    hintText: 'Cerca una oferta',
+                    hintStyle:
+                        TextStyle(fontFamily: 'Hontana', color: Colors.teal),
                   ),
-                  border: InputBorder.none,
-                  hintText: 'Cerca una oferta',
-                  hintStyle:
-                      TextStyle(fontFamily: 'Hontana', color: Colors.teal),
                 ),
               ),
             ),
-          ),
-          Expanded(
-            child: ListView.builder(
-                itemCount: offers.length,
-                itemBuilder: (context, index) {
-                  bool favourite = false;
-                  if (favourites.isNotEmpty){
-                    for (int i = 0; i < offers.length; i++) {
-                      if (offers[index]["_id"] == favourites[i]["_id"]) {
-                        favourite = true;
+            Expanded(
+              child: ListView.builder(
+                  itemCount: offers.length,
+                  itemBuilder: (context, index) {
+                    bool favourite = false;
+                    print(offers.length);
+                    if (favourites.isNotEmpty){
+                      for (int i = 0; i < favourites.length; i++) {
+                        if (offers[index]["_id"] == favourites[i]["_id"]) {
+                          favourite = true;
+                        }
                       }
                     }
-                  }
-                  IconData estrella;
-                  if (favourite) {
-                    estrella = Icons.star;
-                  } else {
-                    estrella = Icons.star_border_outlined;
-                  }
-                  return Padding(
-                    padding: EdgeInsets.fromLTRB(15, 20, 15, 0),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(30),
-                      child: Card(
-                        child: InkWell(
-                          onTap: () {
-                            print(offers[index]);
-                            Navigator.pushNamed(context, '/infoOffer',
-                                arguments: {
-                                  'mapOffer': offers[index] ,
-                                  'mapOwner': offers[index]["owner"]
-                                });
-                          },
-                          child: Container(
-                            height: 250,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                              image: NetworkImage(
-                                  "https://media2.clubrural.com/img990x400/pueblos/barcelona/moia/20160218230817-barcelona-moia.jpg"), //offers[index]['pictures'][0]),
-                              fit: BoxFit.cover,
-                            )),
-                            alignment: Alignment.bottomLeft,
+                    IconData estrella;
+                    if (favourite) {
+                      estrella = Icons.star;
+                    } else {
+                      estrella = Icons.star_border_outlined;
+                    }
+                    return Padding(
+                      padding: EdgeInsets.fromLTRB(15, 20, 15, 0),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(30),
+                        child: Card(
+                          child: InkWell(
+                            onTap: () {
+                              print(offers[index]);
+                              Navigator.pushNamed(context, '/infoOffer',
+                                  arguments: {
+                                    'mapOffer': offers[index] ,
+                                    'mapOwner': offers[index]["owner"]
+                                  });
+                            },
                             child: Container(
-                              color: Colors.black.withOpacity(0.35),
-                              child: ListTile(
-                                title: Text(
-                                  offers[index]["title"],
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                subtitle: Text(offers[index]["village"],
+                              height: 250,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                image: NetworkImage(
+                                    offers[index]['pictures'][0]),
+                                fit: BoxFit.cover,
+                              )),
+                              alignment: Alignment.bottomLeft,
+                              child: Container(
+                                color: Colors.black.withOpacity(0.35),
+                                child: ListTile(
+                                  title: Text(
+                                    offers[index]["title"],
                                     style: TextStyle(
+                                      fontWeight: FontWeight.bold,
                                       color: Colors.white,
-                                      fontSize: 12,
-                                    )),
-                                trailing: IconButton(
-                                  icon: Icon(
-                                    estrella,
-                                    color: Colors.amber,
+                                      fontSize: 16,
+                                    ),
                                   ),
-                                  onPressed: () {
-                                    if (favourite == false) {
-                                      _addFavourites(offers[index]["_id"]);
-                                    } else {
-                                      _deleteFavourites(offers[index]["_id"]);
-                                    }
-                                  },
-                                  iconSize: 32,
+                                  subtitle: Text(offers[index]["village"],
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 12,
+                                      )),
+                                  trailing: IconButton(
+                                    icon: Icon(
+                                      estrella,
+                                      color: Colors.amber,
+                                    ),
+                                    onPressed: () {
+                                      if (favourite == false) {
+                                        _addFavourites(offers[index]["_id"]);
+                                      } else {
+                                        _deleteFavourites(offers[index]["_id"]);
+                                      }
+                                    },
+                                    iconSize: 32,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  );
-                }),
-          ),
-        ],
+                    );
+                  }),
+            ),
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
@@ -176,9 +179,9 @@ class _SearchState extends State<Search> {
   }
 
   void _deleteFavourites(String id) async {
-    UsersManager delOfer = UsersManager.getInstance();
+    UsersManager manager = UsersManager.getInstance();
     print(id);
-    int code = await delOfer.deleteFavourite(id);
+    int code = await manager.deleteFavourite(id);
 
     if (code == 200) {
       setState(() {

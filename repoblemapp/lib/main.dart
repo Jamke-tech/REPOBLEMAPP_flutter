@@ -3,6 +3,7 @@ import 'package:repoblemapp/pages/edit_profile.dart';
 import 'package:repoblemapp/pages/home.dart';
 import 'package:repoblemapp/pages/infoOffer.dart';
 import 'package:repoblemapp/pages/login.dart';
+import 'package:repoblemapp/pages/map_offers.dart';
 import 'package:repoblemapp/pages/profile.dart';
 import 'package:repoblemapp/pages/register.dart';
 import 'package:repoblemapp/pages/fav_offers.dart';
@@ -37,6 +38,7 @@ class RepoblemAPP extends StatelessWidget {
         '/infoOffer':(context)=>InfoOffer(),
         '/social':(context)=>Social(),
         '/xat':(context)=>ChatPage(),
+        '/mapOffers': (context)=> MapOffers(),
       },
     );
   }

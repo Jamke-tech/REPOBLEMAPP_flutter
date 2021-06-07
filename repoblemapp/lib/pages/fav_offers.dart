@@ -78,18 +78,7 @@ class _FavState extends State<Fav> {
         child: ListView(
 
           children: [
-            Text(
-              "Molt bon gust!",
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 25.0,
-                fontWeight: FontWeight.w600,
-              ),
-          ),
-            SizedBox(
-              height:20.0,
 
-          ),
           //Añadimos un poco de elevacion a nuestro TextField
           //Para ello tenemos que hacer wrap in a Material widget
             Material(
@@ -177,7 +166,7 @@ class _FavState extends State<Fav> {
   Widget _itemBuilder(BuildContext context, int index){
 
     return offerCard(
-      imgUrl: urls[2],
+      imgUrl: infoOffersFavourite[index]['pictures'][0],
       infoOffer:infoOffersFavourite[index],
       rating: 1,
     );
