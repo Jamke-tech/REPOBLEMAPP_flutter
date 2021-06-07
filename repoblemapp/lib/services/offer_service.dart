@@ -42,7 +42,17 @@ class OffersManager{
     }
   }
 
+  /*Future<Map> getOffer(String id) async {
+    try{
+      http.Response response = await http.get(
+        Uri.parse("http://${endpoints.IpApi}/api/offer"),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.acceptHeader: 'application/json',
+        },
 
+    }
+  }*/
 
   //Funció per crear una oferta
   Future<int> createOffer(Offer offer) async {

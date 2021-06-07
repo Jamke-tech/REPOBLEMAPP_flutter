@@ -105,7 +105,8 @@ class _SearchState extends State<Search> {
                               Navigator.pushNamed(context, '/infoOffer',
                                   arguments: {
                                     'mapOffer': offers[index],
-                                    'mapOwner': offers[index]["owner"]
+                                    'mapOwner': offers[index]["owner"],
+                                    'favs': favourites
                                   });
                             },
                             child: Container(
