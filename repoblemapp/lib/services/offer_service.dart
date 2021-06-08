@@ -78,16 +78,18 @@ class OffersManager{
           HttpHeaders.acceptHeader: 'application/json',
         },
         body: jsonEncode({
+          "pictures": offer.pictures,
           "title": offer.title,
           "description": offer.description,
-          "pictures": offer.pictures,
-          "ubication": offer.ubication,
           "province": offer.province,
-          "owner": id,
+          "place": offer.ubication, //direccion que corresponde a place backend
+          "lat": offer.lat,
+          "long": offer.long,
+          "owner": id.toString(),
           "village": offer.village,
           "price": offer.price.toString(),
           "services": offer.services,
-          "coordinates": offer.coordinates,
+          
         }),
       );
 

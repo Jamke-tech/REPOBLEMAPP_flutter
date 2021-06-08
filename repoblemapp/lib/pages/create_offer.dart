@@ -25,7 +25,8 @@ class _CreateOfferState extends State<CreateOffer> {
   final villageInputController = TextEditingController();
   final provinceInputController = DropdownButton();
   final placeInputController = TextEditingController(); //direccion 
-  final coordinatesInputController = TextEditingController();
+  final latInputController = TextEditingController();
+  final longInputController = TextEditingController();
   final servicesInputController = DropdownButton();
 
   final _formKey = GlobalKey<FormState>();
@@ -35,6 +36,29 @@ class _CreateOfferState extends State<CreateOffer> {
   Widget build(BuildContext context) {
     return Scaffold(
       //resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        title: Text(
+            'Crea una nova oferta',
+            style: TextStyle(
+              fontFamily: 'Hontana',
+              fontSize: 35,
+              color: Colors.white,
+            ),
+          ),
+          centerTitle: true,
+        backgroundColor: Colors.teal[400],
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_outlined,
+            color: Colors.white,
+            size: 40,
+          ),
+          onPressed: () {
+            Navigator.pushNamed(context, "/profile");
+          },
+        ),
+        
+      ),
 
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -97,10 +121,10 @@ class _CreateOfferState extends State<CreateOffer> {
                       padding: const EdgeInsets.fromLTRB(24, 10, 24, 6),
                       child: Center(
                         child: Text(
-                          "Crea la teva oferta",
+                          "Omple la informació de la teva oferta",
                           style: TextStyle(
-                            fontSize: 45,
-                            fontFamily: 'Hontana',
+                            fontSize: 30,
+                            fontFamily: 'Snidane',
                             color: Colors.teal[900],
 
                           ),
@@ -344,7 +368,7 @@ class _CreateOfferState extends State<CreateOffer> {
                                 ),
                               ),
 
-                              //Coordinates
+                              //Coordinates (latitud)
                               Padding(
                                 padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
                                 child: TextFormField(
@@ -356,7 +380,7 @@ class _CreateOfferState extends State<CreateOffer> {
                                       return null;
                                     }
                                   },
-                                  controller: coordinatesInputController,
+                                  controller: latInputController,
                                   decoration: InputDecoration(
                                     border: InputBorder.none,
                                     prefixIcon: Padding(
@@ -366,7 +390,45 @@ class _CreateOfferState extends State<CreateOffer> {
                                         color: Colors.green,
                                         size: 35,),
                                     ),
-                                    hintText: "Introdueix les coordenades",//'Ingressa les coordenades',
+                                    hintText: "Introdueix les coordenades (Latitud)",//'Ingressa les coordenades',
+                                    hintStyle: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.teal[900],
+                                    ),
+                                  ),
+                                  // Formato del teclado de entrada
+                                  keyboardType: TextInputType.text, //Formato de texto normal
+                                  textInputAction: TextInputAction.next,
+
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.teal[900],
+                                  ),
+                                ),
+                              ),
+                              //Coordinates (Longitud)
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                                child: TextFormField(
+                                  validator: (value){
+                                    if (value.isEmpty) {
+                                      return 'Camp Obligatori';
+                                    }
+                                    else{
+                                      return null;
+                                    }
+                                  },
+                                  controller: longInputController,
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    prefixIcon: Padding(
+                                      padding: const EdgeInsets.all(8),
+                                      child: Icon(
+                                        Icons.location_history,
+                                        color: Colors.green,
+                                        size: 35,),
+                                    ),
+                                    hintText: "Introdueix les coordenades (Longitud)",//'Ingressa les coordenades',
                                     hintStyle: TextStyle(
                                       fontSize: 20,
                                       color: Colors.teal[900],
@@ -437,12 +499,14 @@ class _CreateOfferState extends State<CreateOffer> {
                               Offer createdOffer = new Offer(
                                 title: titleInputController.text,
                                 description: descriptionInputController.text,
-                                ubication: placeInputController.text,
                                 province: provinceInputController.onChanged.toString(),
+                                ubication: placeInputController.text,
+                                lat: latInputController.text,
+                                long: longInputController.text,
                                 village: villageInputController.text,
                                 price: priceInputController.text,
                                 services: servicesInputController.onChanged.toString(),
-                                coordinates: coordinatesInputController.text,
+                                
                               );
                               print (createdOffer);
 

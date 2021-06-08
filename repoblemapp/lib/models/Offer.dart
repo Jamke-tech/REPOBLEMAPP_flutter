@@ -13,6 +13,8 @@ class Offer{
   String village;
   String price; // tiene qie ser un numero, nose como ponerlo
   String coordinates;
+  String lat;
+  String long;
   String services;
 
   Offer(
@@ -25,6 +27,8 @@ class Offer{
     this.village,
     this.price,
     this.coordinates,
+    this.lat,
+    this.long,
     this.services
     }
   );
