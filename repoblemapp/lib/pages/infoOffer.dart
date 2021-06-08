@@ -5,6 +5,8 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart' as Location;
 import 'package:repoblemapp/http_services/endpoints.dart';
 import 'package:repoblemapp/models/Xat.dart';
+import 'package:repoblemapp/services/offer_service.dart';
+import 'package:repoblemapp/services/user_service.dart';
 import 'package:repoblemapp/services/xat_service.dart';
 import 'package:repoblemapp/widgets/error_toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,6 +21,8 @@ class InfoOffer extends StatefulWidget {
 class _InfoOfferState extends State<InfoOffer> {
   Endpoints endpoints = Endpoints.getInstance();
 
+  List<dynamic> favourites;
+
   @override
   Widget build(BuildContext context) {
     //Recollim la info de la Offer per mostrarla per pantalla
@@ -27,7 +31,23 @@ class _InfoOfferState extends State<InfoOffer> {
     Map data = ModalRoute.of(context).settings.arguments;
     infoOfOffer = data['mapOffer'];
     infoOfOwner = data['mapOwner'];
+    favourites = data['favs'];
+    bool favourite = false;
 
+    if (favourites.isNotEmpty) {
+      for (int i = 0; i < favourites.length; i++) {
+        if (infoOfOffer["_id"] == favourites[i]["_id"]) {
+          favourite = true;
+        }
+      }
+    }
+
+    IconData estrella;
+    if (favourite) {
+      estrella = Icons.star;
+    } else {
+      estrella = Icons.star_border_outlined;
+    }
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.teal[400],
@@ -46,11 +66,15 @@ class _InfoOfferState extends State<InfoOffer> {
             padding: const EdgeInsets.fromLTRB(8, 0, 20, 16),
             child: IconButton(
                 onPressed: () {
-                  //Funció per afegir la activitat a favoritos del usuari
+                  if (favourite == false) {
+                    _addFavourites(infoOfOffer["_id"]);
+                  } else {
+                    _deleteFavourites(infoOfOffer["_id"]);
+                  }
                 },
                 icon: Icon(
-                  Icons.star_border_outlined,
-                  color: Colors.white,
+                  estrella,
+                  color: Colors.amber,
                   size: 45,
                 )),
           ),
@@ -69,9 +93,8 @@ class _InfoOfferState extends State<InfoOffer> {
 
             child: ListView.builder(
               itemCount: infoOfOffer['pictures'].length,
-
               scrollDirection: Axis.horizontal,
-              itemBuilder: (context,index) {
+              itemBuilder: (context, index) {
                 return Card(
                   margin: EdgeInsets.fromLTRB(0, 8, 22, 8),
                   clipBehavior: Clip.antiAlias,
@@ -83,17 +106,14 @@ class _InfoOfferState extends State<InfoOffer> {
                   child: Container(
                     decoration: BoxDecoration(
                         image: DecorationImage(
-                          image: NetworkImage(
-                              infoOfOffer['pictures'][index]),
-                          fit: BoxFit.cover,
-                          scale: 2.0,
-                        )),
+                      image: NetworkImage(infoOfOffer['pictures'][index]),
+                      fit: BoxFit.cover,
+                      scale: 2.0,
+                    )),
                     width: 200.0,
                   ),
                 );
-
               },
-
             ),
           ),
 
@@ -209,15 +229,13 @@ class _InfoOfferState extends State<InfoOffer> {
                   Expanded(
                     flex: 1,
                     child: CircleAvatar(
-                      backgroundImage: NetworkImage(
-                          infoOfOwner['profilePhoto']),
+                      backgroundImage:
+                          NetworkImage(infoOfOwner['profilePhoto']),
                       radius: 35,
                     ),
                   )
                 ],
               )),
-
-
 
           SizedBox(
             height: 20,
@@ -301,7 +319,7 @@ class _InfoOfferState extends State<InfoOffer> {
                       //Donde estarà el mapa centrado
                       center: Location.LatLng(
                           infoOfOffer["point"]["coordinates"][0] as double,
-                          infoOfOffer["point"]["coordinates"][1] as double ),
+                          infoOfOffer["point"]["coordinates"][1] as double),
                       minZoom: 5,
                       zoom: 14,
                     ),
@@ -357,12 +375,11 @@ class _InfoOfferState extends State<InfoOffer> {
               borderRadius: BorderRadius.all(Radius.circular(15)),
             ),
             child: Row(
-
               children: [
                 Expanded(
-                  flex:2,
+                  flex: 2,
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(16,4,16,4),
+                    padding: const EdgeInsets.fromLTRB(16, 4, 16, 4),
                     child: Text(
                       "Contacta amb " + infoOfOwner["name"],
                       style: TextStyle(
@@ -375,7 +392,7 @@ class _InfoOfferState extends State<InfoOffer> {
                   ),
                 ),
                 Expanded(
-                  flex:1,
+                  flex: 1,
                   child: FloatingActionButton(
                     backgroundColor: Colors.teal,
                     child: Icon(
@@ -391,12 +408,11 @@ class _InfoOfferState extends State<InfoOffer> {
                       Map infoChat = await manager.findChat(infoOfOffer['_id']);
                       //Retorna null si no existe i un chat lleno si existeix
 
-                      if(infoChat==null){
+                      if (infoChat == null) {
                         //hem de crear un chat nou pq no exiteix un ja creat
                         //Tenim que fer una nou objecte de chat
-                        SharedPreferences prefs = await SharedPreferences.getInstance();
-
-
+                        SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
 
                         /*Xat newXat = new Xat(
                           owner: infoOfOwner['_id'] ,
@@ -404,54 +420,80 @@ class _InfoOfferState extends State<InfoOffer> {
                           offerRelated: infoOfOffer['_id'],
                         );*/
 
+                        Map infoChatCreated = await manager.createXat(
+                            infoOfOwner['_id'], infoOfOffer['_id']);
 
-
-
-                        Map infoChatCreated = await manager.createXat(infoOfOwner['_id'],infoOfOffer['_id']);
-
-                        if(infoChatCreated==null){
+                        if (infoChatCreated == null) {
                           showFlash(
                               context: context,
-                              duration:
-                              const Duration(seconds: 3),
+                              duration: const Duration(seconds: 3),
                               builder: (context, controller) {
                                 return ErrorToast(
                                   controller: controller,
                                   textshow: "No s'ha pogut crear el Xat",
                                 );
                               });
-                        }
-                        else{
+                        } else {
                           //Hem d'anar a la pantalla de chat passant la info del chat creat
 
                           Navigator.pushNamed(context, '/xat', arguments: {
                             'map': infoChatCreated,
                           });
-                      }
-                      }
-                      else{
+                        }
+                      } else {
                         //Ja existeix i enviem direcamament el chat
                         Navigator.pushNamed(context, '/xat', arguments: {
                           'map': infoChat,
-
                         });
-
                       }
                     },
                   ),
                 ),
-
-
               ],
             ),
           ),
 
-          SizedBox(height: 40,)
-
-
-
+          SizedBox(
+            height: 40,
+          )
         ],
       ),
     );
+  }
+
+  void _addFavourites(String id) async {
+    UsersManager addOfer = UsersManager.getInstance();
+    int code = await addOfer.addFavourites(id);
+
+    if (code == 200) {
+      setState(() {
+        getListaFavoritas();
+      });
+    } else {
+      print("Sorry Oller no se hacerlo");
+    }
+  }
+
+  void _deleteFavourites(String id) async {
+    UsersManager manager = UsersManager.getInstance();
+    print(id);
+    int code = await manager.deleteFavourite(id);
+
+    if (code == 200) {
+      setState(() {
+        getListaFavoritas();
+      });
+    } else {
+      print("Sorry Oller no se hacerlo");
+    }
+  }
+
+  void getListaFavoritas() async {
+    UsersManager user = UsersManager.getInstance();
+    List<dynamic> listaFavoritas = await user.getFavourites();
+
+    setState(() {
+      favourites = listaFavoritas;
+    });
   }
 }
