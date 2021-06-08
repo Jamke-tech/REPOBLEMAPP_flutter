@@ -47,12 +47,16 @@ class _MyOffersState extends State<MyOffers> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               Container(
-                /*child: ListView.builder(
-                  itemCount: numberOfMyOffers,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: _itemBuilder,
-                ),*/
-                child: myOfferCard(infoOffer: infoOfOffers['createdOffers'][1], rating: 2)
+               /* height: 300.0,
+                child: Column(
+                  children: [Container(
+                    child: ListView.builder(
+                      itemCount: numberOfMyOffers,
+                      scrollDirection: Axis.vertical,
+                      itemBuilder: _itemBuilder,
+                  ))]
+                )*/
+                child: myOfferCard(infoOffer: infoOfOffers['createdOffers'][1], rating: 2) //Debería funcionar con lo comentado
               )
             ]));
   }

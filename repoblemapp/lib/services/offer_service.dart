@@ -137,4 +137,31 @@ class OffersManager{
       return 505;
     }
   }
+
+  //Funció per eliminar una oferta
+  Future<int> deleteOffer() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String id = prefs.getString('id');
+      http.Response response = await http.delete(
+        Uri.parse("http://${endpoints.IpApi}/api/offer/$id"),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.acceptHeader: 'application/json',
+        },
+      );
+
+      Map<String, dynamic> infoBBDD = jsonDecode(response.body);
+      print(infoBBDD);
+      if (infoBBDD['code'] == "200") {
+        print('Oferta borrada amb èxit');
+        return infoBBDD['code'];
+      } else {
+        return null;
+      }
+    } catch (error) {
+      print(error);
+      return null;
+    }
+  }
 }
