@@ -20,19 +20,21 @@ class InfoOffer extends StatefulWidget {
 
 class _InfoOfferState extends State<InfoOffer> {
   Endpoints endpoints = Endpoints.getInstance();
-
+  Map<String, dynamic> infoOfOffer;
+  Map<String, dynamic> infoOfOwner;
   List<dynamic> favourites;
+  bool favourite = false;
 
   @override
   Widget build(BuildContext context) {
     //Recollim la info de la Offer per mostrarla per pantalla
-    Map<String, dynamic> infoOfOffer;
-    Map<String, dynamic> infoOfOwner;
+
     Map data = ModalRoute.of(context).settings.arguments;
     infoOfOffer = data['mapOffer'];
     infoOfOwner = data['mapOwner'];
-    favourites = data['favs'];
-    bool favourite = false;
+    if(favourites == null) {
+      favourites = data['favs'];
+    }
 
     if (favourites.isNotEmpty) {
       for (int i = 0; i < favourites.length; i++) {
@@ -466,9 +468,7 @@ class _InfoOfferState extends State<InfoOffer> {
     int code = await addOfer.addFavourites(id);
 
     if (code == 200) {
-      setState(() {
         getListaFavoritas();
-      });
     } else {
       print("Sorry Oller no se hacerlo");
     }
@@ -480,9 +480,7 @@ class _InfoOfferState extends State<InfoOffer> {
     int code = await manager.deleteFavourite(id);
 
     if (code == 200) {
-      setState(() {
         getListaFavoritas();
-      });
     } else {
       print("Sorry Oller no se hacerlo");
     }

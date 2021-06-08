@@ -23,11 +23,14 @@ class CardMap extends StatelessWidget {
         borderRadius: BorderRadius.circular(30),
         child: Card(
           child: InkWell(
-            onTap: () {
+            onTap: () async{
+              UsersManager manager = UsersManager.getInstance();
+              Map infoOfUser = await manager.getUser();
               Navigator.pushNamed(context, '/infoOffer',
                   arguments: {
                     'mapOffer': infoOffer,
-                    'mapOwner': infoOffer["owner"]
+                    'mapOwner': infoOffer["owner"],
+                    'favs': infoOfUser['savedOffers']
                   });
             },
             child: Container(
