@@ -434,24 +434,24 @@ class _CreateOfferState extends State<CreateOffer> {
                               //Hem d'agafar la instancia de Offer manage
                               OffersManager manager = OffersManager.getInstance();
                               //Creem el nou usuari
-                              Offer createOffer = new Offer(
+                              Offer createdOffer = new Offer(
                                 title: titleInputController.text,
-                                price: priceInputController.text,
                                 description: descriptionInputController.text,
-                                village: villageInputController.text,
-                                province: provinceInputController.onChanged.toString(),
                                 ubication: placeInputController.text,
-                                coordinates: coordinatesInputController.text,
+                                province: provinceInputController.onChanged.toString(),
+                                village: villageInputController.text,
+                                price: priceInputController.text,
                                 services: servicesInputController.onChanged.toString(),
+                                coordinates: coordinatesInputController.text,
                               );
-                              print (createOffer.title);
+                              print (createdOffer);
 
-                              int code = await manager.createOffer(createOffer);
+                              int code = await manager.createOffer(createdOffer);
 
                               //Comprovem quin codi ens retorna i fem les differents coses
                               if(code==200){
                                 //Tornem al Login amb un pop de la pagina
-                                Navigator.pushNamed(context, "/my_offers");
+                                Navigator.pushNamed(context, "/login");
 
                               }
                               

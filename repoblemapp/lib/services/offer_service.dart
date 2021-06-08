@@ -68,8 +68,10 @@ class OffersManager{
     try {
       //Hacemos el PUT a la dirección /offer con los datos de una oferta
       print("Creating offer...");
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String id = prefs.getString('id');
 
-      http.Response response = await http.put(
+      http.Response response = await http.post(
         Uri.parse("http://${endpoints.IpApi}/api/offer"),
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
@@ -81,9 +83,11 @@ class OffersManager{
           "pictures": offer.pictures,
           "ubication": offer.ubication,
           "province": offer.province,
-          "owner": offer.owner.toString(),
+          "owner": id,
           "village": offer.village,
           "price": offer.price.toString(),
+          "services": offer.services,
+          "coordinates": offer.coordinates,
         }),
       );
 
