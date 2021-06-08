@@ -41,7 +41,7 @@ class OffersManager{
       return null;
     }
   }
-// Funció per agafar les meves ofertes
+/*// Funció per agafar les meves ofertes
     Future<Map> getMyOffers() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -59,7 +59,7 @@ class OffersManager{
       print(error);
       return null;
     }
-  }
+  }*/
 
 
 
