@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 import 'package:repoblemapp/http_services/endpoints.dart';
+import 'package:repoblemapp/models/Offer.dart';
 import 'package:repoblemapp/models/User.dart';
 import 'dart:convert';
 import 'dart:io';
@@ -204,6 +205,79 @@ class UsersManager {
       } else {
         return null;
       }
+    } catch (error) {
+      print(error);
+      return null;
+    }
+  }
+
+
+  Future<int> addFavourites(String id) async{
+    try {
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String idUser = prefs.getString('id');
+      http.Response response = await http.post(
+        Uri.parse("http://${endpoints.IpApi}/api/user/addFavourite"),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.acceptHeader: 'application/json',
+        },
+        body: jsonEncode({
+          "idUser": idUser,
+          "idOffer": id,
+        }),
+        
+      );
+
+      print(response.body);
+      return int.parse(jsonDecode(response.body)["code"]);
+    } catch (error) {
+      print(error);
+      return 505;
+    }
+  }
+
+  Future<int> deleteFavourite(String id) async{
+    try {
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String idUser = prefs.getString('id');
+      print("IDUser:" + idUser);
+      http.Response response = await http.post(
+        Uri.parse("http://${endpoints.IpApi}/api/user/deleteFavourite"),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.acceptHeader: 'application/json',
+        },
+        body: jsonEncode({
+          "idUser": idUser,
+          "idOffer": id,
+        }),
+        
+      );
+
+      print(response.body);
+      return int.parse(jsonDecode(response.body)["code"]);
+    } catch (error) {
+      print(error);
+      return 505;
+    }
+  }
+
+   Future<List<dynamic>> getFavourites() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String idUser = prefs.getString('id');
+      http.Response response = await http.get(
+        Uri.parse("http://${endpoints.IpApi}/api/user/$idUser"),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.acceptHeader: 'application/json',
+        },
+
+      );
+      return jsonDecode(response.body)["user"]["savedOffers"];
     } catch (error) {
       print(error);
       return null;

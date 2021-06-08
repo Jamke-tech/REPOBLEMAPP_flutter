@@ -1,12 +1,15 @@
+import 'package:flash/flash.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart' as Location;
 import 'package:repoblemapp/http_services/endpoints.dart';
-
-
-
-
+import 'package:repoblemapp/models/Xat.dart';
+import 'package:repoblemapp/services/offer_service.dart';
+import 'package:repoblemapp/services/user_service.dart';
+import 'package:repoblemapp/services/xat_service.dart';
+import 'package:repoblemapp/widgets/error_toast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class InfoOffer extends StatefulWidget {
   const InfoOffer({Key key}) : super(key: key);
@@ -16,20 +19,37 @@ class InfoOffer extends StatefulWidget {
 }
 
 class _InfoOfferState extends State<InfoOffer> {
-
   Endpoints endpoints = Endpoints.getInstance();
-
-
+  Map<String, dynamic> infoOfOffer;
+  Map<String, dynamic> infoOfOwner;
+  List<dynamic> favourites;
+  bool favourite = false;
 
   @override
   Widget build(BuildContext context) {
     //Recollim la info de la Offer per mostrarla per pantalla
-    Map<String, dynamic> infoOfOffer;
-    Map<String, dynamic> infoOfOwner;
-    Map data = ModalRoute.of(context).settings.arguments;
-    infoOfOffer =  data['mapOffer'];
-    infoOfOwner = data['mapOwner'];
 
+    Map data = ModalRoute.of(context).settings.arguments;
+    infoOfOffer = data['mapOffer'];
+    infoOfOwner = data['mapOwner'];
+    if(favourites == null) {
+      favourites = data['favs'];
+    }
+
+    if (favourites.isNotEmpty) {
+      for (int i = 0; i < favourites.length; i++) {
+        if (infoOfOffer["_id"] == favourites[i]["_id"]) {
+          favourite = true;
+        }
+      }
+    }
+
+    IconData estrella;
+    if (favourite) {
+      estrella = Icons.star;
+    } else {
+      estrella = Icons.star_border_outlined;
+    }
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.teal[400],
@@ -46,28 +66,26 @@ class _InfoOfferState extends State<InfoOffer> {
         actions: [
           Padding(
             padding: const EdgeInsets.fromLTRB(8, 0, 20, 16),
-            child:
-                IconButton(
-                    onPressed: () {
-                      //Funció per afegir la activitat a favoritos del usuari
-
-
-                    },
-                    icon: Icon(
-                      Icons.star_border_outlined,
-                      color: Colors.white,
-                      size: 45,)
-                ),
+            child: IconButton(
+                onPressed: () {
+                  if (favourite == false) {
+                    _addFavourites(infoOfOffer["_id"]);
+                  } else {
+                    _deleteFavourites(infoOfOffer["_id"]);
+                  }
+                },
+                icon: Icon(
+                  estrella,
+                  color: Colors.amber,
+                  size: 45,
+                )),
           ),
         ],
       ),
-
-
-      body:ListView(
+      body: ListView(
         //Ponemos el listado de Containers para poner las cosas
 
         children: [
-
           //Listado de las fotografias
 
           Container(
@@ -75,76 +93,31 @@ class _InfoOfferState extends State<InfoOffer> {
             //margin: EdgeInsets.all(4),
             height: 350,
 
-            child: ListView(
-
+            child: ListView.builder(
+              itemCount: infoOfOffer['pictures'].length,
               scrollDirection: Axis.horizontal,
-
-              children: [
-                //Totes les card de les fotos
-                Card(
+              itemBuilder: (context, index) {
+                return Card(
                   margin: EdgeInsets.fromLTRB(0, 8, 22, 8),
                   clipBehavior: Clip.antiAlias,
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0)
-                  ),
+                      borderRadius: BorderRadius.circular(30.0)),
                   //para darle un poco de profundidad
                   elevation: 5.0,
                   shadowColor: Colors.teal,
                   child: Container(
                     decoration: BoxDecoration(
                         image: DecorationImage(
-                          image:NetworkImage('https://media.timeout.com/images/101623899/630/472/image.jpg'),
-                          fit: BoxFit.cover,
-                          scale: 2.0,
-                        )
-                    ),
+                      image: NetworkImage(infoOfOffer['pictures'][index]),
+                      fit: BoxFit.cover,
+                      scale: 2.0,
+                    )),
                     width: 200.0,
-
-                ),),
-                Card(
-                  margin: EdgeInsets.fromLTRB(0, 8, 22, 8),
-                  clipBehavior: Clip.antiAlias,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0)
                   ),
-                  //para darle un poco de profundidad
-                  elevation: 5.0,
-                  shadowColor: Colors.teal,
-                  child: Container(
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image:NetworkImage('https://static1.ara.cat/clip/e8527055-f53c-4d8a-8fd7-8519714bda5b_16-9-aspect-ratio_default_0.jpg'),
-                          fit: BoxFit.cover,
-                          scale: 2.0,
-                        )
-                    ),
-                    width: 200.0,
-
-                  ),),
-                Card(
-                  margin: EdgeInsets.fromLTRB(0, 8, 22, 8),
-                  clipBehavior: Clip.antiAlias,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0)
-                  ),
-                  //para darle un poco de profundidad
-                  elevation: 5.0,
-                  shadowColor: Colors.teal,
-                  child: Container(
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image:NetworkImage('https://www.monapart.com/sites/default/files/styles/lazy_full/public/apartment/photos2/1-casa_de_poble-venta-carrer_cases_noves-la_nou_de_gaia-tarragona.jpg?itok=thmfEwLk'),
-                          fit: BoxFit.cover,
-                          scale: 2.0,
-                        )
-                    ),
-                    width: 200.0,
-
-                  ),),
-              ],
+                );
+              },
             ),
           ),
-
 
           //Nombre de la oferta i parametros principales
 
@@ -153,17 +126,12 @@ class _InfoOfferState extends State<InfoOffer> {
             child: Text(
               infoOfOffer["title"],
               style: TextStyle(
-                fontSize: 45,
-                color: Colors.black,
-                fontFamily: 'Hontana'
-              ),
+                  fontSize: 45, color: Colors.black, fontFamily: 'Hontana'),
               textAlign: TextAlign.center,
-
             ),
           ),
           Container(
             padding: EdgeInsets.all(8),
-
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -195,92 +163,85 @@ class _InfoOfferState extends State<InfoOffer> {
                     color: Colors.green[700],
                   ),
                 ),
-
-
               ],
             ),
           ),
-          SizedBox(height: 10,),
+          SizedBox(
+            height: 10,
+          ),
 
           //Preu + nom + telefon + foto
           Container(
-            margin: EdgeInsets.all(16),
-            padding: EdgeInsets.all(6),
-            decoration: BoxDecoration(
-              color: Colors.teal[200],
-
-              borderRadius: BorderRadius.all(Radius.circular(15)),
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  flex:1,
-                  child: Icon(
-                    Icons.euro_outlined,
-                    size: 45,
-                    color: Colors.amber[600],
-                  ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Text(
-                    infoOfOffer["price"].toString(),
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-
+              margin: EdgeInsets.all(16),
+              padding: EdgeInsets.all(6),
+              decoration: BoxDecoration(
+                color: Colors.teal[200],
+                borderRadius: BorderRadius.all(Radius.circular(15)),
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Icon(
+                      Icons.euro_outlined,
+                      size: 45,
+                      color: Colors.amber[600],
                     ),
-                    textAlign: TextAlign.start,
-
                   ),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(
-                          infoOfOwner['name'] +' '+ infoOfOwner['surname'],
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.black,
-
+                  Expanded(
+                    flex: 1,
+                    child: Text(
+                      infoOfOffer["price"].toString(),
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            infoOfOwner['name'] + ' ' + infoOfOwner['surname'],
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.black,
+                            ),
+                            textAlign: TextAlign.end,
                           ),
-                          textAlign: TextAlign.end,
-                        ),
-                        Text(
-                          infoOfOwner['phone'].toString(),
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.white,
-                          ),
-                          textAlign: TextAlign.end,
-                        )
-                      ],
+                          Text(
+                            infoOfOwner['phone'].toString(),
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.white,
+                            ),
+                            textAlign: TextAlign.end,
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                Expanded(
-                  flex:1,
-                  child: CircleAvatar(
-                    backgroundImage: NetworkImage(
-                      'http://${endpoints.photoIP}/${infoOfOwner['profilePhoto']}'
+                  Expanded(
+                    flex: 1,
+                    child: CircleAvatar(
+                      backgroundImage:
+                          NetworkImage(infoOfOwner['profilePhoto']),
+                      radius: 35,
                     ),
-                    radius: 35,
-                  ),
-                )
+                  )
+                ],
+              )),
 
-
-              ],
-            )
+          SizedBox(
+            height: 20,
           ),
-
-
-          SizedBox(height: 20,),
           Padding(
             padding: const EdgeInsets.fromLTRB(14, 2, 0, 0),
             child: Text(
@@ -291,11 +252,10 @@ class _InfoOfferState extends State<InfoOffer> {
                 fontWeight: FontWeight.bold,
                 fontFamily: 'Hontana',
               ),
-
             ),
           ),
           Divider(
-           color: Colors.teal,
+            color: Colors.teal,
             thickness: 4,
           ),
           Padding(
@@ -306,17 +266,16 @@ class _InfoOfferState extends State<InfoOffer> {
               style: TextStyle(
                 fontSize: 18,
                 color: Colors.black,
-
               ),
-
-
             ),
           ),
-          SizedBox(height: 20,),
+          SizedBox(
+            height: 20,
+          ),
           Padding(
             padding: const EdgeInsets.fromLTRB(14, 2, 0, 0),
             child: Text(
-                'On està?',
+              'On està?',
               style: TextStyle(
                 fontSize: 25,
                 color: Colors.teal,
@@ -337,10 +296,7 @@ class _InfoOfferState extends State<InfoOffer> {
               style: TextStyle(
                 fontSize: 18,
                 color: Colors.black,
-
               ),
-
-
             ),
           ),
 
@@ -353,67 +309,189 @@ class _InfoOfferState extends State<InfoOffer> {
               decoration: BoxDecoration(
                 //color: Colors.blue[200],
                 border: Border.all(
-                  color:Colors.teal,
+                  color: Colors.teal,
                   width: 2,
                 ),
                 borderRadius: BorderRadius.all(Radius.circular(15)),
               ),
-              child:Padding(
+              child: Padding(
                   padding: const EdgeInsets.all(6.0),
                   child: FlutterMap(
                     options: MapOptions(
                       //Donde estarà el mapa centrado
-                      center: Location.LatLng(infoOfOffer["point"]["coordinates"][0],infoOfOffer["point"]["coordinates"][1]),
+                      center: Location.LatLng(
+                          infoOfOffer["point"]["coordinates"][0] as double,
+                          infoOfOffer["point"]["coordinates"][1] as double),
                       minZoom: 5,
                       zoom: 14,
                     ),
                     layers: [
                       TileLayerOptions(
-                          urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                          subdomains: ['a', 'b', 'c']
-                      ),
-                      MarkerLayerOptions(
-                          markers: [
-                            //Posem tots els marcadors de la activitat on esta situat
-                            Marker(
-                                width: 30,
-                                height: 30,
-                                point: Location.LatLng(infoOfOffer["point"]["coordinates"][0],infoOfOffer["point"]["coordinates"][1]),
-                                builder: (context) => Icon(
+                          urlTemplate:
+                              "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                          subdomains: ['a', 'b', 'c']),
+                      MarkerLayerOptions(markers: [
+                        //Posem tots els marcadors de la activitat on esta situat
+                        Marker(
+                            width: 30,
+                            height: 30,
+                            point: Location.LatLng(
+                                infoOfOffer["point"]["coordinates"][0],
+                                infoOfOffer["point"]["coordinates"][1]),
+                            builder: (context) => Icon(
                                   Icons.location_on_outlined,
                                   color: Colors.deepOrange,
                                   size: 30,
-                                )
-
-                            )
-                          ]
-                      )
+                                ))
+                      ])
                     ],
-
-                  )
-              ),
-
-
+                  )),
             ),
           ),
-          SizedBox(height: 40,),
+          SizedBox(
+            height: 20,
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(14, 2, 0, 0),
+            child: Text(
+              'Contacte',
+              style: TextStyle(
+                fontSize: 25,
+                color: Colors.teal,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Hontana',
+              ),
+            ),
+          ),
+          Divider(
+            color: Colors.teal,
+            thickness: 4,
+          ),
 
+          //Botó de contacte
+          Container(
+            margin: EdgeInsets.all(6),
+            padding: EdgeInsets.all(2),
+            decoration: BoxDecoration(
+              color: Colors.transparent,
+              borderRadius: BorderRadius.all(Radius.circular(15)),
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 4, 16, 4),
+                    child: Text(
+                      "Contacta amb " + infoOfOwner["name"],
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: FloatingActionButton(
+                    backgroundColor: Colors.teal,
+                    child: Icon(
+                      Icons.message,
+                      size: 30,
+                      color: Colors.white,
+                    ),
+                    onPressed: () async {
+                      //Tenemos que mirar si existe si no existe pues creamos el chat
 
+                      XatManager manager = XatManager.getInstance();
 
+                      Map infoChat = await manager.findChat(infoOfOffer['_id']);
+                      //Retorna null si no existe i un chat lleno si existeix
 
+                      if (infoChat == null) {
+                        //hem de crear un chat nou pq no exiteix un ja creat
+                        //Tenim que fer una nou objecte de chat
+                        SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
 
+                        /*Xat newXat = new Xat(
+                          owner: infoOfOwner['_id'] ,
+                          user: prefs.getString('id'),
+                          offerRelated: infoOfOffer['_id'],
+                        );*/
 
+                        Map infoChatCreated = await manager.createXat(
+                            infoOfOwner['_id'], infoOfOffer['_id']);
 
+                        if (infoChatCreated == null) {
+                          showFlash(
+                              context: context,
+                              duration: const Duration(seconds: 3),
+                              builder: (context, controller) {
+                                return ErrorToast(
+                                  controller: controller,
+                                  textshow: "No s'ha pogut crear el Xat",
+                                );
+                              });
+                        } else {
+                          //Hem d'anar a la pantalla de chat passant la info del chat creat
 
+                          Navigator.pushNamed(context, '/xat', arguments: {
+                            'map': infoChatCreated,
+                          });
+                        }
+                      } else {
+                        //Ja existeix i enviem direcamament el chat
+                        Navigator.pushNamed(context, '/xat', arguments: {
+                          'map': infoChat,
+                        });
+                      }
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
 
-
-
-
+          SizedBox(
+            height: 40,
+          )
         ],
-
-
-      ) ,
-
+      ),
     );
+  }
+
+  void _addFavourites(String id) async {
+    UsersManager addOfer = UsersManager.getInstance();
+    int code = await addOfer.addFavourites(id);
+
+    if (code == 200) {
+        getListaFavoritas();
+    } else {
+      print("Sorry Oller no se hacerlo");
+    }
+  }
+
+  void _deleteFavourites(String id) async {
+    UsersManager manager = UsersManager.getInstance();
+    print(id);
+    int code = await manager.deleteFavourite(id);
+
+    if (code == 200) {
+        getListaFavoritas();
+    } else {
+      print("Sorry Oller no se hacerlo");
+    }
+  }
+
+  void getListaFavoritas() async {
+    UsersManager user = UsersManager.getInstance();
+    List<dynamic> listaFavoritas = await user.getFavourites();
+
+    setState(() {
+      favourites = listaFavoritas;
+    });
   }
 }

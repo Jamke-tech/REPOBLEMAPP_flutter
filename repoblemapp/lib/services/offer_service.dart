@@ -24,7 +24,7 @@ class OffersManager{
   //Recuperem els endpoints de la clase
   Endpoints endpoints = Endpoints.getInstance();
 
-  Future<Map> getOffers() async {
+  Future<List<dynamic>> getOffers() async {
     try {
 
       http.Response response = await http.get(
@@ -35,14 +35,24 @@ class OffersManager{
         },
 
       );
-      return jsonDecode(response.body);
+      return jsonDecode(response.body)["offersList"];
     } catch (error) {
       print(error);
       return null;
     }
   }
 
+  /*Future<Map> getOffer(String id) async {
+    try{
+      http.Response response = await http.get(
+        Uri.parse("http://${endpoints.IpApi}/api/offer"),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.acceptHeader: 'application/json',
+        },
 
+    }
+  }*/
 
   //Funció per crear una oferta
   Future<int> createOffer(Offer offer) async {
@@ -74,6 +84,9 @@ class OffersManager{
       return 505;
     }
   }
+
+  
+
 
   //Funció
   Future<int> updateOffer(Offer offer) async {
