@@ -36,12 +36,14 @@ class offerCard extends StatelessWidget {
 
           UsersManager manager = UsersManager.getInstance();
           Map infoOfOwner = await manager.getOwner(infoOffer['owner']);
+          Map infoOfOUser = await manager.getUser();
 
 
 
           Navigator.pushNamed(context, '/infoOffer',arguments: {
             'mapOffer':infoOffer,
             'mapOwner':infoOfOwner,
+            'favs': infoOfOUser['savedOffers']
 
           });
 
