@@ -34,7 +34,7 @@ class _SearchState extends State<Search> {
                 child: Row(
                   children: [
                     Expanded(
-                      flex:1,
+                      flex: 1,
                       child: IconButton(
                           icon: Icon(
                             Icons.search,
@@ -45,7 +45,7 @@ class _SearchState extends State<Search> {
                           }),
                     ),
                     Expanded(
-                      flex:4,
+                      flex: 4,
                       child: TextField(
                         controller: buscador,
                         decoration: InputDecoration(
@@ -57,7 +57,7 @@ class _SearchState extends State<Search> {
                       ),
                     ),
                     Expanded(
-                    flex:1,
+                      flex: 1,
                       child: IconButton(
                           icon: Icon(
                             Icons.map,
@@ -66,10 +66,8 @@ class _SearchState extends State<Search> {
                           ),
                           onPressed: () {
                             Navigator.pushNamed(context, '/mapOffers',
-                                arguments: {
-                               "mapOffers":offers});
-                            }
-                          ),
+                                arguments: {"mapOffers": offers});
+                          }),
                     )
                   ],
                 ),
@@ -225,7 +223,9 @@ class _SearchState extends State<Search> {
     });
   }
 
-  void _searchOffers() {
+  void _searchOffers() async{
+    OffersManager manager = OffersManager.getInstance();
+    List<dynamic> ofertasBuscadas = await manager.getSearchOffers(buscador.text);
     
   }
 }

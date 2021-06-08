@@ -10,11 +10,8 @@ import 'package:flutter_socket_io/flutter_socket_io.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:socket_io_client/socket_io_client.dart';
-
-
 
 class ChatPage extends StatefulWidget {
   @override
@@ -22,42 +19,30 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-  
   final messageController = TextEditingController();
   User currentUser;
   List<Message> messages = [];
   SocketIO socketIO;
-  RenuevaChat chatInstance= RenuevaChat();
+  RenuevaChat chatInstance = RenuevaChat();
+  String name;
 
-  
   @override
   Widget build(BuildContext context) {
-
-
     //Pasamos un mapa con toda la informacion
     Map<String, dynamic> infoOfChat;
     Map data = ModalRoute.of(context).settings.arguments;
-    infoOfChat =data['map'];
+    infoOfChat = data['map'];
     print(infoOfChat);
-    chatInstance.init(infoOfChat,messages);
+    chatInstance.init(infoOfChat, messages);
 
     //Inicalizamos la lista de mensajes
     print(infoOfChat['messages']);
 
-
     infoOfChat['messages'].forEach((m) {
-        print(m);
+      print(m);
 
-        messages.add(
-          Message(
-              sender: m['sender'],
-              content: m['content'])
-        );
-      }
-    );
-
-
-
+      messages.add(Message(sender: m['sender'], content: m['content']));
+    });
 
     return Scaffold(
       appBar: AppBar(
@@ -66,12 +51,11 @@ class _ChatPageState extends State<ChatPage> {
         title: Row(
           children: [
             BackButton(
-              onPressed: (){
+              onPressed: () {
                 //Desconnectamos el cleinte del chat
                 chatInstance.disconnect();
                 Navigator.pop(context);
               },
-
             ),
             CircleAvatar(
               backgroundImage: AssetImage("assets/images/Repoblem.png"),
@@ -80,8 +64,12 @@ class _ChatPageState extends State<ChatPage> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(infoOfChat['offerRelated']['title'], style: TextStyle(fontSize: 16)),
-                Text(infoOfChat['owner']['name'], style: TextStyle(fontSize: 12)) //TODO: Fer funcio per selccionar el owner i el user
+                Text(infoOfChat['offerRelated']['title'],
+                    style: TextStyle(fontSize: 16)),
+                Text(name,
+                    style: TextStyle(
+                        fontSize:
+                            12)) //TODO: Fer funcio per selccionar el owner i el user
               ],
             )
           ],
@@ -95,8 +83,9 @@ class _ChatPageState extends State<ChatPage> {
         children: [
           Expanded(
               child: ListView.builder(
-                itemCount: messages.length,
-                itemBuilder: (context, index) => MessageBox(message: messages[index].content,),
+            itemCount: messages.length,
+            itemBuilder: (context, index) =>
+                MessageBox(message: messages[index]),
           )),
           Container(
             padding: EdgeInsets.symmetric(
@@ -135,33 +124,32 @@ class _ChatPageState extends State<ChatPage> {
                             child: TextField(
                                 controller: messageController,
                                 decoration: InputDecoration(
-
                                     hintText: "Escriu un missatge",
                                     border: InputBorder.none))),
                         IconButton(
-                          onPressed: () async{
-                            //Enviamos mensaje al websocket
-                            SharedPreferences prefs = await SharedPreferences.getInstance();
-                            List<Message> newMessages = chatInstance.sendMessage(messageController.text, prefs.getString('id'), messages);
+                            onPressed: () async {
+                              //Enviamos mensaje al websocket
+                              SharedPreferences prefs =
+                                  await SharedPreferences.getInstance();
+                              List<Message> newMessages =
+                                  chatInstance.sendMessage(
+                                      messageController.text,
+                                      prefs.getString('id'),
+                                      messages);
 
-
-                            setState(() {
-                              messages=newMessages;
-                            });
-                            print(messages.toString());
-
-
-                          },
-
-                          icon: Icon(
-                            Icons.send,
-                          color: Theme.of(context)
-                              .textTheme
-                              .bodyText1
-                              .color
-                              .withOpacity(0.64),
-                          )
-                        ),
+                              setState(() {
+                                messages = newMessages;
+                              });
+                              print(messages.toString());
+                            },
+                            icon: Icon(
+                              Icons.send,
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1
+                                  .color
+                                  .withOpacity(0.64),
+                            )),
                         SizedBox(
                           width: 5,
                         ),
@@ -184,7 +172,17 @@ class _ChatPageState extends State<ChatPage> {
       ),
     );
   }
-  
+  /*void _selectName() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String idUser = prefs.getString('id');
+
+    if (idUser == infoOfChat['owner']) {
+      name = infoOfChat['user']['userName'];
+    } else {
+      name = infoOfChat['owner']['userName'];
+    }
+  }*/
+
   /*List<Message> getMessagesForChat(String chatID) {
     return messages
         .toList();
@@ -192,12 +190,8 @@ class _ChatPageState extends State<ChatPage> {
 }
 
 class MessageBox extends StatelessWidget {
-  const MessageBox({
-    Key key,
-    @required this.message,
-  }) : super(key: key);
-  final String message;
-
+  const MessageBox({Key key, @required this.message}) : super(key: key);
+  final Message message;
 
   @override
   Widget build(BuildContext context) {
@@ -213,26 +207,26 @@ class MessageBox extends StatelessWidget {
               vertical: 10,
             ),
             decoration: BoxDecoration(
-              color: Colors.teal[400],
-              borderRadius: BorderRadius.circular(30)
-            ),
+                color: Colors.teal[400],
+                borderRadius: BorderRadius.circular(30)),
             child: Text(
-              message,
-              style: TextStyle(
-                color: Colors.white),),
+              message.content,
+              style: TextStyle(color: Colors.white),
+            ),
           ),
         ],
       ),
     );
   }
-}  
-class RenuevaChat extends ChangeNotifier{
+}
 
+class RenuevaChat extends ChangeNotifier {
   /*List<Message> _messages = [];
   UnmodifiableListView<Message> get messages => UnmodifiableListView(_messages);*/
   SocketIO socketIO;
 
-  List<Message> sendMessage(String text, String senderChatId, List<Message> messages) {
+  List<Message> sendMessage(
+      String text, String senderChatId, List<Message> messages) {
     Message mensaje = Message(sender: senderChatId, content: text);
     messages.add(mensaje);
     socketIO.sendMessage(
@@ -243,32 +237,29 @@ class RenuevaChat extends ChangeNotifier{
       }),
     );
     notifyListeners();
-    print (messages);
+    print(messages);
     return messages;
   }
-  void disconnect(){
-    socketIO.disconnect();
 
+  void disconnect() {
+    socketIO.disconnect();
   }
 
-  void init(Map infoOfChat, List<Message> messages) async{
+  void init(Map infoOfChat, List<Message> messages) async {
     Endpoints endpoints = Endpoints.getInstance();
     print("ID of chat is = " + infoOfChat['_id']);
 
     socketIO = SocketIOManager().createSocketIO(
         'http://${endpoints.chatIP}', '/chat',
         query: "chatID=${infoOfChat['_id']}",
-    socketStatusCallback: _socketStatus);
+        socketStatusCallback: _socketStatus);
 
     socketIO.init();
     socketIO.connect();
 
     socketIO.subscribe('receive_message', (jsonData) {
       Map<String, dynamic> data = json.decode(jsonData);
-      messages.add(
-          Message(
-              sender: data['sender'],
-              content:data['content'] ));
+      messages.add(Message(sender: data['sender'], content: data['content']));
       notifyListeners();
     });
 
@@ -280,16 +271,9 @@ class RenuevaChat extends ChangeNotifier{
     socket.connect();*/
 
     //socket.on('connection',)
-
-
-
-
-
   }
 
   _socketStatus(dynamic data) {
     print("Socket status: " + data);
   }
-  
-
 }
