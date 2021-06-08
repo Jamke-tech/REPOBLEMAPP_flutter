@@ -315,7 +315,8 @@ class _ProfileState extends State<Profile> {
                         ),
                       ])),
                   Container(
-                      child: Padding(
+                      child: 
+                      Padding(
                           padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
                           child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
@@ -350,7 +351,45 @@ class _ProfileState extends State<Profile> {
                                   fontSize: 25,
                                   color: Colors.teal[50],
                                 ),
-                              ))))
+                              )))),
+                  Container(
+                      child: 
+                      Padding(
+                          padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
+                          child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.teal[900],
+                                elevation: 5,
+                                padding: EdgeInsets.all(15),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                              ),
+                              onPressed: () async {
+                                if (userDetails != null) {
+                                  Navigator.pushNamed(context, '/create_offer',
+                                      arguments: {
+                                        'map': userDetails['createdOffers'],
+                                      });
+                                } else {
+                                  showFlash(
+                                      context: context,
+                                      duration: const Duration(seconds: 3),
+                                      builder: (context, controller) {
+                                        return ErrorToast(
+                                          controller: controller,
+                                          textshow: "Servidor no disponible",
+                                        );
+                                      });
+                                }
+                              },
+                              child: Text(
+                                'Crear nova oferta',
+                                style: TextStyle(
+                                  fontSize: 25,
+                                  color: Colors.teal[50],
+                                ),
+                              ))))            
                 ],
               ),
             ),

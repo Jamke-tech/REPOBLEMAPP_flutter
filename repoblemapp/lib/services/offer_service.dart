@@ -80,6 +80,7 @@ class OffersManager{
           "description": offer.description,
           "pictures": offer.pictures,
           "ubication": offer.ubication,
+          "province": offer.province,
           "owner": offer.owner.toString(),
           "village": offer.village,
           "price": offer.price.toString(),
@@ -111,10 +112,12 @@ class OffersManager{
           "title": offer.title,
           "description": offer.description,
           "pictures": offer.pictures,
-          "ubication": offer.ubication,
+          "ubication": offer.ubication, //direccion (lo mismo que place en otras paginas)
           "owner": offer.owner.toString(),
           "village": offer.village,
           "price": offer.price.toString(),
+          "services": offer.services,
+          "coordinates": offer.toString(),
         }),
         
       );
