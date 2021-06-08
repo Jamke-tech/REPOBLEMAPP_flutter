@@ -108,22 +108,24 @@ class OffersManager{
       print("Updating offer...");
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String id = prefs.getString('id');
-      http.Response response = await http.put(
+      http.Response response = await http.post(
         Uri.parse("http://${endpoints.IpApi}/api/offer/$id"),
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
           HttpHeaders.acceptHeader: 'application/json',
         },
         body: jsonEncode({
+          "pictures": offer.pictures,
           "title": offer.title,
           "description": offer.description,
-          "pictures": offer.pictures,
-          "ubication": offer.ubication, //direccion (lo mismo que place en otras paginas)
-          "owner": offer.owner.toString(),
+          "province": offer.province,
+          "place": offer.ubication, //direccion que corresponde a place backend
+          "lat": offer.lat,
+          "long": offer.long,
+          "owner": id.toString(),
           "village": offer.village,
           "price": offer.price.toString(),
           "services": offer.services,
-          "coordinates": offer.toString(),
         }),
         
       );

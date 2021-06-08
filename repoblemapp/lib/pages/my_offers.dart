@@ -15,9 +15,12 @@ class _MyOffersState extends State<MyOffers> {
     Map<String, dynamic> infoOfOffers;
     Map data = ModalRoute.of(context).settings.arguments;
     infoOfOffers = data['map'];
-    int numberOfMyOffers = infoOfOffers.length; //COMPROBAR ESTA LÍNEA DE CÓDIGO SI FALLA ALGO DE MIS OFERTAS
+    print("my_offers");
+    print(infoOfOffers);
+    int numberOfMyOffers = infoOfOffers['createdOffers'].length; //COMPROBAR ESTA LÍNEA DE CÓDIGO SI FALLA ALGO DE MIS OFERTAS
+    print(numberOfMyOffers);
     return Scaffold(
-      appBar: AppBar(
+        appBar: AppBar(
           elevation: 10,
           backgroundColor: Colors.teal[400],
           title: Text(
@@ -40,26 +43,24 @@ class _MyOffersState extends State<MyOffers> {
             },
           ),
         ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          Container(
-            child: ListView.builder(
-              itemCount: numberOfMyOffers,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: _itemBuilder,
-            ),
-          )
-        ]
-      )
-    );
+        body: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Container(
+                /*child: ListView.builder(
+                  itemCount: numberOfMyOffers,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: _itemBuilder,
+                ),*/
+                child: myOfferCard(infoOffer: infoOfOffers['createdOffers'][1], rating: 2)
+              )
+            ]));
   }
-  Widget _itemBuilder(BuildContext context, int index){
 
+  /*Widget _itemBuilder(BuildContext context, int index) {
     return myOfferCard(
-      infoOffer:infoOfOffers[index],
+      infoOffer: infoOfOffers['createdOffers'][index],
       rating: 1,
     );
-
-  }
+  }*/
 }

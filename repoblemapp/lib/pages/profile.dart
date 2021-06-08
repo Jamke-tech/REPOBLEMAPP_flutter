@@ -315,8 +315,7 @@ class _ProfileState extends State<Profile> {
                         ),
                       ])),
                   Container(
-                      child: 
-                      Padding(
+                      child: Padding(
                           padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
                           child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
@@ -331,8 +330,10 @@ class _ProfileState extends State<Profile> {
                                 if (userDetails != null) {
                                   Navigator.pushNamed(context, '/my_offers',
                                       arguments: {
-                                        'map': userDetails['createdOffers'],
+                                        'map': userDetails,
                                       });
+                                  print("profile");
+                                  print(userDetails);
                                 } else {
                                   showFlash(
                                       context: context,
@@ -353,8 +354,7 @@ class _ProfileState extends State<Profile> {
                                 ),
                               )))),
                   Container(
-                      child: 
-                      Padding(
+                      child: Padding(
                           padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
                           child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
@@ -389,7 +389,7 @@ class _ProfileState extends State<Profile> {
                                   fontSize: 25,
                                   color: Colors.teal[50],
                                 ),
-                              ))))            
+                              ))))
                 ],
               ),
             ),
