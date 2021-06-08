@@ -8,6 +8,7 @@ import 'package:repoblemapp/pages/profile.dart';
 import 'package:repoblemapp/pages/register.dart';
 import 'package:repoblemapp/pages/fav_offers.dart';
 import 'package:repoblemapp/pages/socialdashboard.dart';
+import 'package:repoblemapp/pages/update_offer.dart';
 
 void main() => runApp(RepoblemAPP());
 
@@ -36,7 +37,8 @@ class RepoblemAPP extends StatelessWidget {
         '/fav_offers': (context) => Fav(),
         '/infoActivity': (context) => InfoOffer(),
         '/social': (context) => Social(),
-        '/my_offers': (context) => MyOffers()
+        '/my_offers': (context) => MyOffers(),
+        '/update_offer': (context) => UpdateOffer()
       },
     );
   }

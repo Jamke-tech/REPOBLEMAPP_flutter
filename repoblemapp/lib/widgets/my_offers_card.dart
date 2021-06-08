@@ -87,7 +87,7 @@ class myOfferCard extends StatelessWidget {
                           onPressed: () async {
                             UsersManager manager = UsersManager.getInstance();
                             Map infoOfOwner = await manager.getOwner(infoOffer['owner']);
-                            Navigator.pushNamed(context, '/infoActivity',arguments: {'mapOffer': infoOffer,'mapOwner': infoOfOwner});
+                            Navigator.pushNamed(context, '/update_offer',arguments: {'mapOffer': infoOffer,'mapOwner': infoOfOwner});
                             },
                             child: Text(
                               'Modificar',
@@ -110,7 +110,7 @@ class myOfferCard extends StatelessWidget {
                                     UsersManager.getInstance();
                                 Map infoOfOwner = await manager
                                     .getOwner(infoOffer['owner']);
-                                Navigator.pushNamed(context, '/infoActivity',
+                                Navigator.pushNamed(context, '/update_offer',
                                     arguments: {
                                       'mapOffer': infoOffer,
                                       'mapOwner': infoOfOwner
