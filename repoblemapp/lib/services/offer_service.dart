@@ -139,10 +139,8 @@ class OffersManager{
   }
 
   //Funció per eliminar una oferta
-  Future<int> deleteOffer() async {
+  Future<String> deleteOffer(String id) async {
     try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      String id = prefs.getString('id');
       http.Response response = await http.delete(
         Uri.parse("http://${endpoints.IpApi}/api/offer/$id"),
         headers: {

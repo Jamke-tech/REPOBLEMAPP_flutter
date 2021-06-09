@@ -44,27 +44,21 @@ class _MyOffersState extends State<MyOffers> {
           ),
         ),
         body: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Container(
-               /* height: 300.0,
-                child: Column(
-                  children: [Container(
-                    child: ListView.builder(
-                      itemCount: numberOfMyOffers,
-                      scrollDirection: Axis.vertical,
-                      itemBuilder: _itemBuilder,
-                  ))]
-                )*/
-                child: myOfferCard(infoOffer: infoOfOffers['createdOffers'][1], rating: 2) //Debería funcionar con lo comentado
+              Expanded(
+                child: ListView.builder(
+                  itemCount: numberOfMyOffers,
+                  scrollDirection: Axis.vertical,
+                  itemBuilder: (context, index){
+                    return myOfferCard(infoOffer: infoOfOffers['createdOffers'][index], rating: 1);
+                  },
+                )
+                //child: myOfferCard(infoOffer: infoOfOffers['createdOffers'][0], rating: 2) //Debería funcionar con lo comentado
               )
             ]));
   }
 
   /*Widget _itemBuilder(BuildContext context, int index) {
-    return myOfferCard(
-      infoOffer: infoOfOffers['createdOffers'][index],
-      rating: 1,
-    );
+    return myOfferCard(infoOffer: infoOfOffers['createdOffers'][index], rating: 1);
   }*/
 }

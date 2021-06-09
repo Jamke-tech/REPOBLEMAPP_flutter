@@ -31,9 +31,8 @@ class myOfferCard extends StatelessWidget {
           //Hem de recollir qui es el owner de la oferta per passar a la info de la oferta
           UsersManager manager = UsersManager.getInstance();
           Map infoOfOwner = await manager.getOwner(infoOffer['owner']);
-          Navigator.pushNamed(context, '/infoActivity', arguments: {
-            'mapOffer': infoOffer, 'mapOwner': infoOfOwner
-          });
+          Navigator.pushNamed(context, '/infoActivity',
+              arguments: {'mapOffer': infoOffer, 'mapOwner': infoOfOwner});
         },
         child: Container(
           child: Padding(
@@ -107,10 +106,11 @@ class myOfferCard extends StatelessWidget {
                           ),
                           onPressed: () async {
                             OffersManager manager = OffersManager.getInstance();
-                            int code = await manager.deleteOffer();
-                            if (code == 200) {
+                            String code =
+                                await manager.deleteOffer(infoOffer['_id']);
+                            if (code == "200") {
                               print("Oferta eliminada");
-                              Navigator.pop(context);
+                              _getListMyOffers();
                             } else {
                               showFlash(
                                   context: context,
@@ -139,5 +139,11 @@ class myOfferCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _getListMyOffers() async{
+    UsersManager manager = UsersManager.getInstance();
+    Map infoOfUser = await manager.getUser();
+    setState()
   }
 }
