@@ -2,7 +2,7 @@ import 'User.dart';
 
 class Ajuda {
   //Variables del Usuari
-  User owner;
+  String owner;
   String admin;
   String message;
 

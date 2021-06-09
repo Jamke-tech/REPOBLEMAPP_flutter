@@ -10,13 +10,13 @@ import 'package:repoblemapp/widgets/error_toast.dart';
 import 'package:repoblemapp/models/Ajuda.dart';
 import 'package:repoblemapp/services/ajuda_service.dart';
 
-class Ajuda extends StatefulWidget {
-  const Ajuda({Key key}) : super(key: key);
+class AjudaPage extends StatefulWidget {
+  const AjudaPage({Key key}) : super(key: key);
   @override
   _AjudaState createState() => _AjudaState();
 }
 
-class _AjudaState extends State<Ajuda> {
+class _AjudaState extends State<AjudaPage> {
   Map<String, dynamic> userDetails;
   final claveFormulario = GlobalKey<FormState>();
   final TextEditingController mensajeAyuda = TextEditingController();
@@ -80,17 +80,34 @@ class _AjudaState extends State<Ajuda> {
                     if (!claveFormulario.currentState.validate()) {
                       return;
                     }
-                    /*if(claveFormulario.currentState.validate()){
+                    if (claveFormulario.currentState.validate()) {
                       AjudaManager manager = AjudaManager.getInstance();
-                              //Creem el nou usuari
-                              Ajuda ajuda = new Ajuda(
-                                message: mensajeAyuda,
-                                
-                              );
-                              print (ajuda.message);
+                      //Creem el nou usuari
+                      Ajuda ajuda = new Ajuda(
+                        owner: userDetails['userName'],
+                        admin: "ADMIN",
+                        message: mensajeAyuda.toString(),
+                      );
+                      print(ajuda.message);
 
-                              int code = await manager.createAjuda(ajuda);
-                    }*/
+                      int code = await manager.createAjuda(ajuda);
+                      //Comprovem quin codi ens retorna i fem les differents coses
+                      if (code == 200) {
+                        //Tornem al Login amb un pop de la pagina
+                        Navigator.pop(context);
+                      } else {
+                        //Error en el servidor o en el guardat de dades
+                        showFlash(
+                            context: context,
+                            duration: const Duration(seconds: 3),
+                            builder: (context, controller) {
+                              return ErrorToast(
+                                controller: controller,
+                                textshow: "Servidor no disponible",
+                              );
+                            });
+                      }
+                    }
                   },
                 ),
               ),
