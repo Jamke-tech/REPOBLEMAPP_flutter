@@ -44,6 +44,8 @@ class _MyOffersState extends State<MyOffers> {
           ),
         ),
         body: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Expanded(
                 child: ListView.builder(

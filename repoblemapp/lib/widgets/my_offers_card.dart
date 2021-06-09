@@ -14,13 +14,23 @@ class myOfferCard extends StatelessWidget {
   int rating;
   myOfferCard({this.infoOffer, this.rating});
 
+
+  void _getListMyOffers() async {
+    UsersManager manager = UsersManager.getInstance();
+    Map infoOfUser = await manager.getUser();
+    
+    setState(() {
+      infoOffer = infoOfUser['createdOffers'];
+    });
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Card(
       margin: EdgeInsets.only(right: 22.0),
       clipBehavior: Clip.antiAlias,
-      color: Colors.teal[900],
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+      color: Colors.teal,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
       //para darle un poco de profundidad
       elevation: 5.0,
       shadowColor: Color(0x55434343),
@@ -60,7 +70,7 @@ class myOfferCard extends StatelessWidget {
                           ),
                           SizedBox(height: 3.0),
                           Text(
-                            infoOffer["description"],
+                            infoOffer["village"],
                             textAlign: TextAlign.end,
                             style: TextStyle(
                               color: Colors.white,
@@ -71,38 +81,48 @@ class myOfferCard extends StatelessWidget {
                         ],
                       ),
                     ),
+                    // Poner fotos en la lista de ofertas
+                    /*Expanded(
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                        image: DecorationImage(image: infoOffer["pictures"][0])
+                        ),
+                      )
+                      ),*/
                     Expanded(
-                        child: Column(children: [
-                      ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.teal[400],
-                            elevation: 5,
-                            padding: EdgeInsets.all(15),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
-                            ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                        IconButton(
+                          icon: Icon(
+                            Icons.remove_red_eye,
+                            color: Colors.white,
+                            size: 30,
+                          ),
+                          onPressed: () async {
+                            UsersManager manager = UsersManager.getInstance();
+                            Map infoOfOwner = await manager.getOwner(infoOffer['owner']);
+                            Navigator.pushNamed(context, '/infoActivity',
+                            arguments: {'mapOffer': infoOffer, 'mapOwner': infoOfOwner});
+                          },),
+                        IconButton(
+                          icon: Icon(
+                            Icons.create,
+                            color: Colors.white,
+                            size: 30,
                           ),
                           onPressed: () async {
                             Navigator.pushNamed(context, '/update_offer',
                                 arguments: {'mapOffer': infoOffer});
                             print("Modificar clicado");
                             print(infoOffer);
-                          },
-                          child: Text(
-                            'Modificar',
-                            style: TextStyle(
-                              fontSize: 25,
-                              color: Colors.teal[50],
-                            ),
-                          )),
-                      ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.teal[400],
-                            elevation: 5,
-                            padding: EdgeInsets.all(15),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
-                            ),
+                          },),
+                        IconButton(
+                          icon: Icon(
+                            Icons.delete,
+                            color: Colors.white,
+                            size: 30,
                           ),
                           onPressed: () async {
                             OffersManager manager = OffersManager.getInstance();
@@ -122,14 +142,7 @@ class myOfferCard extends StatelessWidget {
                                     );
                                   });
                             }
-                          },
-                          child: Text(
-                            'Eliminar',
-                            style: TextStyle(
-                              fontSize: 25,
-                              color: Colors.teal[50],
-                            ),
-                          ))
+                          })
                     ]))
                   ],
                 )
@@ -141,9 +154,5 @@ class myOfferCard extends StatelessWidget {
     );
   }
 
-  void _getListMyOffers() async{
-    UsersManager manager = UsersManager.getInstance();
-    Map infoOfUser = await manager.getUser();
-    setState()
-  }
+  void setState(Null Function() param0) {}
 }
