@@ -79,7 +79,7 @@ class _MyOffersState extends State<MyOffers> {
                         UsersManager manager = UsersManager.getInstance();
                         Map infoOfOwner =
                             await manager.getOwner(createdOffers[index]['owner']);
-                        Navigator.pushNamed(context, '/infoActivity',
+                        Navigator.pushNamed(context, '/infoOffer',
                             arguments: {
                               'mapOffer': createdOffers[index],
                               'mapOwner': infoOfOwner
@@ -154,7 +154,7 @@ class _MyOffersState extends State<MyOffers> {
                                             Map infoOfOwner = await manager
                                                 .getOwner(createdOffers[index]['owner']);
                                             Navigator.pushNamed(
-                                                context, '/infoActivity',
+                                                context, '/infoOffer',
                                                 arguments: {
                                                   'mapOffer': createdOffers[index],
                                                   'mapOwner': infoOfOwner
