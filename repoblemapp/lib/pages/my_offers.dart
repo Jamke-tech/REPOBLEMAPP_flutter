@@ -82,7 +82,8 @@ class _MyOffersState extends State<MyOffers> {
                         Navigator.pushNamed(context, '/infoOffer',
                             arguments: {
                               'mapOffer': createdOffers[index],
-                              'mapOwner': infoOfOwner
+                              'mapOwner': infoOfOwner,
+                              'favs':infoOfUser['savedOffers']
                             });
                       },
                       child: Container(
@@ -96,6 +97,7 @@ class _MyOffersState extends State<MyOffers> {
                               Row(
                                 children: [
                                   Expanded(
+                                    flex:2,
                                     child: Column(
                                       //Queremos el title y la ubicacion
                                       mainAxisAlignment: MainAxisAlignment.end,
@@ -125,10 +127,13 @@ class _MyOffersState extends State<MyOffers> {
                                   ),
                                   // Poner fotos en la lista de ofertas
                                   Expanded(
+                                    flex:4,
                                         child: Container(
+                                          height: 200,
                                           decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(15),
                                               image: DecorationImage(
-                                                image:NetworkImage(createdOffers[index]['pictures'][0]),
+                                                image:NetworkImage(createdOffers[index]['pictures'][1]),
                                                 fit: BoxFit.cover,
                                                 scale: 2.0,
                                               )
@@ -136,6 +141,7 @@ class _MyOffersState extends State<MyOffers> {
                                         ),
                                   ),
                                   Expanded(
+                                    flex:1,
                                       child: Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.end,
@@ -157,7 +163,8 @@ class _MyOffersState extends State<MyOffers> {
                                                 context, '/infoOffer',
                                                 arguments: {
                                                   'mapOffer': createdOffers[index],
-                                                  'mapOwner': infoOfOwner
+                                                  'mapOwner': infoOfOwner,
+                                                  'favs':infoOfUser['savedOffers']
                                                 });
                                           },
                                         ),

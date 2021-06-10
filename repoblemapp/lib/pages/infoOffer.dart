@@ -440,12 +440,16 @@ class _InfoOfferState extends State<InfoOffer> {
 
                           Navigator.pushNamed(context, '/xat', arguments: {
                             'map': infoChatCreated,
+                            'id': prefs.getString('id')
                           });
                         }
                       } else {
+                        SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
                         //Ja existeix i enviem direcamament el chat
                         Navigator.pushNamed(context, '/xat', arguments: {
                           'map': infoChat,
+                          'id': prefs.getString('id')
                         });
                       }
                     },

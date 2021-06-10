@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:repoblemapp/pages/create_offer.dart';
 import 'package:repoblemapp/pages/edit_profile.dart';
 import 'package:repoblemapp/pages/home.dart';
@@ -12,8 +13,13 @@ import 'package:repoblemapp/pages/fav_offers.dart';
 import 'package:repoblemapp/pages/socialdashboard.dart';
 import 'package:repoblemapp/pages/xat_page.dart';
 import 'package:repoblemapp/pages/update_offer.dart';
+import 'package:repoblemapp/models/renueva_Chat.dart';
 
-void main() => runApp(RepoblemAPP());
+void main() => runApp(
+    ChangeNotifierProvider(
+      create: (context)=> RenuevaChat(),
+      child:RepoblemAPP() ,
+    ));
 
 class RepoblemAPP extends StatelessWidget {
   // This widget is the root of your application.

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:repoblemapp/models/Chat.dart';
 import 'package:repoblemapp/models/Xat.dart';
 import 'package:repoblemapp/services/xat_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Social extends StatefulWidget {
   const Social({Key key}) : super(key: key);
@@ -26,10 +27,18 @@ class _SocialState extends State<Social> {
   void getInfoXatsUser() async {
     //Hem de demanar els xats que te l'usuari que estigui actius
     XatManager manager = XatManager.getInstance();
-    List<dynamic> infoXatsUser =await manager.getChats();
+    List<dynamic> infoXatsUser = await manager.getChats();
+    List<dynamic> infoXatsClean= [];
 
+    int i =0;
+    while (i<infoXatsUser.length){
+      if(infoXatsUser[i]['offerRelated']!=null){
+        infoXatsClean.add(infoXatsUser[i]);
+      }
+      i++;
+     }
     setState(() {
-      XatsData = infoXatsUser;
+      XatsData = infoXatsClean;
     });
     print(XatsData);
   }
@@ -45,12 +54,15 @@ class _SocialState extends State<Social> {
             child:ListView.builder(
               itemCount: XatsData.length,
               itemBuilder: (context, index) => InkWell(
-                onTap: () {
+                onTap: () async {
                   //hacer la función aqui para entrar al chat 
                   //pasandole todos los mensajes a la siguiente xat_page.dart
+                   SharedPreferences pref = await SharedPreferences.getInstance();
+
 
                     Navigator.pushNamed(context, '/xat', arguments: {
                     'map': XatsData[index],
+                      'id': pref.getString('id'),
                     });
                   },
                 child: Padding(
@@ -61,7 +73,7 @@ class _SocialState extends State<Social> {
                         children: [
                           CircleAvatar(
                             radius: 24,
-                            backgroundImage: AssetImage("assets/images/Repoblem.png"),
+                            backgroundImage: NetworkImage( XatsData[index]['offerRelated']['pictures'][0]),
                           ),
                           //si esta activo, enciende la lucecita
                           if(chatsData[index].isActive)
@@ -91,7 +103,7 @@ class _SocialState extends State<Social> {
                                 Text(
                                   XatsData[index]['offerRelated']['title'],
                                   style: TextStyle(
-                                    fontSize: 15,
+                                    fontSize: 20,
                                     fontWeight: FontWeight.w500
                                   ),
                                 ),

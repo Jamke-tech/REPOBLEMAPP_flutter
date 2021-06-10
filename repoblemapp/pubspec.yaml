@@ -39,6 +39,7 @@ dependencies:
   flutter_socket_io: ^0.6.0
   provider: ^4.3.3
   socket_io_client: ^0.9.12
+  jitsi_meet: ^3.0.0
 
   latlong: ^0.6.1
 
