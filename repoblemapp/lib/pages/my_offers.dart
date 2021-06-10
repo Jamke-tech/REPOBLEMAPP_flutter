@@ -61,9 +61,9 @@ class _MyOffersState extends State<MyOffers> {
                 itemCount: numberOfMyOffers,
                 scrollDirection: Axis.vertical,
                 itemBuilder: (context, index) {
-                  Offer infoOffer = createdOffers[index];
+                  //Offer infoOffer = createdOffers[index];
                   return Card(
-                    margin: EdgeInsets.only(right: 22.0),
+                    margin: EdgeInsets.all(8),
                     clipBehavior: Clip.antiAlias,
                     color: Colors.teal,
                     shape: RoundedRectangleBorder(
@@ -78,10 +78,10 @@ class _MyOffersState extends State<MyOffers> {
                         //Hem de recollir qui es el owner de la oferta per passar a la info de la oferta
                         UsersManager manager = UsersManager.getInstance();
                         Map infoOfOwner =
-                            await manager.getOwner(createdOffers[index].owner);
+                            await manager.getOwner(createdOffers[index]['owner']);
                         Navigator.pushNamed(context, '/infoActivity',
                             arguments: {
-                              'mapOffer': infoOffer,
+                              'mapOffer': createdOffers[index],
                               'mapOwner': infoOfOwner
                             });
                       },
@@ -103,7 +103,7 @@ class _MyOffersState extends State<MyOffers> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          infoOffer.title,
+                                          createdOffers[index]['title'],
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontSize: 22.0,
@@ -112,7 +112,7 @@ class _MyOffersState extends State<MyOffers> {
                                         ),
                                         SizedBox(height: 3.0),
                                         Text(
-                                          infoOffer.village,
+                                          createdOffers[index]['village'],
                                           textAlign: TextAlign.end,
                                           style: TextStyle(
                                             color: Colors.white,
@@ -124,13 +124,17 @@ class _MyOffersState extends State<MyOffers> {
                                     ),
                                   ),
                                   // Poner fotos en la lista de ofertas
-                                  /*Expanded(
-                                        child: DecoratedBox(
+                                  Expanded(
+                                        child: Container(
                                           decoration: BoxDecoration(
-                                          image: DecorationImage(image: infoOffer["pictures"][0])
+                                              image: DecorationImage(
+                                                image:NetworkImage(createdOffers[index]['pictures'][0]),
+                                                fit: BoxFit.cover,
+                                                scale: 2.0,
+                                              )
                                           ),
-                                        )
-                                        ),*/
+                                        ),
+                                  ),
                                   Expanded(
                                       child: Column(
                                           mainAxisAlignment:
@@ -148,11 +152,11 @@ class _MyOffersState extends State<MyOffers> {
                                             UsersManager manager =
                                                 UsersManager.getInstance();
                                             Map infoOfOwner = await manager
-                                                .getOwner(infoOffer.owner);
+                                                .getOwner(createdOffers[index]['owner']);
                                             Navigator.pushNamed(
                                                 context, '/infoActivity',
                                                 arguments: {
-                                                  'mapOffer': infoOffer,
+                                                  'mapOffer': createdOffers[index],
                                                   'mapOwner': infoOfOwner
                                                 });
                                           },
@@ -167,10 +171,10 @@ class _MyOffersState extends State<MyOffers> {
                                             Navigator.pushNamed(
                                                 context, '/update_offer',
                                                 arguments: {
-                                                  'mapOffer': infoOffer
+                                                  'mapOffer': createdOffers[index]
                                                 });
                                             print("Modificar clicado");
-                                            print(infoOffer);
+                                            print(createdOffers[index]);
                                           },
                                         ),
                                         IconButton(
