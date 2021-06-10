@@ -14,16 +14,6 @@ class myOfferCard extends StatelessWidget {
   int rating;
   myOfferCard({this.infoOffer, this.rating});
 
-
-  void _getListMyOffers() async {
-    UsersManager manager = UsersManager.getInstance();
-    Map infoOfUser = await manager.getUser();
-    
-    setState(() {
-      infoOffer = infoOfUser['createdOffers'];
-    });
-  }
-  
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -90,60 +80,66 @@ class myOfferCard extends StatelessWidget {
                       )
                       ),*/
                     Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                        IconButton(
-                          icon: Icon(
-                            Icons.remove_red_eye,
-                            color: Colors.white,
-                            size: 30,
-                          ),
-                          onPressed: () async {
-                            UsersManager manager = UsersManager.getInstance();
-                            Map infoOfOwner = await manager.getOwner(infoOffer['owner']);
-                            Navigator.pushNamed(context, '/infoActivity',
-                            arguments: {'mapOffer': infoOffer, 'mapOwner': infoOfOwner});
-                          },),
-                        IconButton(
-                          icon: Icon(
-                            Icons.create,
-                            color: Colors.white,
-                            size: 30,
-                          ),
-                          onPressed: () async {
-                            Navigator.pushNamed(context, '/update_offer',
-                                arguments: {'mapOffer': infoOffer});
-                            print("Modificar clicado");
-                            print(infoOffer);
-                          },),
-                        IconButton(
-                          icon: Icon(
-                            Icons.delete,
-                            color: Colors.white,
-                            size: 30,
-                          ),
-                          onPressed: () async {
-                            OffersManager manager = OffersManager.getInstance();
-                            String code =
-                                await manager.deleteOffer(infoOffer['_id']);
-                            if (code == "200") {
-                              print("Oferta eliminada");
-                              _getListMyOffers();
-                            } else {
-                              showFlash(
-                                  context: context,
-                                  duration: const Duration(seconds: 3),
-                                  builder: (context, controller) {
-                                    return ErrorToast(
-                                      controller: controller,
-                                      textshow: "Servidor no disponible",
-                                    );
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                          IconButton(
+                            icon: Icon(
+                              Icons.remove_red_eye,
+                              color: Colors.white,
+                              size: 30,
+                            ),
+                            onPressed: () async {
+                              UsersManager manager = UsersManager.getInstance();
+                              Map infoOfOwner =
+                                  await manager.getOwner(infoOffer['owner']);
+                              Navigator.pushNamed(context, '/infoActivity',
+                                  arguments: {
+                                    'mapOffer': infoOffer,
+                                    'mapOwner': infoOfOwner
                                   });
-                            }
-                          })
-                    ]))
+                            },
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.create,
+                              color: Colors.white,
+                              size: 30,
+                            ),
+                            onPressed: () async {
+                              Navigator.pushNamed(context, '/update_offer',
+                                  arguments: {'mapOffer': infoOffer});
+                              print("Modificar clicado");
+                              print(infoOffer);
+                            },
+                          ),
+                          IconButton(
+                              icon: Icon(
+                                Icons.delete,
+                                color: Colors.white,
+                                size: 30,
+                              ),
+                              onPressed: () async {
+                                OffersManager manager =
+                                    OffersManager.getInstance();
+                                String code =
+                                    await manager.deleteOffer(infoOffer['_id']);
+                                if (code == "200") {
+                                  print("Oferta eliminada");
+                                } else {
+                                  showFlash(
+                                      context: context,
+                                      duration: const Duration(seconds: 3),
+                                      builder: (context, controller) {
+                                        return ErrorToast(
+                                          controller: controller,
+                                          textshow: "Servidor no disponible",
+                                        );
+                                      });
+                                }
+                              })
+                        ]))
                   ],
                 )
               ],
@@ -153,6 +149,4 @@ class myOfferCard extends StatelessWidget {
       ),
     );
   }
-
-  void setState(Null Function() param0) {}
 }

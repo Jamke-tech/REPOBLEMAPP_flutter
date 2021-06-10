@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:repoblemapp/models/Offer.dart';
 import 'package:repoblemapp/services/offer_service.dart';
 import 'package:repoblemapp/widgets/error_toast.dart';
+import 'package:numberpicker/numberpicker.dart';
 
 class UpdateOffer extends StatefulWidget {
   @override
@@ -26,6 +27,8 @@ class _UpdateOfferState extends State<UpdateOffer> {
   final servicesInputController = DropdownButton();
 
   final _formKey = GlobalKey<FormState>();
+  //Intento fotos (1)
+  //List<Asset> images = <Asset>[];
 
   @override
   Widget build(BuildContext context) {
@@ -125,6 +128,22 @@ class _UpdateOfferState extends State<UpdateOffer> {
                       ),
                     ),
                   ),
+
+                  //Intento fotos (2)
+                  /*Padding(padding: EdgeInsets.fromLTRB(24, 4, 24, 4),
+                    child: Container(
+                      height:DeviceSize.height(context),
+                      width:DeviceSize.width(context),
+                      child:Column(
+                        mainAxisAlignment:MainAxisAlignment.center,
+                        children: <Widget>[
+                          Expanded(
+                            child: buildGridView(),
+                          ),
+                        ],
+                      ),
+                    ),),*/
+
 
                   //Container pels camps
                   Padding(
