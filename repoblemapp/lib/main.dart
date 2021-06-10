@@ -4,11 +4,13 @@ import 'package:repoblemapp/pages/home.dart';
 import 'package:repoblemapp/pages/infoOffer.dart';
 import 'package:repoblemapp/pages/login.dart';
 import 'package:repoblemapp/pages/map_offers.dart';
+import 'package:repoblemapp/pages/my_offers.dart';
 import 'package:repoblemapp/pages/profile.dart';
 import 'package:repoblemapp/pages/register.dart';
 import 'package:repoblemapp/pages/fav_offers.dart';
 import 'package:repoblemapp/pages/socialdashboard.dart';
 import 'package:repoblemapp/pages/xat_page.dart';
+import 'package:repoblemapp/pages/update_offer.dart';
 
 void main() => runApp(RepoblemAPP());
 
@@ -39,6 +41,10 @@ class RepoblemAPP extends StatelessWidget {
         '/social':(context)=>Social(),
         '/xat':(context)=>ChatPage(),
         '/mapOffers': (context)=> MapOffers(),
+        '/social': (context) => Social(),
+        '/my_offers': (context) => MyOffers(),
+        '/update_offer': (context) => UpdateOffer(),
+        '/create_offer': (context) => CreateOffer()
       },
     );
   }

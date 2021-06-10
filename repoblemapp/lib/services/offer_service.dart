@@ -41,6 +41,25 @@ class OffersManager{
       return null;
     }
   }
+/*// Funció per agafar les meves ofertes
+    Future<Map> getMyOffers() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String id = prefs.getString('id');
+      http.Response response = await http.get(
+        Uri.parse("http://${endpoints.IpApi}/api/myoffers/$id"),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.acceptHeader: 'application/json',
+        },
+
+      );
+      return jsonDecode(response.body);
+    } catch (error) {
+      print(error);
+      return null;
+    }
+  }*/
 
   /*Future<Map> getOffer(String id) async {
     try{
@@ -59,21 +78,28 @@ class OffersManager{
     try {
       //Hacemos el PUT a la dirección /offer con los datos de una oferta
       print("Creating offer...");
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String id = prefs.getString('id');
 
-      http.Response response = await http.put(
+      http.Response response = await http.post(
         Uri.parse("http://${endpoints.IpApi}/api/offer"),
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
           HttpHeaders.acceptHeader: 'application/json',
         },
         body: jsonEncode({
+          "pictures": offer.pictures,
           "title": offer.title,
           "description": offer.description,
-          "pictures": offer.pictures,
-          "ubication": offer.ubication,
-          "owner": offer.owner.toString(),
+          "province": offer.province,
+          "place": offer.ubication, //direccion que corresponde a place backend
+          "lat": offer.lat,
+          "long": offer.long,
+          "owner": id.toString(),
           "village": offer.village,
           "price": offer.price.toString(),
+          "services": offer.services,
+          
         }),
       );
 
@@ -95,20 +121,24 @@ class OffersManager{
       print("Updating offer...");
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String id = prefs.getString('id');
-      http.Response response = await http.put(
+      http.Response response = await http.post(
         Uri.parse("http://${endpoints.IpApi}/api/offer/$id"),
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
           HttpHeaders.acceptHeader: 'application/json',
         },
         body: jsonEncode({
+          "pictures": offer.pictures,
           "title": offer.title,
           "description": offer.description,
-          "pictures": offer.pictures,
-          "ubication": offer.ubication,
-          "owner": offer.owner.toString(),
+          "province": offer.province,
+          "place": offer.ubication, //direccion que corresponde a place backend
+          "lat": offer.lat,
+          "long": offer.long,
+          "owner": id.toString(),
           "village": offer.village,
           "price": offer.price.toString(),
+          "services": offer.services,
         }),
         
       );
@@ -118,6 +148,31 @@ class OffersManager{
     } catch (error) {
       print(error);
       return 505;
+    }
+  }
+
+  //Funció per eliminar una oferta
+  Future<String> deleteOffer(String id) async {
+    try {
+      http.Response response = await http.delete(
+        Uri.parse("http://${endpoints.IpApi}/api/offer/$id"),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.acceptHeader: 'application/json',
+        },
+      );
+
+      Map<String, dynamic> infoBBDD = jsonDecode(response.body);
+      print(infoBBDD);
+      if (infoBBDD['code'] == "200") {
+        print('Oferta borrada amb èxit');
+        return infoBBDD['code'];
+      } else {
+        return null;
+      }
+    } catch (error) {
+      print(error);
+      return null;
     }
   }
 }
