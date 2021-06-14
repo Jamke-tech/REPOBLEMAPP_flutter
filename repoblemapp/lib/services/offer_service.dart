@@ -6,10 +6,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 //no esta del todo bien, hay que revisarlo
-class OffersManager{
-
+class OffersManager {
   static OffersManager _instance;
 
   OffersManager._internal();
@@ -26,14 +24,44 @@ class OffersManager{
 
   Future<Map> getOffers() async {
     try {
-
       http.Response response = await http.get(
         Uri.parse("http://${endpoints.IpApi}/api/offers"),
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
           HttpHeaders.acceptHeader: 'application/json',
         },
+      );
+      return jsonDecode(response.body);
+    } catch (error) {
+      print(error);
+      return null;
+    }
+  }
 
+  Future<Map> getSearchOffers(village) async {
+    try {
+      http.Response response = await http.get(
+        Uri.parse("http://${endpoints.IpApi}/api/offers/$village"),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.acceptHeader: 'application/json',
+        },
+      );
+      return jsonDecode(response.body);
+    } catch (error) {
+      print(error);
+      return null;
+    }
+  }
+
+  Future<Map> getSearchOffersByProvince(province) async {
+    try {
+      http.Response response = await http.get(
+        Uri.parse("http://${endpoints.IpApi}/api/offers/$province"),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.acceptHeader: 'application/json',
+        },
       );
       return jsonDecode(response.body);
     } catch (error) {
@@ -61,7 +89,25 @@ class OffersManager{
     }
   }*/
 
+/*// Funció per agafar les meves ofertes
+    Future<Map> getMyOffers() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String id = prefs.getString('id');
+      http.Response response = await http.get(
+        Uri.parse("http://${endpoints.IpApi}/api/myoffers/$id"),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.acceptHeader: 'application/json',
+        },
 
+      );
+      return jsonDecode(response.body);
+    } catch (error) {
+      print(error);
+      return null;
+    }
+  }*/
 
   //Funció per crear una oferta
   Future<int> createOffer(Offer offer) async {
@@ -89,7 +135,6 @@ class OffersManager{
           "village": offer.village,
           "price": offer.price.toString(),
           "services": offer.services,
-          
         }),
       );
 
@@ -127,7 +172,6 @@ class OffersManager{
           "price": offer.price.toString(),
           "services": offer.services,
         }),
-        
       );
 
       print(response.body);
