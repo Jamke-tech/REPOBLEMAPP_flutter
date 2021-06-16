@@ -1,5 +1,9 @@
+import 'dart:html';
+
 import 'package:flash/flash.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong/latlong.dart' as Location;
 import 'package:repoblemapp/models/Offer.dart';
 import 'package:repoblemapp/services/offer_service.dart';
 import 'package:repoblemapp/widgets/error_toast.dart';
@@ -22,8 +26,6 @@ class _UpdateOfferState extends State<UpdateOffer> {
   final villageInputController = TextEditingController();
   final provinceInputController = DropdownButton();
   final placeInputController = TextEditingController(); //direccion
-  final latInputController = TextEditingController();
-  final longInputController = TextEditingController();
   final servicesInputController = DropdownButton();
 
   final _formKey = GlobalKey<FormState>();
@@ -44,8 +46,6 @@ class _UpdateOfferState extends State<UpdateOffer> {
     villageInputController.text = infoOfOffer['village'];
     //provinceInputController.text = infoOfOffer['title'];
     placeInputController.text = infoOfOffer['place'];
-    latInputController.text = infoOfOffer['lat'].toString();
-    longInputController.text = infoOfOffer['long'].toString();
     //servicesInputController. = infoOfOffer['title'];
 
     return Scaffold(
@@ -112,7 +112,7 @@ class _UpdateOfferState extends State<UpdateOffer> {
                   ),
                 ],
               ),
-              ListView(
+              Column(
                 children: [
                   //Titol de la pagina
                   Padding(
@@ -143,7 +143,6 @@ class _UpdateOfferState extends State<UpdateOffer> {
                         ],
                       ),
                     ),),*/
-
 
                   //Container pels camps
                   Padding(
@@ -325,8 +324,9 @@ class _UpdateOfferState extends State<UpdateOffer> {
 
                             //Provincia
                             Padding(
-                              padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                              padding: const EdgeInsets.fromLTRB(40, 0, 8, 0),
                               child: DropdownButton(
+                                value: infoOfOffer['province'],
                                 items: lista.map((String a) {
                                   return DropdownMenuItem(
                                       value: a, child: Text(a));
@@ -336,7 +336,7 @@ class _UpdateOfferState extends State<UpdateOffer> {
                                     vista = value;
                                   })
                                 },
-                                hint: Text(vista),
+                                hint: Text(infoOfOffer['province']),
                               ),
                             ),
 
@@ -382,88 +382,63 @@ class _UpdateOfferState extends State<UpdateOffer> {
                               ),
                             ),
 
-                            //Coordinates (latitud)
+                            //Mapa de leafleat
                             Padding(
-                              padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                              child: TextFormField(
-                                validator: (value) {
-                                  if (value.isEmpty) {
-                                    return 'Camp Obligatori';
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                                controller: latInputController,
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  prefixIcon: Padding(
-                                    padding: const EdgeInsets.all(8),
-                                    child: Icon(
-                                      Icons.location_history,
-                                      color: Colors.green,
-                                      size: 35,
-                                    ),
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                height: 250,
+                                width: MediaQuery.of(context).size.width,
+                                decoration: BoxDecoration(
+                                  //color: Colors.blue[200],
+                                  border: Border.all(
+                                    color: Colors.teal,
+                                    width: 2,
                                   ),
-                                  hintText:
-                                      "Introdueix les coordenades (Latitud)", //'Ingressa les coordenades',
-                                  hintStyle: TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.teal[900],
-                                  ),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15)),
                                 ),
-                                // Formato del teclado de entrada
-                                keyboardType: TextInputType
-                                    .text, //Formato de texto normal
-                                textInputAction: TextInputAction.next,
-
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.teal[900],
-                                ),
-                              ),
-                            ),
-                            //Coordinates (Longitud)
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                              child: TextFormField(
-                                validator: (value) {
-                                  if (value.isEmpty) {
-                                    return 'Camp Obligatori';
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                                controller: longInputController,
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  prefixIcon: Padding(
-                                    padding: const EdgeInsets.all(8),
-                                    child: Icon(
-                                      Icons.location_history,
-                                      color: Colors.green,
-                                      size: 35,
-                                    ),
-                                  ),
-                                  hintText:
-                                      "Introdueix les coordenades (Longitud)", //'Ingressa les coordenades',
-                                  hintStyle: TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.teal[900],
-                                  ),
-                                ),
-                                // Formato del teclado de entrada
-                                keyboardType: TextInputType
-                                    .text, //Formato de texto normal
-                                textInputAction: TextInputAction.next,
-
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.teal[900],
-                                ),
+                                child: Padding(
+                                    padding: const EdgeInsets.all(6.0),
+                                    child: FlutterMap(
+                                      options: MapOptions(
+                                        //Donde estarà el mapa centrado
+                                        center: Location.LatLng(
+                                            infoOfOffer["point"]["coordinates"]
+                                                [0] as double,
+                                            infoOfOffer["point"]["coordinates"]
+                                                [1] as double),
+                                        minZoom: 5,
+                                        zoom: 14,
+                                      ),
+                                      layers: [
+                                        TileLayerOptions(
+                                            urlTemplate:
+                                                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                                            subdomains: ['a', 'b', 'c']),
+                                        MarkerLayerOptions(markers: [
+                                          //Posem tots els marcadors de la activitat on esta situat
+                                          Marker(
+                                              width: 30,
+                                              height: 30,
+                                              point: Location.LatLng(
+                                                  infoOfOffer["point"]
+                                                          ["coordinates"][0]
+                                                      as double,
+                                                  infoOfOffer["point"]
+                                                          ["coordinates"][1]
+                                                      as double),
+                                              builder: (context) => Icon(
+                                                    Icons.location_on_outlined,
+                                                    color: Colors.deepOrange,
+                                                    size: 30,
+                                                  ))
+                                        ])
+                                      ],
+                                    )),
                               ),
                             ),
 
-                            //serveis
+                            /* //serveis
                             Padding(
                               padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
                               child: DropdownButton(
@@ -478,7 +453,7 @@ class _UpdateOfferState extends State<UpdateOffer> {
                                 },
                                 hint: Text(vista2),
                               ),
-                            ),
+                            ),*/
                           ],
                         ),
                       ),
@@ -510,8 +485,6 @@ class _UpdateOfferState extends State<UpdateOffer> {
                               province:
                                   provinceInputController.onChanged.toString(),
                               ubication: placeInputController.text,
-                              lat: latInputController.text,
-                              long: longInputController.text,
                               village: villageInputController.text,
                               price: priceInputController.text,
                               services:

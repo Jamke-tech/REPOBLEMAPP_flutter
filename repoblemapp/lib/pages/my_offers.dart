@@ -126,7 +126,7 @@ class _MyOffersState extends State<MyOffers> {
                                     ),
                                   ),
                                   // Poner fotos en la lista de ofertas
-                                  Expanded(
+                                  /*Expanded(
                                     flex:4,
                                         child: Container(
                                           height: 200,
@@ -139,7 +139,7 @@ class _MyOffersState extends State<MyOffers> {
                                               )
                                           ),
                                         ),
-                                  ),
+                                  ),*/
                                   Expanded(
                                     flex:1,
                                       child: Column(
