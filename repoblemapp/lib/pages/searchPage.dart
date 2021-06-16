@@ -15,6 +15,7 @@ class _SearchState extends State<Search> {
   List<dynamic> offers;
   List<dynamic> favourites;
   TextEditingController buscador;
+  List<dynamic> _searchResult;
 
   @override
   Widget build(BuildContext context) {
@@ -34,18 +35,18 @@ class _SearchState extends State<Search> {
                 child: Row(
                   children: [
                     Expanded(
-                      flex:1,
+                      flex: 1,
                       child: IconButton(
                           icon: Icon(
                             Icons.search,
                             size: 40,
                           ),
                           onPressed: () {
-                            _searchOffers();
+                            _searchOffers(buscador.toString());
                           }),
                     ),
                     Expanded(
-                      flex:4,
+                      flex: 4,
                       child: TextField(
                         controller: buscador,
                         decoration: InputDecoration(
@@ -54,10 +55,24 @@ class _SearchState extends State<Search> {
                           hintStyle: TextStyle(
                               fontFamily: 'Hontana', color: Colors.teal),
                         ),
+                        onChanged: onSearchTextChanged,
                       ),
                     ),
                     Expanded(
-                    flex:1,
+                      flex: 1,
+                      child: IconButton(
+                          icon: Icon(
+                            Icons.cancel,
+                            size: 40,
+                            color: Colors.teal,
+                          ),
+                          onPressed: () {
+                            buscador.clear();
+                            onSearchTextChanged('');
+                          }),
+                    ),
+                    Expanded(
+                      flex: 1,
                       child: IconButton(
                           icon: Icon(
                             Icons.map,
@@ -66,10 +81,8 @@ class _SearchState extends State<Search> {
                           ),
                           onPressed: () {
                             Navigator.pushNamed(context, '/mapOffers',
-                                arguments: {
-                               "mapOffers":offers});
-                            }
-                          ),
+                                arguments: {"mapOffers": offers});
+                          }),
                     )
                   ],
                 ),
@@ -225,7 +238,27 @@ class _SearchState extends State<Search> {
     });
   }
 
-  void _searchOffers() {
-    
+  void _searchOffers(String village) async {
+    _searchResult.clear();
+    OffersManager receptor = OffersManager.getInstance();
+    List<dynamic> listaOffersSearched = await receptor.getOffers();
+
+    setState(() {
+      _searchResult = listaOffersSearched;
+    });
+  }
+
+  void onSearchTextChanged(String text) async {
+    _searchResult.clear();
+    if (text.isEmpty) {
+      setState(() {});
+      return;
+    }
+
+    offers.forEach((Offer) {
+      if (Offer.village.contains(text)) _searchResult.add(Offer);
+    });
+
+    setState(() {});
   }
 }
