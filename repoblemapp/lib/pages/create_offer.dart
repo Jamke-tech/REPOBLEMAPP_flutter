@@ -27,7 +27,7 @@ class _CreateOfferState extends State<CreateOffer> {
   final placeInputController = TextEditingController(); //direccion 
   final latInputController = TextEditingController();
   final longInputController = TextEditingController();
-  final servicesInputController = DropdownButton();
+  final servicesInputController = FilterChipWidget();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -70,50 +70,8 @@ class _CreateOfferState extends State<CreateOffer> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-
-                    Expanded(
-                      flex: 2,
-                      child: Container(
-                        padding: EdgeInsets.all(24),
-                        height: 60,
-                        decoration:BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(15),
-                              bottomRight: Radius.circular(15)
-
-                          ),
-                          gradient: LinearGradient(
-                              colors: [Colors.green,Colors.green[300]]
-                          ),
-
-                        ),
-                      ),
-                    ),
-                  Expanded(
-                      flex:5,
-                      child: Container()),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      padding: EdgeInsets.all(24),
-                      height: 120,
-                      decoration:BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(15),
-                          topRight: Radius.circular(15)
-                          
-                        ),
-                        gradient: LinearGradient(
-                            colors: [Colors.green,Colors.green[300]]
-                        ),
-
-                      ),
-                    ),
-                  ),
-
-                ],
               ),
+                
                 ListView(
                   children: [
                     //Titol de la pagina
@@ -136,7 +94,7 @@ class _CreateOfferState extends State<CreateOffer> {
                     Padding(
                       padding: EdgeInsets.fromLTRB(24, 4, 24, 4),
                       child: Container(
-                        height: 500,
+                        height: 550,
                         decoration:BoxDecoration(
                           color: Colors.teal[50],
                           borderRadius: BorderRadius.circular(15),
@@ -445,7 +403,7 @@ class _CreateOfferState extends State<CreateOffer> {
                                 ),
                               ),
 
-                              //serveis
+                              /*//serveis
                               Padding(
                                 
                                 padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
@@ -466,7 +424,38 @@ class _CreateOfferState extends State<CreateOffer> {
                                   
                                 ),
                               ),
+                              */
+                              //INTENTO DE MULTISELECT PARA LOS SERVICIOS
+                              Align
+                                (
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: _TitleContainer("Seleccioni els serveis "),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left:8.0),
+                                child: Align
+                                  (
+                                  alignment: Alignment.centerLeft,
+                                  child: Container(
+                                      child: Wrap(
+                                        spacing: 5.0,
+                                        runSpacing: 3.0,
+                                        children: <Widget>[
+                                          FilterChipWidget(chipName: 'Aire acondicionat'),
+                                          FilterChipWidget(chipName: 'Supermercat aprop'),
+                                          FilterChipWidget(chipName: 'Piscina'),
+                                          FilterChipWidget(chipName: 'Terrassa'),
+                                          FilterChipWidget(chipName: 'Parking'),
+                                          FilterChipWidget(chipName: 'Local inclòs'),
 
+                                        ],
+                                      )
+                                  ),
+                                ),
+                              ),
                               
                             ],
                       ),
@@ -505,7 +494,7 @@ class _CreateOfferState extends State<CreateOffer> {
                                 long: longInputController.text,
                                 village: villageInputController.text,
                                 price: priceInputController.text,
-                                services: servicesInputController.onChanged.toString(),
+                                services: servicesInputController.toString(),
                                 
                               );
                               print (createdOffer);
@@ -548,5 +537,44 @@ class _CreateOfferState extends State<CreateOffer> {
         ),]
       ),
     );
+  }
+}
+
+Widget _TitleContainer(String myTitle) {
+  return Text(
+    myTitle,
+    style: TextStyle(
+        color: Colors.black, fontSize: 20.0, fontWeight: FontWeight.bold),
+  );
+}
+
+class FilterChipWidget extends StatefulWidget {
+  final String chipName;
+
+  FilterChipWidget({Key key, this.chipName}) : super(key: key);
+
+  @override
+  _FilterChipWidgetState createState() => _FilterChipWidgetState();
+}
+
+class _FilterChipWidgetState extends State<FilterChipWidget> {
+  var _isSelected = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return FilterChip(
+      label: Text(widget.chipName),
+      labelStyle: TextStyle(color: Colors.teal[900],fontSize: 16.0,fontWeight: FontWeight.bold),
+      selected: _isSelected,
+      shape:RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(
+            30.0),),
+      backgroundColor: Colors.teal[100],
+      onSelected: (isSelected) {
+        setState(() {
+          _isSelected = isSelected;
+        });
+      },
+      selectedColor: Colors.teal[400],);
   }
 }

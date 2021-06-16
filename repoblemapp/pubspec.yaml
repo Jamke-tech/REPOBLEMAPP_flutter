@@ -35,7 +35,7 @@ dependencies:
   flutter_signin_button: ^2.0.0
 
   get: ^4.1.4
-
+  multi_select_flutter: ^4.0.0
   numberpicker: ^2.0.1
 
   # The following adds the Cupertino Icons font to your application.
