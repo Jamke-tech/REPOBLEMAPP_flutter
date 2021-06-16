@@ -6,10 +6,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 //no esta del todo bien, hay que revisarlo
-class OffersManager{
-
+class OffersManager {
   static OffersManager _instance;
 
   OffersManager._internal();
@@ -26,16 +24,30 @@ class OffersManager{
 
   Future<List<dynamic>> getOffers() async {
     try {
-
       http.Response response = await http.get(
         Uri.parse("http://${endpoints.IpApi}/api/offers"),
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
           HttpHeaders.acceptHeader: 'application/json',
         },
-
       );
       return jsonDecode(response.body)["offersList"];
+    } catch (error) {
+      print(error);
+      return null;
+    }
+  }
+
+  Future<Map> getSearchOffersByProvince(province) async {
+    try {
+      http.Response response = await http.get(
+        Uri.parse("http://${endpoints.IpApi}/api/offers/$province"),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.acceptHeader: 'application/json',
+        },
+      );
+      return jsonDecode(response.body);
     } catch (error) {
       print(error);
       return null;
@@ -99,7 +111,6 @@ class OffersManager{
           "village": offer.village,
           "price": offer.price.toString(),
           "services": offer.services,
-          
         }),
       );
 
@@ -110,9 +121,6 @@ class OffersManager{
       return 505;
     }
   }
-
-  
-
 
   //Funció
   Future<int> updateOffer(Offer offer) async {
@@ -140,7 +148,6 @@ class OffersManager{
           "price": offer.price.toString(),
           "services": offer.services,
         }),
-        
       );
 
       print(response.body);
