@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +15,12 @@ class _ImageOffer extends State<ImagenOferta> {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text(offerName),
+          title: Text(
+              offerName,
+              style: TextStyle(
+                fontSize: 35,
+                fontFamily: "Hontana",
+                color: Colors.white,)),
           backgroundColor: Colors.teal,
         ),
         body: Center(

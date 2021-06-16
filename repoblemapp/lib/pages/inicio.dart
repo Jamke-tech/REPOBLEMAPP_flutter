@@ -42,12 +42,12 @@ class _InicioState extends State<Inicio> {
                     Text(
                         "RepoblemApp",
                         style: TextStyle(
-                            fontSize: 40.0,
-                            fontFamily: "Hontana",),
+                            fontSize: 60.0,
+                            fontFamily: "Hontana",
+                        color: Colors.teal[700]),
                     ),
-                    Icon(
-                      Icons.home,
-                      size: 40.0,)
+
+
                   ],
 
                 ), //Row
@@ -73,7 +73,33 @@ class _InicioState extends State<Inicio> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-              )
+              ),
+              SizedBox(height: 20,),
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.coronavirus_outlined,
+                      size: 40,
+                      color: Colors.teal[700],
+                    ),
+                    Text(
+                      "Free Covid",
+                      style: TextStyle(
+                          fontSize: 25.0
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    Icon(
+                      Icons.coronavirus_outlined,
+                      size: 40,
+                      color: Colors.teal[700],
+                    ),
+                  ],
+                ),
+              ),
+
             ],
           ),
         ),
@@ -131,17 +157,18 @@ class CardScrollWidget extends StatelessWidget {
                     child: Stack(fit: StackFit.expand, children: <Widget>[
                       Image.asset(images[i], fit: BoxFit.cover),
                       Align(
-                        alignment: Alignment.bottomLeft,
+                        alignment: Alignment.bottomRight,
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Padding(
                                 padding: EdgeInsets.symmetric(
-                                    horizontal: 16.0, vertical: 0.0),
+                                    horizontal: 16.0, vertical: 8.0),
                                 child: Text(titles[i],
+                                    textAlign: TextAlign.end,
                                     style: TextStyle(
-                                        color: Colors.white, fontSize: 25.0))),
+                                        color: Colors.white, fontSize: 30.0))),
                           ],
                         ),
                       )

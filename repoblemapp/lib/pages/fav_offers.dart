@@ -1,12 +1,15 @@
-import 'package:flash/flash.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:repoblemapp/models/Offer.dart';
-import 'package:repoblemapp/models/User.dart';
-import 'package:repoblemapp/services/offer_service.dart';
+
 import 'package:repoblemapp/services/user_service.dart';
-import 'package:repoblemapp/widgets/error_toast.dart';
+
 import 'package:repoblemapp/widgets/offerscard.dart';
+
+import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
+import 'package:latlong/latlong.dart' as Location;
+
 
 class Fav extends StatefulWidget {
   @override
@@ -121,31 +124,57 @@ class _FavState extends State<Fav> {
                     ),
                     SizedBox(height: 20.0),
                     Container(
-                      height: 300.0,
+                      height: 450,
+
                       child: TabBarView(
                         children: [
                           //Ponemos ya las ofertas
                           Container(
-                            //Apartado de ofertas 
+                            //Apartado de ofertas
                             child: ListView.builder(
                               itemCount: numberOfFavourite,
                               scrollDirection: Axis.horizontal,
                               itemBuilder: _itemBuilder,
-                              /*children:[
-                                //probamos la primera card
-                                //EXAMPLE: offerCard(imagen, title, location, rating(number)),
-                                offerCard(urls[1], "Panadero del pueblo", "Santa Coloma de Cervelló", 3),
-                                offerCard(urls[1], "Agricultor", "Mora", 2),
-                                offerCard(urls[2], "Herrero", "Delta de l'Ebre", 4),
-                              ],*/
+
                               ),
                             ),
                           Container(
                               //Apartado de Mapa
-                            child: ListView(
-                              //scrollDirection: Axis.horizontal,
-                              children:[],
-                              ),
+                            child: Container(
+                              child: Padding(
+                                  padding: const EdgeInsets.all(6.0),
+                                  child: FlutterMap(
+                                      options: MapOptions(
+                                        plugins: [MarkerClusterPlugin()],
+                                        //Donde estarà el mapa centrado
+                                        center: Location.LatLng(
+                                            infoOffersFavourite[0]['point']['coordinates'][0],
+                                            infoOffersFavourite[0]['point']['coordinates'][1]),
+                                        minZoom: 5,
+                                        zoom: 11,
+                                        maxZoom: 18,
+                                      ),
+                                      layers: [
+                                        TileLayerOptions(
+                                            urlTemplate:
+                                            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                                            subdomains: ['a', 'b', 'c']),
+                                        MarkerClusterLayerOptions(
+                                          markers: [],
+                                          polygonOptions: PolygonOptions(
+                                              borderColor: Colors.teal,
+                                              color: Colors.white,
+                                              borderStrokeWidth: 3),
+                                          builder: (context, markers) {
+                                            return FloatingActionButton(
+                                              child: Text(markers.length.toString()),
+                                              onPressed: null,
+                                            );
+                                          },
+                                        )
+                                      ]
+                                  )),
+                            ),
                             ),
                         ],)
                     ),

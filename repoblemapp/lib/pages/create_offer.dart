@@ -63,7 +63,7 @@ class _CreateOfferState extends State<CreateOffer> {
             size: 40,
           ),
           onPressed: () {
-            Navigator.pushNamed(context, "/profile");
+            Navigator.pop(context);
           },
         ),
       ),
@@ -524,7 +524,7 @@ class _CreateOfferState extends State<CreateOffer> {
                               description: descriptionInputController.text,
                               province:
                                   provinceInputController.onChanged.toString(),
-                              ubication: placeInputController.text,
+                              place: placeInputController.text,
                               lat: latInputController.text,
                               long: longInputController.text,
                               village: villageInputController.text,

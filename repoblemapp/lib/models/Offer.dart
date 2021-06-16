@@ -8,11 +8,10 @@ class Offer{
   String description;
   String pictures;
   String province;
-  String ubication;
+  String place;
   User owner; //no se como ponerlo porque es un objeto schemaMongo con referencia User
   String village;
   String price; // tiene qie ser un numero, nose como ponerlo
-  String coordinates;
   String lat;
   String long;
   String services;
@@ -22,11 +21,10 @@ class Offer{
     this.description,
     this.pictures,
     this.province,
-    this.ubication,
+    this.place,
     this.owner,
     this.village,
     this.price,
-    this.coordinates,
     this.lat,
     this.long,
     this.services

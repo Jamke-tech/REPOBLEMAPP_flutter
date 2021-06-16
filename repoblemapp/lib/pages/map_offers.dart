@@ -10,11 +10,18 @@ class MapOffers extends StatefulWidget {
 
   @override
   _MapOffersState createState() => _MapOffersState();
+
+
+
 }
 
 class _MapOffersState extends State<MapOffers> {
   Widget InfoContainer = null;
   List < dynamic> infoOfOffers;
+  String mapString;
+  bool satellite =false;
+
+
   @override
   Widget build(BuildContext context) {
 
@@ -45,7 +52,7 @@ class _MapOffersState extends State<MapOffers> {
               child: Icon(
                 Icons.location_on_outlined,
                 color: Colors.deepOrange,
-                size: 30,),
+                size: 35,),
             ),
           )
       );
@@ -53,6 +60,14 @@ class _MapOffersState extends State<MapOffers> {
       i++;
 
     }
+    //Inicializamos el valor del mapa en satelite
+    if(satellite) {
+      mapString = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';}
+    else{
+      mapString ='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+    }
+
+
 
 
 
@@ -77,7 +92,7 @@ class _MapOffersState extends State<MapOffers> {
               layers: [
                 TileLayerOptions(
                     urlTemplate:
-                    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                    mapString,
                     subdomains: ['a', 'b', 'c']),
                 MarkerClusterLayerOptions(
                   markers: markerlist,
@@ -94,10 +109,54 @@ class _MapOffersState extends State<MapOffers> {
                 )
               ]
             )),
+
         Align(
           alignment: Alignment.bottomCenter,
           child: InfoContainer,
-        )
+        ),
+        Align(
+          alignment: Alignment.topRight,
+          child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(0, 10, 10, 0),
+                child: FloatingActionButton(
+                  onPressed: (){
+                    //Posem el valor de satellite en true i tornem a fer un set State
+                    setState(() {
+                      satellite= !satellite;
+
+                    });
+
+                  },
+                  backgroundColor: Colors.teal[700],
+                  child: Icon(
+                    satellite ? Icons.map_outlined : Icons.satellite,
+                    size:40 ,
+                  ),
+
+                ),
+              )),
+        ),
+        Align(
+          alignment: Alignment.topLeft,
+          child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
+                child: FloatingActionButton(
+                  onPressed: (){
+                    //Posem el valor de satellite en true i tornem a fer un set State
+                    Navigator.pop(context);
+
+                  },
+                  backgroundColor: Colors.teal[700],
+                  child: Icon(
+                    Icons.search,
+                    size:40 ,
+                  ),
+
+                ),
+              )),
+        ),
 
 
 

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:repoblemapp/models/User.dart';
 import 'package:repoblemapp/services/user_service.dart';
 import 'package:repoblemapp/widgets/error_toast.dart';
+import 'package:intl/intl.dart';
 
 class Register extends StatefulWidget {
   @override
@@ -23,10 +24,15 @@ class _RegisterState extends State<Register> {
   final birthDayInputController= TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+  DateTime dateNow = DateTime.now();
+  DateTime dateSelected= DateTime.now();
 
 
   @override
   Widget build(BuildContext context) {
+
+    var newFormat = DateFormat("dd-MM-yyyy");
+
     return Scaffold(
       //resizeToAvoidBottomInset: false,
 
@@ -232,44 +238,39 @@ class _RegisterState extends State<Register> {
                               //ANIVERSARI
                               Padding(
                                 padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                                child: TextFormField(
-                                  validator: (value){
-                                    try{
-                                      DateTime date = DateTime.parse(value);
-                                      print(date);
-                                      return null;
-                                    }
-                                    catch(e){
-                                      return "Format incorrecte";
-                                    }
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
 
-
-                                  },
-                                  controller: birthDayInputController,
-                                  decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    prefixIcon: Padding(
-                                      padding: const EdgeInsets.all(8),
-                                      child: Icon(
-                                        Icons.cake_outlined,
-                                        color: Colors.green,
-                                        size: 35,),
+                                  children: [
+                                    IconButton(
+                                        icon: Icon(Icons.cake_outlined,size: 35,color: Colors.green,),
+                                        onPressed: () async{
+                                          //ensenyem el date picker
+                                          DateTime _selectedInitialdateTime = await showDatePicker(
+                                            initialDatePickerMode: DatePickerMode.year,
+                                              context: context,
+                                              initialDate: DateTime(1999),
+                                              firstDate: DateTime(1921),
+                                              lastDate: DateTime(2022),
+                                              currentDate: dateSelected
+                                          );
+                                          if (_selectedInitialdateTime != null && _selectedInitialdateTime != dateSelected)
+                                            setState(() {
+                                              dateSelected = _selectedInitialdateTime;
+                                            });
+                                          print(dateSelected.toString());
+                                        },),
+                                    SizedBox(width: 4,),
+                                    Text(
+                                      newFormat.format(dateSelected),
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        color: Colors.teal[900],
+                                      ),
                                     ),
-                                    hintText: "Aniversari (YYYY-MM-DD)",//'Ingressa el teu nom',
-                                    hintStyle: TextStyle(
-                                      fontSize: 20,
-                                      color: Colors.teal[900],
-                                    ),
-                                  ),
-                                  // Formato del teclado de entrada
-                                  keyboardType: TextInputType.datetime, //Formato de texto normal
-                                  textInputAction: TextInputAction.next,
 
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.teal[900],
-                                  ),
-                                ),
+                                  ],
+                                )
                               ),
 
                               //NUMERO DE TELEFON
