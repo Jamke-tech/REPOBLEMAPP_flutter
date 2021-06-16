@@ -5,6 +5,7 @@ import 'package:repoblemapp/http_services/endpoints.dart';
 import 'package:repoblemapp/models/User.dart';
 import 'package:repoblemapp/services/user_service.dart';
 import 'package:repoblemapp/widgets/error_toast.dart';
+import 'package:intl/intl.dart';
 
 class EditProfile extends StatefulWidget {
   @override
@@ -23,33 +24,31 @@ class _EditProfileState extends State<EditProfile> {
   final _formKey = GlobalKey<FormState>();
   UsersManager manager = UsersManager.getInstance();
   Endpoints endpoints = Endpoints.getInstance();
+  Map<String, dynamic> infoOfUser;
+  var aniversari;
 
   @override
   Widget build(BuildContext context) {
-    Map<String, dynamic> infoOfUser;
-    Map data = ModalRoute.of(context).settings.arguments;
-    infoOfUser =
-        data['map']; //Sacamos de los argumentos la información del usuario
 
-    //Establecemos los valores de ls campos a modificar si no son nulos
-    /*if (infoOfUser['userName'] != null){
+    var newFormat = DateFormat("dd-MM-yyyy");
+    if(infoOfUser==null) {
+      Map data = ModalRoute
+          .of(context)
+          .settings
+          .arguments;
+      infoOfUser =
+      data['map']; //Sacamos de los argumentos la información del usuario
+
       userNameInputController.text = infoOfUser['userName'];
+      nameInputController.text = infoOfUser['name'];
+      surnameInputController.text = infoOfUser['surname'];
+      emailInputController.text = infoOfUser['email'];
+      phoneInputController.text = infoOfUser['phone'].toString();
+      passwordInputController.text = infoOfUser['password'];
+
+      aniversari = DateTime.parse(infoOfUser['birthDate']);
     }
-    else{
-      userNameInputController.text = "Nom d'usuari";
-    }*/
-    userNameInputController.text = infoOfUser['userName'];
-    nameInputController.text = infoOfUser['name'];
-    surnameInputController.text = infoOfUser['surname'];
-    emailInputController.text = infoOfUser['email'];
-    phoneInputController.text = infoOfUser['phone'].toString();
-    passwordInputController.text = infoOfUser['password'];
 
-    var aniversari = DateTime.parse(infoOfUser['birthDate']);
-
-
-    String stringDate = aniversari.year.toString()+"-0" +aniversari.month.toString() + "-" + aniversari.day.toString();
-    birthDayInputController.text = stringDate;
 
     return Scaffold(
         appBar: AppBar(
@@ -223,45 +222,38 @@ class _EditProfileState extends State<EditProfile> {
                           )),
                           Padding(
                           padding: const EdgeInsets.fromLTRB(8, 0, 8, 20),
-                          child: TextFormField(
-                            validator: (value) {
-                              try {
-                                DateTime date = DateTime.parse(value);
-                                print(date);
-                                return null;
-                              } catch (e) {
-                                return "Format incorrecte";
-                              }
-                            },
-                            controller: birthDayInputController,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              prefixIcon: Padding(
-                                padding: const EdgeInsets.all(8),
-                                child: Icon(
-                                  Icons.cake_outlined,
-                                  color: Colors.green,
-                                  size: 35,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+
+                            children: [
+                              IconButton(
+                                icon: Icon(Icons.cake_outlined,size: 35,color: Colors.green,),
+                                onPressed: () async{
+                                  //ensenyem el date picker
+                                  DateTime _selectedInitialdateTime = await showDatePicker(
+                                      initialDatePickerMode: DatePickerMode.year,
+                                      context: context,
+                                      initialDate: DateTime(1999),
+                                      firstDate: DateTime(1921),
+                                      lastDate: DateTime(2022),
+                                      currentDate: aniversari
+                                  );
+                                  if (_selectedInitialdateTime != null && _selectedInitialdateTime != aniversari)
+                                    setState(() {
+                                      aniversari = _selectedInitialdateTime;
+                                    });
+                                  print(aniversari.toString());
+                                },),
+                              SizedBox(width: 4,),
+                              Text(
+                                newFormat.format(aniversari),
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.teal[900],
                                 ),
                               ),
-                              //labelText: infoOfUser["date"],
-                              hintText: "Data aniversari",
-                              enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.black)),
-                              hintStyle: TextStyle(
-                                fontSize: 20,
-                                color: Colors.teal[900],
-                              ),
-                            ),
-                            // Formato del teclado de entrada
-                            keyboardType:
-                                TextInputType.datetime, //Formato de texto normal
-                            textInputAction: TextInputAction.next,
 
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.teal[900],
-                            ),
+                            ],
                           )),
                           Padding(
                           padding: const EdgeInsets.fromLTRB(8, 0, 8, 20),
@@ -419,8 +411,7 @@ class _EditProfileState extends State<EditProfile> {
                                 password: passwordInputController.text,
                                 phone: phoneInputController.text,
                                 profilePhoto:infoOfUser['profilePhoto'],
-                                birthDate:
-                                    DateTime.parse(birthDayInputController.text),
+                                birthDate: aniversari,
                               );
                               print("Actualizo");
                               print(updatedUser.name);
@@ -430,7 +421,7 @@ class _EditProfileState extends State<EditProfile> {
                               //Comprovem quin codi ens retorna
                               if (code == 200) {
                                 //Tornem al Login amb un pop de la pagina
-                                Navigator.pop(context);
+                                Navigator.pushNamedAndRemoveUntil(context, "/home", ModalRoute.withName('/home'));
                               } else if (code == 403) {
                                 //Repetición de correo o de nombre de Avatar
                                 showFlash(

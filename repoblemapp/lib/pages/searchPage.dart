@@ -52,7 +52,7 @@ class _SearchState extends State<Search> {
                           border: InputBorder.none,
                           hintText: 'Cerca una oferta',
                           hintStyle: TextStyle(
-                              fontFamily: 'Hontana', color: Colors.teal),
+                              fontFamily: 'Hontana', color: Colors.teal[700]),
                         ),
                       ),
                     ),
@@ -62,7 +62,7 @@ class _SearchState extends State<Search> {
                           icon: Icon(
                             Icons.map,
                             size: 40,
-                            color: Colors.teal,
+                            color: Colors.teal[700],
                           ),
                           onPressed: () {
                             Navigator.pushNamed(context, '/mapOffers',
@@ -162,9 +162,10 @@ class _SearchState extends State<Search> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.teal[700],
         child: Icon(Icons.add),
         onPressed: () {
-          Navigator.pushNamed(context, '/crear_oferta');
+          Navigator.pushNamed(context, '/create_offer');
         },
       ),
     );

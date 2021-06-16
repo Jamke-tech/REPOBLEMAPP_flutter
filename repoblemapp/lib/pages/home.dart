@@ -15,6 +15,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int selectedIndex = 2;
 
+
   final screen = [Search(),Fav(),Inicio(),Social(),Profile()];
 
   Widget build(BuildContext context) {

@@ -41,37 +41,6 @@ class OffersManager{
       return null;
     }
   }
-/*// Funció per agafar les meves ofertes
-    Future<Map> getMyOffers() async {
-    try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      String id = prefs.getString('id');
-      http.Response response = await http.get(
-        Uri.parse("http://${endpoints.IpApi}/api/myoffers/$id"),
-        headers: {
-          HttpHeaders.contentTypeHeader: 'application/json',
-          HttpHeaders.acceptHeader: 'application/json',
-        },
-
-      );
-      return jsonDecode(response.body);
-    } catch (error) {
-      print(error);
-      return null;
-    }
-  }*/
-
-  /*Future<Map> getOffer(String id) async {
-    try{
-      http.Response response = await http.get(
-        Uri.parse("http://${endpoints.IpApi}/api/offer"),
-        headers: {
-          HttpHeaders.contentTypeHeader: 'application/json',
-          HttpHeaders.acceptHeader: 'application/json',
-        },
-
-    }
-  }*/
 
   //Funció per crear una oferta
   Future<int> createOffer(Offer offer) async {
@@ -92,7 +61,7 @@ class OffersManager{
           "title": offer.title,
           "description": offer.description,
           "province": offer.province,
-          "place": offer.ubication, //direccion que corresponde a place backend
+          "place": offer.place, //direccion que corresponde a place backend
           "lat": offer.lat,
           "long": offer.long,
           "owner": id.toString(),
@@ -115,28 +84,25 @@ class OffersManager{
 
 
   //Funció
-  Future<int> updateOffer(Offer offer) async {
+  Future<int> updateOffer(Offer offer, String idOffer) async {
     try {
       //Hacemos el PUT a la dirección /user con los datos de un usuario
       print("Updating offer...");
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      String id = prefs.getString('id');
+
       http.Response response = await http.post(
-        Uri.parse("http://${endpoints.IpApi}/api/offer/$id"),
+        Uri.parse("http://${endpoints.IpApi}/api/offer/$idOffer"),
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
           HttpHeaders.acceptHeader: 'application/json',
         },
         body: jsonEncode({
-          "pictures": offer.pictures,
           "title": offer.title,
           "description": offer.description,
+          "place": offer.place,
+          "village": offer.village,
           "province": offer.province,
-          "place": offer.ubication, //direccion que corresponde a place backend
           "lat": offer.lat,
           "long": offer.long,
-          "owner": id.toString(),
-          "village": offer.village,
           "price": offer.price.toString(),
           "services": offer.services,
         }),

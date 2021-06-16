@@ -288,14 +288,18 @@ class MessageBox extends StatelessWidget {
               : MainAxisAlignment.start,
           children: [
             Container(
-              margin: EdgeInsets.only(top: 20),
+              margin: EdgeInsets.fromLTRB(0, 5, 8, 5),
               padding: EdgeInsets.symmetric(
                 horizontal: 15,
                 vertical: 10,
               ),
               decoration: BoxDecoration(
                   color: isSender ? Colors.teal : Colors.teal[200],
-                  borderRadius: BorderRadius.circular(30)
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(15),
+                      topRight: Radius.circular(15),
+                      bottomLeft: isSender ? Radius.circular(15) : Radius.circular(0),
+                      bottomRight: isSender ? Radius.circular(0) : Radius.circular(15),),
               ),
               child: Text(
                 message,
