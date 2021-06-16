@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:repoblemapp/pages/create_offer.dart';
 import 'package:repoblemapp/pages/edit_profile.dart';
 import 'package:repoblemapp/pages/home.dart';
+import 'package:repoblemapp/pages/imageOffert.dart';
 import 'package:repoblemapp/pages/infoOffer.dart';
 import 'package:repoblemapp/pages/login.dart';
 import 'package:repoblemapp/pages/map_offers.dart';
@@ -51,7 +52,8 @@ class RepoblemAPP extends StatelessWidget {
         '/social': (context) => Social(),
         '/my_offers': (context) => MyOffers(),
         '/update_offer': (context) => UpdateOffer(),
-        '/create_offer': (context) => CreateOffer()
+        '/create_offer': (context) => CreateOffer(),
+        '/big_image': (context) => ImagenOferta(),
       },
     );
   }

@@ -102,7 +102,8 @@ class _ProfileState extends State<Profile> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         CircleAvatar(
-                          backgroundImage: NetworkImage( userDetails['profilePhoto']),
+                          backgroundImage:
+                              NetworkImage(userDetails['profilePhoto']),
                           radius: 65.0,
                         ),
                         SizedBox(
@@ -388,6 +389,37 @@ class _ProfileState extends State<Profile> {
                                   fontSize: 25,
                                   color: Colors.teal[50],
                                 ),
+                              )))),
+                  Container(
+                      child: Padding(
+                          padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
+                          child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.teal[900],
+                                elevation: 5,
+                                padding: EdgeInsets.all(15),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                              ),
+                              onPressed: () async {
+                                Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.logout),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    'Log Out',
+                                    style: TextStyle(
+                                      fontSize: 25,
+                                      color: Colors.teal[50],
+                                    ),
+                                  ),
+                                ],
                               ))))
                 ],
               ),

@@ -97,22 +97,35 @@ class _InfoOfferState extends State<InfoOffer> {
               itemCount: infoOfOffer['pictures'].length,
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
-                return Card(
-                  margin: EdgeInsets.fromLTRB(0, 8, 22, 8),
-                  clipBehavior: Clip.antiAlias,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0)),
-                  //para darle un poco de profundidad
-                  elevation: 5.0,
-                  shadowColor: Colors.teal,
-                  child: Container(
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                      image: NetworkImage(infoOfOffer['pictures'][index]),
-                      fit: BoxFit.cover,
-                      scale: 2.0,
-                    )),
-                    width: 200.0,
+                return InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context, '/big_image',
+                      arguments: {
+                        'url':infoOfOffer['pictures'][index], 
+                        'title':infoOfOffer["title"] },
+                    );
+                  },
+                  child: Hero(
+                    tag: infoOfOffer['pictures'][index],
+                    child: Card(
+                      margin: EdgeInsets.fromLTRB(0, 8, 22, 8),
+                      clipBehavior: Clip.antiAlias,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0)),
+                      //para darle un poco de profundidad
+                      elevation: 5.0,
+                      shadowColor: Colors.teal,
+                      child: Container(
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                          image: NetworkImage(infoOfOffer['pictures'][index]),
+                          fit: BoxFit.cover,
+                          scale: 2.0,
+                        )),
+                        width: 200.0,
+                      ),
+                    ),
                   ),
                 );
               },
