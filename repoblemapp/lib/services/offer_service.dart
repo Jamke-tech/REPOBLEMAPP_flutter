@@ -54,21 +54,6 @@ class OffersManager {
     }
   }
 
-  Future<Map> getSearchOffersByProvince(province) async {
-    try {
-      http.Response response = await http.get(
-        Uri.parse("http://${endpoints.IpApi}/api/offers/$province"),
-        headers: {
-          HttpHeaders.contentTypeHeader: 'application/json',
-          HttpHeaders.acceptHeader: 'application/json',
-        },
-      );
-      return jsonDecode(response.body);
-    } catch (error) {
-      print(error);
-      return null;
-    }
-  }
 /*// Funció per agafar les meves ofertes
     Future<Map> getMyOffers() async {
     try {
