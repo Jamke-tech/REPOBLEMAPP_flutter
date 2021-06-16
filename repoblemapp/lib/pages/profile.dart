@@ -50,7 +50,8 @@ class _ProfileState extends State<Profile> {
     String phoneString = userDetails['phone'].toString();
 
     return Scaffold(
-      appBar: AppBar(
+      /*appBar: AppBar(
+          elevation: 0,
           title: Text(
             'El meu perfil',
             style: TextStyle(
@@ -60,7 +61,7 @@ class _ProfileState extends State<Profile> {
             ),
           ),
           centerTitle: true,
-          backgroundColor: Colors.teal[400],
+          backgroundColor: Colors.green[900],
           actions: [
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 8, 24, 8),
@@ -84,367 +85,415 @@ class _ProfileState extends State<Profile> {
                     }
                   }),
             )
-          ]),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            flex: 2,
-            child: Container(
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [Colors.green[900], Colors.green[400]])),
+          ]),*/
+      body: Stack(children: [
+        Column(
+          children: <Widget>[
+            Expanded(
+              flex: 2,
               child: Container(
-                child: Center(
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        CircleAvatar(
-                          backgroundImage:
-                              NetworkImage(userDetails['profilePhoto']),
-                          radius: 65.0,
-                        ),
-                        SizedBox(
-                          height: 10.0,
-                        ),
-                        Text(userDetails['userName'],
-                            style:
-                                TextStyle(fontSize: 22.0, color: Colors.white)),
-                      ]),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(25),
+                        bottomRight: Radius.circular(25)),
+                    gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [Colors.teal[900], Colors.teal[400]])),
+                child: Container(
+                  child: Center(
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            'El meu perfil',
+                            style: TextStyle(
+                              fontFamily: 'Hontana',
+                              fontSize: 35,
+                              color: Colors.white,
+                            ),
+                          ),
+                          CircleAvatar(
+                            backgroundImage:
+                                NetworkImage(userDetails['profilePhoto']),
+                            radius: 65.0,
+                          ),
+                          SizedBox(
+                            height: 10.0,
+                          ),
+                          Text(userDetails['userName'],
+                              style: TextStyle(
+                                  fontSize: 22.0, color: Colors.white)),
+                          
+                        ]),
+                  ),
                 ),
               ),
             ),
-          ),
-          Expanded(
-            flex: 3,
-            child: Container(
-              child: ListView(
-                padding: const EdgeInsets.fromLTRB(8, 8, 8, 20),
-                children: [
-                  Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: Colors.green[100].withOpacity(0.5),
-                        borderRadius: BorderRadius.only(
-                            bottomRight: Radius.circular(50),
-                            bottomLeft: Radius.circular(50),
-                            topLeft: Radius.circular(50),
-                            topRight: Radius.circular(50)),
-                        border: Border.all(
-                          color: Colors.green,
-                          width: 1,
+            Expanded(
+              flex: 3,
+              child: Container(
+                child: ListView(
+                  padding: const EdgeInsets.fromLTRB(8, 8, 8, 20),
+                  children: [
+                    Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: Colors.green[100].withOpacity(0.5),
+                          borderRadius: BorderRadius.only(
+                              bottomRight: Radius.circular(50),
+                              bottomLeft: Radius.circular(50),
+                              topLeft: Radius.circular(50),
+                              topRight: Radius.circular(50)),
+                          border: Border.all(
+                            color: Colors.green,
+                            width: 1,
+                          ),
                         ),
-                      ),
-                      child: new Row(children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(8),
+                        child: new Row(children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(8),
+                          ),
+                          Icon(
+                            Icons.person_outline_outlined,
+                            color: Colors.green,
+                            size: 35,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8),
+                          ),
+                          Text(
+                            userDetails['name'],
+                            style: TextStyle(
+                                color: Colors.green[900],
+                                fontStyle: FontStyle.normal,
+                                fontSize: 20.0),
+                            textAlign: TextAlign.left,
+                          ),
+                        ])),
+                    const Divider(
+                      height: 10,
+                      thickness: 5,
+                      color: Colors.transparent,
+                    ),
+                    Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: Colors.green[100].withOpacity(0.5),
+                          borderRadius: BorderRadius.only(
+                              bottomRight: Radius.circular(50),
+                              bottomLeft: Radius.circular(50),
+                              topLeft: Radius.circular(50),
+                              topRight: Radius.circular(50)),
+                          border: Border.all(
+                            color: Colors.green,
+                            width: 1,
+                          ),
                         ),
-                        Icon(
-                          Icons.person_outline_outlined,
-                          color: Colors.green,
-                          size: 35,
+                        child: new Row(children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(8),
+                          ),
+                          Icon(
+                            Icons.people_outline_outlined,
+                            color: Colors.green,
+                            size: 35,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8),
+                          ),
+                          Text(
+                            userDetails['surname'],
+                            style: TextStyle(
+                                color: Colors.green[900],
+                                fontStyle: FontStyle.normal,
+                                fontSize: 20.0),
+                            textAlign: TextAlign.left,
+                          ),
+                        ])),
+                    const Divider(
+                      height: 10,
+                      thickness: 5,
+                      color: Colors.transparent
+                    ),
+                    Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: Colors.green[100].withOpacity(0.5),
+                          borderRadius: BorderRadius.only(
+                              bottomRight: Radius.circular(50),
+                              bottomLeft: Radius.circular(50),
+                              topLeft: Radius.circular(50),
+                              topRight: Radius.circular(50)),
+                          border: Border.all(
+                            color: Colors.green,
+                            width: 1,
+                          ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(8),
+                        child: new Row(children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(8),
+                          ),
+                          Icon(
+                            Icons.alternate_email_outlined,
+                            color: Colors.green,
+                            size: 35,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8),
+                          ),
+                          Text(
+                            userDetails['email'],
+                            style: TextStyle(
+                                color: Colors.green[900],
+                                fontStyle: FontStyle.normal,
+                                fontSize: 20.0),
+                            textAlign: TextAlign.left,
+                          ),
+                        ])),
+                    const Divider(
+                      height: 10,
+                      thickness: 5,
+                      color: Colors.transparent,
+                    ),
+                    Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: Colors.green[100].withOpacity(0.5),
+                          borderRadius: BorderRadius.only(
+                              bottomRight: Radius.circular(50),
+                              bottomLeft: Radius.circular(50),
+                              topLeft: Radius.circular(50),
+                              topRight: Radius.circular(50)),
+                          border: Border.all(
+                            color: Colors.green,
+                            width: 1,
+                          ),
                         ),
-                        Text(
-                          userDetails['name'],
-                          style: TextStyle(
-                              color: Colors.green[900],
-                              fontStyle: FontStyle.normal,
-                              fontSize: 20.0),
-                          textAlign: TextAlign.left,
+                        child: new Row(children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(8),
+                          ),
+                          Icon(
+                            Icons.contact_phone_outlined,
+                            color: Colors.green,
+                            size: 35,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8),
+                          ),
+                          Text(
+                            phoneString,
+                            style: TextStyle(
+                                color: Colors.green[900],
+                                fontStyle: FontStyle.normal,
+                                fontSize: 20.0),
+                            textAlign: TextAlign.left,
+                          ),
+                        ])),
+                    const Divider(
+                      height: 10,
+                      thickness: 5,
+                      color: Colors.transparent,
+                    ),
+                    Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: Colors.green[100].withOpacity(0.5),
+                          borderRadius: BorderRadius.only(
+                              bottomRight: Radius.circular(50),
+                              bottomLeft: Radius.circular(50),
+                              topLeft: Radius.circular(50),
+                              topRight: Radius.circular(50)),
+                          border: Border.all(
+                            color: Colors.green,
+                            width: 1,
+                          ),
                         ),
-                      ])),
-                  const Divider(
-                    height: 10,
-                    thickness: 5,
-                  ),
-                  Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: Colors.green[100].withOpacity(0.5),
-                        borderRadius: BorderRadius.only(
-                            bottomRight: Radius.circular(50),
-                            bottomLeft: Radius.circular(50),
-                            topLeft: Radius.circular(50),
-                            topRight: Radius.circular(50)),
-                        border: Border.all(
-                          color: Colors.green,
-                          width: 1,
-                        ),
-                      ),
-                      child: new Row(children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(8),
-                        ),
-                        Icon(
-                          Icons.people_outline_outlined,
-                          color: Colors.green,
-                          size: 35,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8),
-                        ),
-                        Text(
-                          userDetails['surname'],
-                          style: TextStyle(
-                              color: Colors.green[900],
-                              fontStyle: FontStyle.normal,
-                              fontSize: 20.0),
-                          textAlign: TextAlign.left,
-                        ),
-                      ])),
-                  const Divider(
-                    height: 10,
-                    thickness: 5,
-                  ),
-                  Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: Colors.green[100].withOpacity(0.5),
-                        borderRadius: BorderRadius.only(
-                            bottomRight: Radius.circular(50),
-                            bottomLeft: Radius.circular(50),
-                            topLeft: Radius.circular(50),
-                            topRight: Radius.circular(50)),
-                        border: Border.all(
-                          color: Colors.green,
-                          width: 1,
-                        ),
-                      ),
-                      child: new Row(children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(8),
-                        ),
-                        Icon(
-                          Icons.alternate_email_outlined,
-                          color: Colors.green,
-                          size: 35,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8),
-                        ),
-                        Text(
-                          userDetails['email'],
-                          style: TextStyle(
-                              color: Colors.green[900],
-                              fontStyle: FontStyle.normal,
-                              fontSize: 20.0),
-                          textAlign: TextAlign.left,
-                        ),
-                      ])),
-                  const Divider(
-                    height: 10,
-                    thickness: 5,
-                  ),
-                  Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: Colors.green[100].withOpacity(0.5),
-                        borderRadius: BorderRadius.only(
-                            bottomRight: Radius.circular(50),
-                            bottomLeft: Radius.circular(50),
-                            topLeft: Radius.circular(50),
-                            topRight: Radius.circular(50)),
-                        border: Border.all(
-                          color: Colors.green,
-                          width: 1,
-                        ),
-                      ),
-                      child: new Row(children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(8),
-                        ),
-                        Icon(
-                          Icons.contact_phone_outlined,
-                          color: Colors.green,
-                          size: 35,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8),
-                        ),
-                        Text(
-                          phoneString,
-                          style: TextStyle(
-                              color: Colors.green[900],
-                              fontStyle: FontStyle.normal,
-                              fontSize: 20.0),
-                          textAlign: TextAlign.left,
-                        ),
-                      ])),
-                  const Divider(
-                    height: 10,
-                    thickness: 5,
-                  ),
-                  Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: Colors.green[100].withOpacity(0.5),
-                        borderRadius: BorderRadius.only(
-                            bottomRight: Radius.circular(50),
-                            bottomLeft: Radius.circular(50),
-                            topLeft: Radius.circular(50),
-                            topRight: Radius.circular(50)),
-                        border: Border.all(
-                          color: Colors.green,
-                          width: 1,
-                        ),
-                      ),
-                      child: new Row(children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(8),
-                        ),
-                        Icon(
-                          Icons.cake_outlined,
-                          color: Colors.green,
-                          size: 35,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8),
-                        ),
-                        Text(
-                          stringDate,
-                          style: TextStyle(
-                              color: Colors.green[900],
-                              fontStyle: FontStyle.normal,
-                              fontSize: 20.0),
-                          textAlign: TextAlign.left,
-                        ),
-                      ])),
-                  Container(
-                      child: Padding(
-                          padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
-                          child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                primary: Colors.teal[900],
-                                elevation: 5,
-                                padding: EdgeInsets.all(15),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                              ),
-                              onPressed: () async {
-                                if (userDetails != null) {
-                                  Navigator.pushNamed(context, '/my_offers',
-                                      arguments: {
-                                        'map': userDetails,
-                                      });
-                                  print("profile");
-                                  print(userDetails);
-                                } else {
-                                  showFlash(
-                                      context: context,
-                                      duration: const Duration(seconds: 3),
-                                      builder: (context, controller) {
-                                        return ErrorToast(
-                                          controller: controller,
-                                          textshow: "Servidor no disponible",
-                                        );
-                                      });
-                                }
-                              },
-                              child: Text(
-                                'Mis ofertas',
-                                style: TextStyle(
-                                  fontSize: 25,
-                                  color: Colors.teal[50],
-                                ),
-                              )))),
-                  Container(
-                      child: Padding(
-                          padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
-                          child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                primary: Colors.teal[900],
-                                elevation: 5,
-                                padding: EdgeInsets.all(15),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                              ),
-                              onPressed: () async {
-                                if (userDetails != null) {
-                                  Navigator.pushNamed(context, '/create_offer',
-                                      arguments: {
-                                        'map': userDetails['createdOffers'],
-                                      });
-                                } else {
-                                  showFlash(
-                                      context: context,
-                                      duration: const Duration(seconds: 3),
-                                      builder: (context, controller) {
-                                        return ErrorToast(
-                                          controller: controller,
-                                          textshow: "Servidor no disponible",
-                                        );
-                                      });
-                                }
-                              },
-                              child: Text(
-                                'Crear nova oferta',
-                                style: TextStyle(
-                                  fontSize: 25,
-                                  color: Colors.teal[50],
-                                ),
-                              )))),
-                  Container(
-                      child: Padding(
-                          padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
-                          child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                primary: Colors.teal[900],
-                                elevation: 5,
-                                padding: EdgeInsets.all(15),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                              ),
-                              onPressed: () async {
-                                Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
-                              },
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.logout),
-                                  SizedBox(
-                                    width: 10,
+                        child: new Row(children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(8),
+                          ),
+                          Icon(
+                            Icons.cake_outlined,
+                            color: Colors.green,
+                            size: 35,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8),
+                          ),
+                          Text(
+                            stringDate,
+                            style: TextStyle(
+                                color: Colors.green[900],
+                                fontStyle: FontStyle.normal,
+                                fontSize: 20.0),
+                            textAlign: TextAlign.left,
+                          ),
+                        ])),
+                    const Divider(
+                      height: 20,
+                      thickness: 5,
+                      color: Colors.transparent,
+                    ),
+                    Container(
+                        child: Padding(
+                            padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary: Colors.teal[900],
+                                  elevation: 5,
+                                  padding: EdgeInsets.all(15),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
                                   ),
-                                  Text(
-                                    'Log Out',
-                                    style: TextStyle(
-                                      fontSize: 25,
-                                      color: Colors.teal[50],
+                                ),
+                                onPressed: () async {
+                                  if (userDetails != null) {
+                                    Navigator.pushNamed(context, '/my_offers',
+                                        arguments: {
+                                          'map': userDetails,
+                                        });
+                                    print("profile");
+                                    print(userDetails);
+                                  } else {
+                                    showFlash(
+                                        context: context,
+                                        duration: const Duration(seconds: 3),
+                                        builder: (context, controller) {
+                                          return ErrorToast(
+                                            controller: controller,
+                                            textshow: "Servidor no disponible",
+                                          );
+                                        });
+                                  }
+                                },
+                                child: Text(
+                                  'Mis ofertas',
+                                  style: TextStyle(
+                                    fontSize: 25,
+                                    color: Colors.teal[50],
+                                  ),
+                                )))),
+                    Container(
+                        child: Padding(
+                            padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary: Colors.teal[900],
+                                  elevation: 5,
+                                  padding: EdgeInsets.all(15),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                ),
+                                onPressed: () async {
+                                  if (userDetails != null) {
+                                    Navigator.pushNamed(
+                                        context, '/create_offer',
+                                        arguments: {
+                                          'map': userDetails['createdOffers'],
+                                        });
+                                  } else {
+                                    showFlash(
+                                        context: context,
+                                        duration: const Duration(seconds: 3),
+                                        builder: (context, controller) {
+                                          return ErrorToast(
+                                            controller: controller,
+                                            textshow: "Servidor no disponible",
+                                          );
+                                        });
+                                  }
+                                },
+                                child: Text(
+                                  'Crear nova oferta',
+                                  style: TextStyle(
+                                    fontSize: 25,
+                                    color: Colors.teal[50],
+                                  ),
+                                )))),
+                    Container(
+                        child: Padding(
+                            padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary: Colors.teal[900],
+                                  elevation: 5,
+                                  padding: EdgeInsets.all(15),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                ),
+                                onPressed: () async {
+                                  Navigator.pushNamedAndRemoveUntil(
+                                      context, '/login', (route) => false);
+                                },
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.logout),
+                                    SizedBox(
+                                      width: 10,
                                     ),
-                                  ),
-                                ],
-                              ))))
-                ],
+                                    Text(
+                                      'Log Out',
+                                      style: TextStyle(
+                                        fontSize: 25,
+                                        color: Colors.teal[50],
+                                      ),
+                                    ),
+                                  ],
+                                ))))
+                  ],
+                ),
               ),
             ),
-          ),
 
-          /*ListView(
-            padding: const EdgeInsets.all(8),
-            children: <Widget>[
-              Container(
-                height: 50,
-                child: const Center(child: Text('User Name')),
-              ),
-              const Divider(
-                height: 2,
-                thickness: 2,
-              ),
-              Container(
-                height: 50,
-                child: const Center(child: Text('Lo que sea')),
-              ),
-            ],
-          ),*/
-        ],
-      ),
+            /*ListView(
+              padding: const EdgeInsets.all(8),
+              children: <Widget>[
+                Container(
+                  height: 50,
+                  child: const Center(child: Text('User Name')),
+                ),
+                const Divider(
+                  height: 2,
+                  thickness: 2,
+                ),
+                Container(
+                  height: 50,
+                  child: const Center(child: Text('Lo que sea')),
+                ),
+              ],
+            ),*/
+          ],
+        ),
+        Positioned(
+          child: FloatingActionButton(
+            backgroundColor: Colors.teal[900],
+              onPressed: () {
+                if (userDetails != null) {
+                      Navigator.pushNamed(context, '/edit_profile', arguments: {
+                        'map': userDetails,
+                      });
+                    } else {
+                      showFlash(
+                          context: context,
+                          duration: const Duration(seconds: 3),
+                          builder: (context, controller) {
+                            return ErrorToast(
+                              controller: controller,
+                              textshow: "Servidor no disponible",
+                            );
+                          });
+                    }
+              }, child: Icon(Icons.edit)),
+          right: 5,
+          top: MediaQuery.of(context).size.height * .3,
+        )
+      ]),
     );
   }
 }
