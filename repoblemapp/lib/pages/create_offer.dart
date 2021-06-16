@@ -15,9 +15,9 @@ class CreateOffer extends StatefulWidget {
 
 class _CreateOfferState extends State<CreateOffer> {
   var lista = ["Barcelona", "Lleida", "Girona", "Tarragona"];
-  var serveis = ["Aire acondicionat", "Local inclòs", "Supermercats"];
+  
   String vista = "Seleccioni la província";
-  String vista2 = "Seleccioni els serveis";
+  
   final titleInputController = TextEditingController();
   //final fotos que nose como añadirlas
   final priceInputController = TextEditingController();
