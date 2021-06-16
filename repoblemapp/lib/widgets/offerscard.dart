@@ -13,10 +13,12 @@ class offerCard extends StatelessWidget {
   String imgUrl;
   int rating;
 
+
   offerCard({this.imgUrl,this.infoOffer,this.rating});
 
   @override
   Widget build(BuildContext context) {
+
     return Card(
       margin: EdgeInsets.only(right: 22.0),
       clipBehavior: Clip.antiAlias,
@@ -34,12 +36,14 @@ class offerCard extends StatelessWidget {
 
           UsersManager manager = UsersManager.getInstance();
           Map infoOfOwner = await manager.getOwner(infoOffer['owner']);
+          Map infoOfOUser = await manager.getUser();
 
 
 
-          Navigator.pushNamed(context, '/infoActivity',arguments: {
+          Navigator.pushNamed(context, '/infoOffer',arguments: {
             'mapOffer':infoOffer,
             'mapOwner':infoOfOwner,
+            'favs': infoOfOUser['savedOffers']
 
           });
 

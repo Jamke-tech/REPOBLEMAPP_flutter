@@ -1,9 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 import 'package:repoblemapp/http_services/endpoints.dart';
+import 'package:repoblemapp/models/Offer.dart';
 import 'package:repoblemapp/models/User.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class UsersManager {
   //Fem un Singleton per asegurar idem dades en totes les busquedes
@@ -79,6 +84,48 @@ class UsersManager {
     }
   }
 
+  Future<Map> signInWithGoogle() async {
+    print('SIGNING with google');
+    final clientIDWeb =
+        "117441791789-ap8ddcqtua09klrn3mfb9laqqstmthj3.apps.googleusercontent.com";
+    //final clientIDandroid = "117441791789-nac8i3tnns5jok16age2uovasub9a96f.apps.googleusercontent.com";
+    final googleSignIn = GoogleSignIn(clientId: clientIDWeb);
+
+    // Trigger the authentication flow
+    final GoogleSignInAccount googleUser = await googleSignIn.signIn();
+    print(googleUser.displayName);
+    print(googleUser.email);
+    print(googleUser.id);
+
+    try {
+      //Hacemos el PUT a la dirección /user con los datos de un usuario
+      print("Registering user...");
+
+      http.Response response = await http.put(
+        Uri.parse("http://${endpoints.IpApi}/api/user"),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.acceptHeader: 'application/json',
+        },
+        body: jsonEncode({
+          "userName": googleUser.displayName,
+          "name": "",
+          "surname": "",
+          "email": googleUser.email,
+          "password": "",
+          "phone": "",
+          "birthDate": "",
+        }),
+      );
+
+      print(response.body);
+      return jsonDecode(response.body);
+    } catch (error) {
+      print(error);
+      return null;
+    }
+  }
+
 //Funció per mostrar un usuari
   Future<Map> getUser() async {
     try {
@@ -92,16 +139,14 @@ class UsersManager {
         },
       );
 
-      Map<String,dynamic> infoBBDD = jsonDecode(response.body);
+      Map<String, dynamic> infoBBDD = jsonDecode(response.body);
       print(infoBBDD);
-      if(infoBBDD['code']=="200"){
+      if (infoBBDD['code'] == "200") {
         print('ENTRO');
         return infoBBDD['user'];
-      }
-      else{
+      } else {
         return null;
       }
-
     } catch (error) {
       print(error);
       return null;
@@ -129,7 +174,7 @@ class UsersManager {
           "email": user.email,
           "password": user.password,
           "phone": user.phone,
-          "profilePhoto":user.profilePhoto,
+          "profilePhoto": user.profilePhoto,
           "birthDate": user.birthDate.toString(),
         }),
       );
@@ -152,23 +197,90 @@ class UsersManager {
         },
       );
 
-      Map<String,dynamic> infoBBDD = jsonDecode(response.body);
+      Map<String, dynamic> infoBBDD = jsonDecode(response.body);
       print(infoBBDD);
-      if(infoBBDD['code']=="200"){
+      if (infoBBDD['code'] == "200") {
         print('ENTRO');
         return infoBBDD['user'];
-      }
-      else{
+      } else {
         return null;
       }
-
     } catch (error) {
       print(error);
       return null;
     }
+  }
 
 
+  Future<int> addFavourites(String id) async{
+    try {
 
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String idUser = prefs.getString('id');
+      http.Response response = await http.post(
+        Uri.parse("http://${endpoints.IpApi}/api/user/addFavourite"),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.acceptHeader: 'application/json',
+        },
+        body: jsonEncode({
+          "idUser": idUser,
+          "idOffer": id,
+        }),
+        
+      );
 
+      print(response.body);
+      return int.parse(jsonDecode(response.body)["code"]);
+    } catch (error) {
+      print(error);
+      return 505;
+    }
+  }
+
+  Future<int> deleteFavourite(String id) async{
+    try {
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String idUser = prefs.getString('id');
+      print("IDUser:" + idUser);
+      http.Response response = await http.post(
+        Uri.parse("http://${endpoints.IpApi}/api/user/deleteFavourite"),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.acceptHeader: 'application/json',
+        },
+        body: jsonEncode({
+          "idUser": idUser,
+          "idOffer": id,
+        }),
+        
+      );
+
+      print(response.body);
+      return int.parse(jsonDecode(response.body)["code"]);
+    } catch (error) {
+      print(error);
+      return 505;
+    }
+  }
+
+   Future<List<dynamic>> getFavourites() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String idUser = prefs.getString('id');
+      http.Response response = await http.get(
+        Uri.parse("http://${endpoints.IpApi}/api/user/$idUser"),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.acceptHeader: 'application/json',
+        },
+
+      );
+      return jsonDecode(response.body)["user"]["savedOffers"];
+    } catch (error) {
+      print(error);
+      return null;
+    }
   }
 }
