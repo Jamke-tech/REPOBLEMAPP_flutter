@@ -241,7 +241,7 @@ class _SearchState extends State<Search> {
   void _searchOffers(String village) async {
     _searchResult.clear();
     OffersManager receptor = OffersManager.getInstance();
-    List<dynamic> listaOffersSearched = await receptor.getOffers();
+    List<dynamic> listaOffersSearched = await receptor.getSearchOffers(village);
 
     setState(() {
       _searchResult = listaOffersSearched;

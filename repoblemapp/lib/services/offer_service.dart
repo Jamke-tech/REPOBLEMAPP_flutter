@@ -38,7 +38,23 @@ class OffersManager {
     }
   }
 
-  Future<Map> getSearchOffersByProvince(province) async {
+  Future<List<dynamic>> getSearchOffers(village) async {
+    try {
+      http.Response response = await http.get(
+        Uri.parse("http://${endpoints.IpApi}/api/offers/$village"),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.acceptHeader: 'application/json',
+        },
+      );
+      return jsonDecode(response.body)["searchOffers"];
+    } catch (error) {
+      print(error);
+      return null;
+    }
+  }
+
+  Future<List<dynamic>> getSearchOffersByProvince(province) async {
     try {
       http.Response response = await http.get(
         Uri.parse("http://${endpoints.IpApi}/api/offers/$province"),
@@ -47,7 +63,7 @@ class OffersManager {
           HttpHeaders.acceptHeader: 'application/json',
         },
       );
-      return jsonDecode(response.body);
+      return jsonDecode(response.body)["searchOffers"];
     } catch (error) {
       print(error);
       return null;
