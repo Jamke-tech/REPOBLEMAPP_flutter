@@ -41,7 +41,7 @@ class OffersManager {
   Future<List<dynamic>> getSearchOffers(village) async {
     try {
       http.Response response = await http.get(
-        Uri.parse("http://${endpoints.IpApi}/api/offers/$village"),
+        Uri.parse("http://${endpoints.IpApi}/api/offers/filtervillage/$village"),
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
           HttpHeaders.acceptHeader: 'application/json',
@@ -57,7 +57,7 @@ class OffersManager {
   Future<List<dynamic>> getSearchOffersByProvince(province) async {
     try {
       http.Response response = await http.get(
-        Uri.parse("http://${endpoints.IpApi}/api/offers/$province"),
+        Uri.parse("http://${endpoints.IpApi}/api/offers/filterprovince/$province"),
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
           HttpHeaders.acceptHeader: 'application/json',

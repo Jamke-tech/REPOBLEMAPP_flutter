@@ -11,6 +11,7 @@ import 'package:repoblemapp/pages/my_offers.dart';
 import 'package:repoblemapp/pages/profile.dart';
 import 'package:repoblemapp/pages/register.dart';
 import 'package:repoblemapp/pages/fav_offers.dart';
+import 'package:repoblemapp/pages/searchPage.dart';
 import 'package:repoblemapp/pages/socialdashboard.dart';
 import 'package:repoblemapp/pages/xat_page.dart';
 import 'package:repoblemapp/pages/update_offer.dart';
@@ -48,6 +49,7 @@ class RepoblemAPP extends StatelessWidget {
         '/infoOffer':(context)=>InfoOffer(),
         '/social':(context)=>Social(),
         '/xat':(context)=>ChatPage(),
+        '/search':(context)=>Search(),
         '/mapOffers': (context)=> MapOffers(),
         '/my_offers': (context) => MyOffers(),
         '/update_offer': (context) => UpdateOffer(),

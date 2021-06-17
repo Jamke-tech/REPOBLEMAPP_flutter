@@ -13,7 +13,7 @@ class UpdateOffer extends StatefulWidget {
 }
 
 class _UpdateOfferState extends State<UpdateOffer> {
-  var lista = ["Barcelona", "Lleida", "Girona", "Tarragona"];
+  var lista = ["Barcelona", "LLeida", "Girona", "Tarragona"];
   var serveis = ["Aire acondicionat", "Local inclòs", "Supermercats"];
   final titleInputController = TextEditingController();
   //final fotos que nose como añadirlas

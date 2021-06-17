@@ -25,27 +25,9 @@ class _FavState extends State<Fav> {
   void initState()  {
     super.initState();
     //Recuperamos la info de la BBDD sobre el usario
-    getInfoOffersFavorite();
 
   }
 
-  void getInfoOffersFavorite() async{
-    UsersManager manager = UsersManager.getInstance();
-
-    Map<String,dynamic> infoBBDD = await manager.getUser();
-
-    setState(() {
-      numberOfFavourite=infoBBDD['savedOffers'].length;
-      print(numberOfFavourite);
-      print(infoBBDD['savedOffers']);
-      infoOffersFavourite= infoBBDD['savedOffers'] ;
-      print(infoOffersFavourite);
-
-    });
-
-
-
-  }
 
 
 
@@ -62,6 +44,18 @@ class _FavState extends State<Fav> {
 
   @override
   Widget build(BuildContext context) {
+
+    Future<List<dynamic>> _getInfoFavOffers() async{
+      UsersManager manager = UsersManager.getInstance();
+
+      Map<String,dynamic> infoBBDD = await manager.getUser();
+      numberOfFavourite=infoBBDD['savedOffers'].length;
+      print(numberOfFavourite);
+      print(infoBBDD['savedOffers']);
+      infoOffersFavourite= infoBBDD['savedOffers'] ;
+      print(infoOffersFavourite);
+
+    }
     return Scaffold(
       //backgroundColor: Colors.green[300],
       appBar: AppBar(
@@ -76,116 +70,134 @@ class _FavState extends State<Fav> {
         
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(8, 8, 8, 2),
-        child: ListView(
+      body: FutureBuilder<List<dynamic>>(
+        future: _getInfoFavOffers(),
+        builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting: return Container();
+            default:
+              if (snapshot.hasError)
+                return Text('Error: ${snapshot.error}');
+              else
+                return Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 8, 8, 2),
+                  child: ListView(
 
-          children: [
+                    children: [
 
-          //Añadimos un poco de elevacion a nuestro TextField
-          //Para ello tenemos que hacer wrap in a Material widget
-            Material(
-              elevation: 10.0,
-              borderRadius: BorderRadius.circular(30.0),
-              shadowColor: Color(0x55434343),
-              child: TextField(
-                textAlign: TextAlign.start,
-                textAlignVertical: TextAlignVertical.center,
-                decoration: InputDecoration(
-                  hintText: "Busca a les ofertes preferides",
-                  border: InputBorder.none,
-                  icon: Icon(
-                    Icons.search,
-                    ),
-                  //falta poner el icono de la lupa   que no me ha dejado
-                  ),
-              ),
-            ),
-            SizedBox(height: 30.0),
-            //Añadimos una barra de tabulación
-            //servira para distinguir las opciones de ver las ofertas en modo mapa o las ofertas en si
-            DefaultTabController(
-              length: 2, 
-              child: Expanded(
-                child: Column(
-                  children: [
-                    TabBar(
-                      indicatorColor: Colors.black,
-                      unselectedLabelColor: Colors.grey[700],
-                      labelColor: Colors.black,
-                      tabs: [
-                        Tab(
-                          text: "Ofertes",
+                      //Añadimos un poco de elevacion a nuestro TextField
+                      //Para ello tenemos que hacer wrap in a Material widget
+                      Material(
+                        elevation: 10.0,
+                        borderRadius: BorderRadius.circular(30.0),
+                        shadowColor: Color(0x55434343),
+                        child: TextField(
+                          textAlign: TextAlign.start,
+                          textAlignVertical: TextAlignVertical.center,
+                          decoration: InputDecoration(
+                            hintText: "Busca a les ofertes preferides",
+                            border: InputBorder.none,
+                            icon: Icon(
+                              Icons.search,
+                            ),
+                            //falta poner el icono de la lupa   que no me ha dejado
+                          ),
                         ),
-                        Tab(
-                          text: "Mapa",
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 20.0),
-                    Container(
-                      height: 450,
-
-                      child: TabBarView(
-                        children: [
-                          //Ponemos ya las ofertas
-                          Container(
-                            //Apartado de ofertas
-                            child: ListView.builder(
-                              itemCount: numberOfFavourite,
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: _itemBuilder,
-
+                      ),
+                      SizedBox(height: 30.0),
+                      //Añadimos una barra de tabulación
+                      //servira para distinguir las opciones de ver las ofertas en modo mapa o las ofertas en si
+                      DefaultTabController(
+                        length: 2,
+                        child: Expanded(
+                          child: Column(
+                            children: [
+                              TabBar(
+                                indicatorColor: Colors.black,
+                                unselectedLabelColor: Colors.grey[700],
+                                labelColor: Colors.black,
+                                tabs: [
+                                  Tab(
+                                    text: "Ofertes",
+                                  ),
+                                  Tab(
+                                    text: "Mapa",
+                                  ),
+                                ],
                               ),
-                            ),
-                          Container(
-                              //Apartado de Mapa
-                            child: Container(
-                              child: Padding(
-                                  padding: const EdgeInsets.all(6.0),
-                                  child: FlutterMap(
-                                      options: MapOptions(
-                                        plugins: [MarkerClusterPlugin()],
-                                        //Donde estarà el mapa centrado
-                                        center: Location.LatLng(
-                                            infoOffersFavourite[0]['point']['coordinates'][0],
-                                            infoOffersFavourite[0]['point']['coordinates'][1]),
-                                        minZoom: 5,
-                                        zoom: 11,
-                                        maxZoom: 18,
-                                      ),
-                                      layers: [
-                                        TileLayerOptions(
-                                            urlTemplate:
-                                            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                                            subdomains: ['a', 'b', 'c']),
-                                        MarkerClusterLayerOptions(
-                                          markers: [],
-                                          polygonOptions: PolygonOptions(
-                                              borderColor: Colors.teal,
-                                              color: Colors.white,
-                                              borderStrokeWidth: 3),
-                                          builder: (context, markers) {
-                                            return FloatingActionButton(
-                                              child: Text(markers.length.toString()),
-                                              onPressed: null,
-                                            );
-                                          },
-                                        )
-                                      ]
-                                  )),
-                            ),
-                            ),
-                        ],)
-                    ),
+                              SizedBox(height: 20.0),
+                              Container(
+                                  height: 450,
 
-                  ],
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
+                                  child: TabBarView(
+                                    children: [
+                                      //Ponemos ya las ofertas
+                                      Container(
+                                        //Apartado de ofertas
+                                        child: ListView.builder(
+                                          itemCount: numberOfFavourite,
+                                          scrollDirection: Axis.horizontal,
+                                          itemBuilder: _itemBuilder,
+
+                                        ),
+                                      ),
+                                      Container(
+                                        //Apartado de Mapa
+                                        child: Container(
+                                          child: Padding(
+                                              padding: const EdgeInsets.all(6.0),
+                                              child: FlutterMap(
+                                                  options: MapOptions(
+                                                    plugins: [MarkerClusterPlugin()],
+                                                    //Donde estarà el mapa centrado
+                                                    center: Location.LatLng(
+                                                        infoOffersFavourite[0]['point']['coordinates'][0],
+                                                        infoOffersFavourite[0]['point']['coordinates'][1]),
+                                                    minZoom: 5,
+                                                    zoom: 11,
+                                                    maxZoom: 18,
+                                                  ),
+                                                  layers: [
+                                                    TileLayerOptions(
+                                                        urlTemplate:
+                                                        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                                                        subdomains: ['a', 'b', 'c']),
+                                                    MarkerClusterLayerOptions(
+                                                      markers: [],
+                                                      polygonOptions: PolygonOptions(
+                                                          borderColor: Colors.teal,
+                                                          color: Colors.white,
+                                                          borderStrokeWidth: 3),
+                                                      builder: (context, markers) {
+                                                        return FloatingActionButton(
+                                                          child: Text(markers.length.toString()),
+                                                          onPressed: null,
+                                                        );
+                                                      },
+                                                    )
+                                                  ]
+                                              )),
+                                        ),
+                                      ),
+                                    ],)
+                              ),
+
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                );
+          }
+
+        },
+
+      )
+
+
+
+
       
 
     );

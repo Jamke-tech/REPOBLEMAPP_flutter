@@ -145,35 +145,48 @@ class CardScrollWidget extends StatelessWidget {
             textDirection: TextDirection.rtl,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(16.0),
-              child: Container(
-                  decoration: BoxDecoration(color: Colors.white, boxShadow: [
-                    BoxShadow(
-                        color: Colors.black12,
-                        offset: Offset(3.0, 6.0),
-                        blurRadius: 10.0)
-                  ]),
-                  child: AspectRatio(
-                    aspectRatio: cardAspectRatio,
-                    child: Stack(fit: StackFit.expand, children: <Widget>[
-                      Image.asset(images[i], fit: BoxFit.cover),
-                      Align(
-                        alignment: Alignment.bottomRight,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 16.0, vertical: 8.0),
-                                child: Text(titles[i],
-                                    textAlign: TextAlign.end,
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 30.0))),
-                          ],
-                        ),
-                      )
+              child: InkWell(
+                onTap: (){
+                  //Pasem a la searchpaga emb el filtre de la comarca
+                  print("HELLO");
+
+
+
+
+                },
+
+
+
+                child: Container(
+                    decoration: BoxDecoration(color: Colors.white, boxShadow: [
+                      BoxShadow(
+                          color: Colors.black12,
+                          offset: Offset(3.0, 6.0),
+                          blurRadius: 10.0)
                     ]),
-                  )),
+                    child: AspectRatio(
+                      aspectRatio: cardAspectRatio,
+                      child: Stack(fit: StackFit.expand, children: <Widget>[
+                        Image.asset(images[i], fit: BoxFit.cover),
+                        Align(
+                          alignment: Alignment.bottomRight,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 16.0, vertical: 8.0),
+                                  child: Text(titles[i],
+                                      textAlign: TextAlign.end,
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 30.0))),
+                            ],
+                          ),
+                        )
+                      ]),
+                    )),
+              ),
             ),
           );
           cardList.add(cardItem);
