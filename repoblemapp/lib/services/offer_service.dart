@@ -102,39 +102,49 @@ class OffersManager {
   }*/
 
   //Funció per crear una oferta
-  Future<int> createOffer(Offer offer) async {
+  Future<bool> createOffer(Offer offer, List<File> images) async {
     try {
       //Hacemos el PUT a la dirección /offer con los datos de una oferta
       print("Creating offer...");
+
+      //Treiem els paths del vector de Files
+
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String id = prefs.getString('id');
 
-      http.Response response = await http.post(
-        Uri.parse("http://${endpoints.IpApi}/api/offer"),
-        headers: {
-          HttpHeaders.contentTypeHeader: 'application/json',
-          HttpHeaders.acceptHeader: 'application/json',
-        },
-        body: jsonEncode({
-          "pictures": offer.pictures,
-          "title": offer.title,
-          "description": offer.description,
-          "province": offer.province,
-          "place": offer.place, //direccion que corresponde a place backend
-          "lat": offer.lat,
-          "long": offer.long,
-          "owner": id.toString(),
-          "village": offer.village,
-          "price": offer.price.toString(),
-          "services": offer.services,
-        }),
-      );
+      var request = http.MultipartRequest(
+        'POST', Uri.parse("http://${endpoints.IpApi}/api/offer") );
 
-      print(response.body);
-      return int.parse(jsonDecode(response.body)["code"]);
+      request.fields['title']=offer.title;
+      request.fields['description']=offer.description;
+      request.fields['province']=offer.province;
+      request.fields['place']=offer.place;
+      request.fields['village']=offer.village;
+      request.fields['lat']=offer.lat;
+      request.fields['long']=offer.long;
+      request.fields['owner']=id;
+      request.fields['price']=offer.price;
+
+      int i =0;
+      while( i < images.length) {
+        request.files.add(await http.MultipartFile.fromPath(
+            'pictures', images[i].path));
+        i++;
+
+      }
+
+
+      var response = await request.send();
+      final res = await http.Response.fromStream(response);
+      if(jsonDecode(res.body)['code'] == "200"){
+        return false;
+      }
+      else{
+        return true;
+      }
     } catch (error) {
       print(error);
-      return 505;
+      return true;
     }
   }
 

@@ -16,6 +16,7 @@ class _SocialState extends State<Social> {
 
 
   List<dynamic> XatsData;
+  List<bool> isSender=[];
 
   @override
   void initState() {
@@ -38,11 +39,37 @@ class _SocialState extends State<Social> {
       while (i<infoXatsUser.length){
         if(infoXatsUser[i]['offerRelated']!=null){
           infoXatsClean.add(infoXatsUser[i]);
+          List Messages =infoXatsUser[i]['messages'];
+          print(Messages);
+          int last = Messages.length - 1;
+          String sender = Messages[last]['sender'];
+          if(sender == null){
+            sender='';
+          }
+
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+
+
+          //Miramos is es sender o no
+          if(sender == prefs.getString("id")){
+            isSender.add(false);
+          }
+          else{
+            isSender.add(true);
+          }
         }
+
+
         i++;
       }
+      print(isSender);
       XatsData = infoXatsClean;
-      print(XatsData);
+      //print(XatsData);
+
+
+
+
+
 
     }
 
@@ -75,8 +102,21 @@ class _SocialState extends State<Social> {
                               'id': pref.getString('id'),
                             });
                           },
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 7.5),
+                          child: Container(
+                            margin: EdgeInsets.all(8),
+                            padding: EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: Colors.teal[100].withOpacity(0.5),
+                              borderRadius: BorderRadius.only(
+                                  bottomRight: Radius.circular(15),
+                                  bottomLeft: Radius.circular(15),
+                                  topLeft: Radius.circular(15),
+                                  topRight: Radius.circular(15)),
+                              border: Border.all(
+                                color: Colors.teal[700],
+                                width: 1,
+                              ),
+                            ),
                             child: Row(
                                 children: [
                                   Stack(
@@ -89,8 +129,9 @@ class _SocialState extends State<Social> {
                                     ],
                                   ),
                                   Expanded(
+                                    flex:4,
                                     child: Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                                      padding: const EdgeInsets.only(left: 16),
                                       child: Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
@@ -114,6 +155,14 @@ class _SocialState extends State<Social> {
                                       ),
                                     ),
                                   ),
+                                  Expanded(
+                                    flex:1,
+                                    child: Icon(
+                                      isSender[index]? Icons.mark_chat_unread: null,
+                                      size: 30,
+                                      color: Colors.teal[700],
+                                    ),
+                                  )
                                   /*Opacity(
                           opacity: 0.64,
                           child: Text(chatsData[index].time),
@@ -151,12 +200,14 @@ class _SocialState extends State<Social> {
   }
   String getLastMessage(int index){
     List Messages = XatsData[index]['messages'];
-    print(Messages);
+    //print(Messages);
     int last = Messages.length - 1;
     String lastMessage = Messages[last]['content'];
     if(lastMessage == null){
       lastMessage='';
     }
+
+
     return lastMessage;
 
 

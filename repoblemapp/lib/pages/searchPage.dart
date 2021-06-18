@@ -241,69 +241,137 @@ class _SearchState extends State<Search> {
                               } else {
                                 estrella = Icons.star_border_outlined;
                               }
-                              return Padding(
-                                padding: EdgeInsets.fromLTRB(15, 20, 15, 0),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(30),
-                                  child: Card(
-                                    child: InkWell(
-                                      onTap: () {
-                                        print(offers[index]);
-                                        Navigator.pushNamed(context, '/infoOffer',
-                                            arguments: {
-                                              'mapOffer': offers[index],
-                                              'mapOwner': offers[index]["owner"],
-                                              'favs': favourites
-                                            });
-                                      },
-                                      child: Container(
-                                        height: 250,
-                                        width: double.infinity,
-                                        decoration: BoxDecoration(
-                                            image: DecorationImage(
-                                              image:
-                                              NetworkImage(offers[index]['pictures'][0]),
-                                              fit: BoxFit.cover,
-                                            )),
-                                        alignment: Alignment.bottomLeft,
+                              if(index==offers.length-1){
+                                return Padding(
+                                  padding: EdgeInsets.fromLTRB(15, 10, 15, 80),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(30),
+                                    child: Card(
+                                      child: InkWell(
+                                        onTap: () {
+                                          print(offers[index]);
+                                          Navigator.pushNamed(context, '/infoOffer',
+                                              arguments: {
+                                                'mapOffer': offers[index],
+                                                'mapOwner': offers[index]["owner"],
+                                                'favs': favourites
+                                              });
+                                        },
                                         child: Container(
-                                          color: Colors.black.withOpacity(0.35),
-                                          child: ListTile(
-                                            title: Text(
-                                              offers[index]["title"],
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white,
-                                                fontSize: 16,
-                                              ),
-                                            ),
-                                            subtitle: Text(offers[index]["village"],
+                                          height: 250,
+                                          width: double.infinity,
+                                          decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                image:
+                                                NetworkImage(offers[index]['pictures'][0]),
+                                                fit: BoxFit.cover,
+                                              )),
+                                          alignment: Alignment.bottomLeft,
+                                          child: Container(
+                                            color: Colors.black.withOpacity(0.35),
+                                            child: ListTile(
+                                              title: Text(
+                                                offers[index]["title"],
                                                 style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
                                                   color: Colors.white,
-                                                  fontSize: 12,
-                                                )),
-                                            trailing: IconButton(
-                                              icon: Icon(
-                                                estrella,
-                                                color: Colors.amber,
+                                                  fontSize: 16,
+                                                ),
                                               ),
-                                              onPressed: () {
-                                                if (favourite == false) {
-                                                  _addFavourites(offers[index]["_id"]);
-                                                } else {
-                                                  _deleteFavourites(offers[index]["_id"]);
-                                                }
-                                              },
-                                              iconSize: 32,
+                                              subtitle: Text(offers[index]["village"],
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 12,
+                                                  )),
+                                              trailing: IconButton(
+                                                icon: Icon(
+                                                  estrella,
+                                                  color: Colors.amber,
+                                                ),
+                                                onPressed: () {
+                                                  if (favourite == false) {
+                                                    _addFavourites(offers[index]["_id"]);
+                                                  } else {
+                                                    _deleteFavourites(offers[index]["_id"]);
+                                                  }
+                                                },
+                                                iconSize: 32,
+                                              ),
                                             ),
                                           ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              );
-                            }),
+                                );
+                            }
+                              else{
+                                return Padding(
+                                  padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(30),
+                                    child: Card(
+                                      child: InkWell(
+                                        onTap: () {
+                                          print(offers[index]);
+                                          Navigator.pushNamed(context, '/infoOffer',
+                                              arguments: {
+                                                'mapOffer': offers[index],
+                                                'mapOwner': offers[index]["owner"],
+                                                'favs': favourites
+                                              });
+                                        },
+                                        child: Container(
+                                          height: 250,
+                                          width: double.infinity,
+                                          decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                image:
+                                                NetworkImage(offers[index]['pictures'][0]),
+                                                fit: BoxFit.cover,
+                                              )),
+                                          alignment: Alignment.bottomLeft,
+                                          child: Container(
+                                            color: Colors.black.withOpacity(0.35),
+                                            child: ListTile(
+                                              title: Text(
+                                                offers[index]["title"],
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white,
+                                                  fontSize: 16,
+                                                ),
+                                              ),
+                                              subtitle: Text(offers[index]["village"],
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 12,
+                                                  )),
+                                              trailing: IconButton(
+                                                icon: Icon(
+                                                  estrella,
+                                                  color: Colors.amber,
+                                                ),
+                                                onPressed: () {
+                                                  if (favourite == false) {
+                                                    _addFavourites(offers[index]["_id"]);
+                                                  } else {
+                                                    _deleteFavourites(offers[index]["_id"]);
+                                                  }
+                                                },
+                                                iconSize: 32,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }
+
+          }
+                              ),
                       ),
                     ],
                   ),
@@ -342,8 +410,16 @@ class _SearchState extends State<Search> {
     int code = await addOfer.addFavourites(id);
 
     if (code == 200) {
+      List<dynamic> offersSearch;
+      if(busquedaActive && vista=='Buscar per poble'){
+        offersSearch = await _searchOffers(buscador.text);
+
+      }
+      else if (busquedaActive && vista=='Buscar per província' ){
+        offersSearch = await _searchOffersProvince(buscador.text);
+      }
       setState(() {
-        getListaFavoritas();
+        offers=offersSearch;
         getListaOfertas();
       });
     } else {
@@ -357,8 +433,16 @@ class _SearchState extends State<Search> {
     int code = await manager.deleteFavourite(id);
 
     if (code == 200) {
+      List<dynamic> offersSearch;
+      if(busquedaActive && vista=='Buscar per poble'){
+        offersSearch = await _searchOffers(buscador.text);
+
+      }
+      else if (busquedaActive && vista=='Buscar per província' ){
+        offersSearch = await _searchOffersProvince(buscador.text);
+      }
       setState(() {
-        getListaFavoritas();
+        offers=offersSearch;
         getListaOfertas();
       });
     } else {

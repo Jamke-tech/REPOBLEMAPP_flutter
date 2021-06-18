@@ -118,7 +118,7 @@ class XatManager {
           HttpHeaders.acceptHeader: 'application/json',
         },
       );
-      print(jsonDecode(response.body)['activeChats']);
+      //print(jsonDecode(response.body)['activeChats']);
       return jsonDecode(response.body)['activeChats'];
     } catch (error) {
       print(error);

@@ -1,3 +1,4 @@
+
 import 'dart:io';
 
 import 'package:flash/flash.dart';
@@ -5,18 +6,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_map/flutter_map.dart';
-//import 'package:get/get_connect/http/src/multipart/multipart_file.dart';
-import 'package:http_parser/http_parser.dart';
 import 'package:dio/dio.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:repoblemapp/models/User.dart';
 import 'package:repoblemapp/models/Offer.dart';
-import 'package:repoblemapp/pages/my_offers.dart';
 import 'package:repoblemapp/services/offer_service.dart';
-import 'package:repoblemapp/services/user_service.dart';
 import 'package:repoblemapp/widgets/error_toast.dart';
 import 'package:latlong/latlong.dart' as Location;
-import 'package:multi_image_picker/multi_image_picker.dart';
+
 
 class CreateOffer extends StatefulWidget {
   @override
@@ -35,31 +31,25 @@ class _CreateOfferState extends State<CreateOffer> {
   final villageInputController = TextEditingController();
   final provinceInputController = DropdownButton();
   final placeInputController = TextEditingController(); //direccion
-  final latInputController = TextEditingController();
-  final longInputController = TextEditingController();
   final servicesInputController = DropdownButton();
 
   final _formKey = GlobalKey<FormState>();
-
-  get floatingActionButton => null;
-
-  Dio dio = new Dio();
   List<Location.LatLng> tappedPoint = [];
   Location.LatLng firstpoint= Location.LatLng(41.83922,1.76856);
-  List<File> images=[];
-  List<Widget> imageWidget=[];
-
-
-
-
-
-
+  List<File> images=[]; //Vector de path de imagenes
+  List<Widget> imageWidget=[]; //vector de listview para ver las fotos
+  Widget listView ;
 
   @override
   Widget build(BuildContext context) {
     print(imageWidget);
+    print(images);
 
     if(imageWidget.isEmpty){
+      listView=ListView(
+        scrollDirection: Axis.horizontal,
+        children: imageWidget,
+      );
       imageWidget.add(Padding(
         padding: const EdgeInsets.all(8.0),
         child: ElevatedButton(
@@ -94,14 +84,6 @@ class _CreateOfferState extends State<CreateOffer> {
 
               }
               else if(imagePicker != null){
-                //Añadimos el fichero al vector de imagenes
-                print(images);
-                //List<File> filesnew = images;
-                //print(filesnew);
-                //List<Widget> widgetsnew = imageWidget;
-                //filesnew.add(File(imagePicker.path));
-                //print(filesnew);
-                print(images);
 
                 //Añadimos la carde del widget
                 Widget cardImage = Card(
@@ -122,22 +104,18 @@ class _CreateOfferState extends State<CreateOffer> {
                     width: 200.0,
                   ),
                 );
-
-                //widgetsnew.add(cardImage);
-                //print(widgetsnew);
-                print(imageWidget);
+                images.add(File(imagePicker.path));
+                imageWidget.add(cardImage);
 
                 setState(() {
-                  setState(() {
-                    images.add(File(imagePicker.path));
-                  });
-                  setState(() {
-                    imageWidget.add(cardImage);
-                  });
-
-
-
+                  listView= ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: imageWidget,
+                  );
                 });
+
+
+
               }
 
 
@@ -527,10 +505,7 @@ class _CreateOfferState extends State<CreateOffer> {
                                   borderRadius:
                                   BorderRadius.all(Radius.circular(15)),
                                 ),
-                                child: ListView(
-                                  scrollDirection: Axis.horizontal,
-                                  children: imageWidget,
-                                ),
+                                child: listView
                               )
                           ),
 
@@ -580,24 +555,21 @@ class _CreateOfferState extends State<CreateOffer> {
                         Offer createdOffer = new Offer(
                           title: titleInputController.text,
                           description: descriptionInputController.text,
-                          province:
-                              provinceInputController.onChanged.toString(),
+                          province: vista,
                           place: placeInputController.text,
-                          lat: latInputController.text,
-                          long: longInputController.text,
+                          lat: tappedPoint[0].latitude.toString(),
+                          long: tappedPoint[0].longitude.toString(),
                           village: villageInputController.text,
                           price: priceInputController.text,
-                          services:
-                              servicesInputController.onChanged.toString(),
                         );
                         print(createdOffer);
 
-                        int code = await manager.createOffer(createdOffer);
+                        bool error = await manager.createOffer(createdOffer,images);
 
                         //Comprovem quin codi ens retorna i fem les differents coses
-                        if (code == 200) {
+                        if (!error) {
                           //Tornem al Login amb un pop de la pagina
-                          Navigator.pushNamed(context, "/login");
+                          Navigator.pop(context);
                         } else {
                           //Error en el servidor o en el guardat de dades
                           showFlash(
@@ -606,7 +578,7 @@ class _CreateOfferState extends State<CreateOffer> {
                               builder: (context, controller) {
                                 return ErrorToast(
                                   controller: controller,
-                                  textshow: "Servidor no disponible",
+                                  textshow: "Error en pujar l'oferta",
                                 );
                               });
                         }
