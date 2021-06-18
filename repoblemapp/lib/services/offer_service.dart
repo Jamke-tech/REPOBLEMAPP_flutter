@@ -24,11 +24,13 @@ class OffersManager {
 
   Future<List<dynamic>> getOffers() async {
     try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
       http.Response response = await http.get(
         Uri.parse("http://${endpoints.IpApi}/api/offers"),
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
           HttpHeaders.acceptHeader: 'application/json',
+          HttpHeaders.authorizationHeader: prefs.getString('token'),
         },
       );
       return jsonDecode(response.body)["offersList"];
@@ -40,11 +42,13 @@ class OffersManager {
 
   Future<List<dynamic>> getSearchOffers(village) async {
     try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
       http.Response response = await http.get(
         Uri.parse("http://${endpoints.IpApi}/api/offers/filtervillage/$village"),
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
           HttpHeaders.acceptHeader: 'application/json',
+          HttpHeaders.authorizationHeader: prefs.getString('token'),
         },
       );
       return jsonDecode(response.body)["searchOffers"];
@@ -56,11 +60,13 @@ class OffersManager {
 
   Future<List<dynamic>> getSearchOffersByProvince(province) async {
     try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
       http.Response response = await http.get(
         Uri.parse("http://${endpoints.IpApi}/api/offers/filterprovince/$province"),
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
           HttpHeaders.acceptHeader: 'application/json',
+          HttpHeaders.authorizationHeader: prefs.getString('token'),
         },
       );
       return jsonDecode(response.body)["searchOffers"];
@@ -69,37 +75,6 @@ class OffersManager {
       return null;
     }
   }
-/*// Funció per agafar les meves ofertes
-    Future<Map> getMyOffers() async {
-    try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      String id = prefs.getString('id');
-      http.Response response = await http.get(
-        Uri.parse("http://${endpoints.IpApi}/api/myoffers/$id"),
-        headers: {
-          HttpHeaders.contentTypeHeader: 'application/json',
-          HttpHeaders.acceptHeader: 'application/json',
-        },
-
-      );
-      return jsonDecode(response.body);
-    } catch (error) {
-      print(error);
-      return null;
-    }
-  }*/
-
-  /*Future<Map> getOffer(String id) async {
-    try{
-      http.Response response = await http.get(
-        Uri.parse("http://${endpoints.IpApi}/api/offer"),
-        headers: {
-          HttpHeaders.contentTypeHeader: 'application/json',
-          HttpHeaders.acceptHeader: 'application/json',
-        },
-
-    }
-  }*/
 
   //Funció per crear una oferta
   Future<bool> createOffer(Offer offer, List<File> images) async {
@@ -114,6 +89,8 @@ class OffersManager {
 
       var request = http.MultipartRequest(
         'POST', Uri.parse("http://${endpoints.IpApi}/api/offer") );
+
+      request.headers['authorization']=prefs.getString('token');
 
       request.fields['title']=offer.title;
       request.fields['description']=offer.description;
@@ -153,12 +130,14 @@ class OffersManager {
     try {
       //Hacemos el PUT a la dirección /user con los datos de un usuario
       print("Updating offer...");
+      SharedPreferences prefs = await SharedPreferences.getInstance();
 
       http.Response response = await http.post(
         Uri.parse("http://${endpoints.IpApi}/api/offer/$idOffer"),
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
           HttpHeaders.acceptHeader: 'application/json',
+          HttpHeaders.authorizationHeader: prefs.getString('token'),
         },
         body: jsonEncode({
           "title": offer.title,
@@ -184,11 +163,13 @@ class OffersManager {
   //Funció per eliminar una oferta
   Future<String> deleteOffer(String id) async {
     try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
       http.Response response = await http.delete(
         Uri.parse("http://${endpoints.IpApi}/api/offer/$id"),
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
           HttpHeaders.acceptHeader: 'application/json',
+          HttpHeaders.authorizationHeader: prefs.getString('token'),
         },
       );
 

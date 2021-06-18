@@ -136,6 +136,7 @@ class UsersManager {
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
           HttpHeaders.acceptHeader: 'application/json',
+          HttpHeaders.authorizationHeader: prefs.getString('token'),
         },
       );
 
@@ -166,6 +167,7 @@ class UsersManager {
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
           HttpHeaders.acceptHeader: 'application/json',
+          HttpHeaders.authorizationHeader: prefs.getString('token'),
         },
         body: jsonEncode({
           "userName": user.userName,
@@ -189,11 +191,13 @@ class UsersManager {
 
   Future<Map> getOwner(idOwner) async {
     try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
       http.Response response = await http.get(
         Uri.parse("http://${endpoints.IpApi}/api/user/$idOwner"),
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
           HttpHeaders.acceptHeader: 'application/json',
+          HttpHeaders.authorizationHeader: prefs.getString('token'),
         },
       );
 
@@ -222,6 +226,7 @@ class UsersManager {
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
           HttpHeaders.acceptHeader: 'application/json',
+          HttpHeaders.authorizationHeader: prefs.getString('token'),
         },
         body: jsonEncode({
           "idUser": idUser,
@@ -249,6 +254,7 @@ class UsersManager {
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
           HttpHeaders.acceptHeader: 'application/json',
+          HttpHeaders.authorizationHeader: prefs.getString('token'),
         },
         body: jsonEncode({
           "idUser": idUser,
@@ -274,6 +280,8 @@ class UsersManager {
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
           HttpHeaders.acceptHeader: 'application/json',
+          HttpHeaders.authorizationHeader: prefs.getString('token'),
+
         },
 
       );
@@ -295,6 +303,7 @@ class UsersManager {
     var request = http.MultipartRequest(
       'POST', Uri.parse("http://${endpoints.IpApi}/api/user/newPhoto/$idUser"),
     );
+    request.headers['authorization']=prefs.getString('token');
 
     request.files.add(await http.MultipartFile.fromPath('image',image.path));
 

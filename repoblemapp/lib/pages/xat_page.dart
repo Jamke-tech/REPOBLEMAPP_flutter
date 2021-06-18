@@ -97,7 +97,7 @@ class _ChatPageState extends State<ChatPage> with ChangeNotifier{
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.teal[400],
+        backgroundColor: Colors.teal[700],
         automaticallyImplyLeading: false,
         title: Row(
           children: [

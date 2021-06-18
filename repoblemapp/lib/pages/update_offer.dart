@@ -88,7 +88,7 @@ class _UpdateOfferState extends State<UpdateOffer> {
           ),
         ),
         centerTitle: true,
-        backgroundColor: Colors.teal[400],
+        backgroundColor: Colors.teal[700],
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_outlined,

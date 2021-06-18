@@ -36,6 +36,7 @@ class XatManager {
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
           HttpHeaders.acceptHeader: 'application/json',
+          HttpHeaders.authorizationHeader: prefs.getString('token'),
         },
         body: jsonEncode({
           //"message": xat.message,
@@ -70,6 +71,7 @@ class XatManager {
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
           HttpHeaders.acceptHeader: 'application/json',
+          HttpHeaders.authorizationHeader: prefs.getString('token'),
         },
       );
 
@@ -90,12 +92,13 @@ class XatManager {
   //GetMessages
   Future<Map> getMessages(String idChat) async {
     try {
-
+      SharedPreferences prefs = await SharedPreferences.getInstance();
       http.Response response = await http.get(
         Uri.parse("http://${endpoints.IpApi}/api/Messages/$idChat"),
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
           HttpHeaders.acceptHeader: 'application/json',
+          HttpHeaders.authorizationHeader: prefs.getString('token'),
         },
       );
       return jsonDecode(response.body);
@@ -116,6 +119,7 @@ class XatManager {
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
           HttpHeaders.acceptHeader: 'application/json',
+          HttpHeaders.authorizationHeader: prefs.getString('token'),
         },
       );
       //print(jsonDecode(response.body)['activeChats']);
@@ -138,6 +142,7 @@ class XatManager {
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
           HttpHeaders.acceptHeader: 'application/json',
+          HttpHeaders.authorizationHeader: prefs.getString('token'),
         },
       );
 
