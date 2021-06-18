@@ -34,7 +34,7 @@ class _MyOffersState extends State<MyOffers> {
     return Scaffold(
         appBar: AppBar(
           elevation: 10,
-          backgroundColor: Colors.teal[400],
+          backgroundColor: Colors.teal[700],
           title: Text(
             "Les meves ofertes",
             style: TextStyle(
@@ -77,7 +77,7 @@ class _MyOffersState extends State<MyOffers> {
                                 return Card(
                                   margin: EdgeInsets.all(8),
                                   clipBehavior: Clip.antiAlias,
-                                  color: Colors.teal,
+                                  color: Colors.teal[700],
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(15.0)),
                                   //para darle un poco de profundidad

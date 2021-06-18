@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flash/flash.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:repoblemapp/http_services/endpoints.dart';
 import 'package:repoblemapp/models/User.dart';
 import 'package:repoblemapp/services/user_service.dart';
@@ -52,10 +55,11 @@ class _EditProfileState extends State<EditProfile> {
 
     return Scaffold(
         appBar: AppBar(
-          elevation: 10,
-          backgroundColor: Colors.teal[400],
+          elevation: 0,
+          backgroundColor: Colors.teal[900],
           title: Text(
             "Modifica el perfil ",
+            textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 35,
               fontFamily: "Hontana",
@@ -74,318 +78,339 @@ class _EditProfileState extends State<EditProfile> {
             },
           ),
         ),
-        body: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Expanded(
-                flex: 1,
-                child: Container(
-                  decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [Colors.green[900], Colors.green[400]])),
+        body: Stack(
+          children:[ Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Expanded(
+                  flex: 1,
                   child: Container(
-                    child: Center(
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                  infoOfUser['profilePhoto']),
-                              radius: 65.0,
-                            ),
-                            SizedBox(
-                              height: 10.0,
-                            ),
-                            Text(infoOfUser['name'],
-                                style: TextStyle(
-                                    fontSize: 22.0, color: Colors.white)),
-                          ]),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(25),
+                            bottomRight: Radius.circular(25)),
+                        gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [Colors.teal[900], Colors.teal[400]])),
+                    child: Container(
+                      child: Center(
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              CircleAvatar(
+                                backgroundImage: NetworkImage(
+                                    infoOfUser['profilePhoto']),
+                                radius: 65.0,
+                              ),
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                              Text(infoOfUser['userName'],
+                                  style: TextStyle(
+                                      fontSize: 22.0, color: Colors.white)),
+                            ]),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Expanded(
-                  flex: 3,
-                  child: Container(
-                      child: Form(
-                        key: _formKey,
-                        autovalidateMode: AutovalidateMode.disabled,
+                Expanded(
+                    flex: 3,
+                    child: Container(
+                        child: Form(
+                          key: _formKey,
+                          autovalidateMode: AutovalidateMode.disabled,
 
-                        child: ListView(children: [
-                          Padding(
-                          padding: const EdgeInsets.fromLTRB(8, 8, 8, 20),
-                          child: TextFormField(
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return 'Camp Obligatori';
-                              } else {
-                                return null;
-                              }
-                            },
-                            controller: userNameInputController,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              prefixIcon: Padding(
-                                padding: const EdgeInsets.all(8),
-                                child: Icon(
-                                  Icons.face_outlined,
-                                  color: Colors.green,
-                                  size: 35,
+                          child: ListView(children: [
+                            Padding(
+                            padding: const EdgeInsets.fromLTRB(8, 8, 8, 20),
+                            child: TextFormField(
+                              validator: (value) {
+                                if (value.isEmpty) {
+                                  return 'Camp Obligatori';
+                                } else {
+                                  return null;
+                                }
+                              },
+                              controller: userNameInputController,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                prefixIcon: Padding(
+                                  padding: const EdgeInsets.all(8),
+                                  child: Icon(
+                                    Icons.face_outlined,
+                                    color: Colors.teal[700],
+                                    size: 35,
+                                  ),
                                 ),
-                              ),
-                              hintText: "Nom d'usuari",
-                              enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.black)),
-                              hintStyle: TextStyle(
-                                fontSize: 20,
-                                color: Colors.teal[900],
-                              ),
-                            ),
-                            // Formato del teclado de entrada
-                            keyboardType:
-                                TextInputType.text, //Formato de texto normal
-                            textInputAction: TextInputAction.next,
-
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.teal[900],
-                            ),
-                          )),
-                          Padding(
-                          padding: const EdgeInsets.fromLTRB(8, 0, 8, 20),
-                          child: TextFormField(
-                            controller: nameInputController,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              prefixIcon: Padding(
-                                padding: const EdgeInsets.all(8),
-                                child: Icon(
-                                  Icons.person_outline_outlined,
-                                  color: Colors.green,
-                                  size: 35,
-                                ),
-                              ),
-                              //labelText: infoOfUser["name"],
-                              hintText: "Nom",
-                              enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.black)),
-                              hintStyle: TextStyle(
-                                fontSize: 20,
-                                color: Colors.teal[900],
-                              ),
-                            ),
-                            // Formato del teclado de entrada
-                            keyboardType:
-                                TextInputType.text, //Formato de texto normal
-                            textInputAction: TextInputAction.next,
-
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.teal[900],
-                            ),
-                          )),
-                          Padding(
-                          padding: const EdgeInsets.fromLTRB(8, 0, 8, 20),
-                          child: TextFormField(
-                            controller: surnameInputController,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              prefixIcon: Padding(
-                                padding: const EdgeInsets.all(8),
-                                child: Icon(
-                                  Icons.people_outline_outlined,
-                                  color: Colors.green,
-                                  size: 35,
-                                ),
-                              ),
-                              //labelText: infoOfUser["surname"],
-                              hintText: "Cognom",
-                              enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.black)),
-                              hintStyle: TextStyle(
-                                fontSize: 20,
-                                color: Colors.teal[900],
-                              ),
-                            ),
-                            // Formato del teclado de entrada
-                            keyboardType:
-                                TextInputType.text, //Formato de texto normal
-                            textInputAction: TextInputAction.next,
-
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.teal[900],
-                            ),
-                          )),
-                          Padding(
-                          padding: const EdgeInsets.fromLTRB(8, 0, 8, 20),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-
-                            children: [
-                              IconButton(
-                                icon: Icon(Icons.cake_outlined,size: 35,color: Colors.green,),
-                                onPressed: () async{
-                                  //ensenyem el date picker
-                                  DateTime _selectedInitialdateTime = await showDatePicker(
-                                      initialDatePickerMode: DatePickerMode.year,
-                                      context: context,
-                                      initialDate: DateTime(1999),
-                                      firstDate: DateTime(1921),
-                                      lastDate: DateTime(2022),
-                                      currentDate: aniversari
-                                  );
-                                  if (_selectedInitialdateTime != null && _selectedInitialdateTime != aniversari)
-                                    setState(() {
-                                      aniversari = _selectedInitialdateTime;
-                                    });
-                                  print(aniversari.toString());
-                                },),
-                              SizedBox(width: 4,),
-                              Text(
-                                newFormat.format(aniversari),
-                                style: TextStyle(
+                                hintText: "Nom d'usuari",
+                                enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.black)),
+                                hintStyle: TextStyle(
                                   fontSize: 20,
                                   color: Colors.teal[900],
                                 ),
                               ),
+                              // Formato del teclado de entrada
+                              keyboardType:
+                                  TextInputType.text, //Formato de texto normal
+                              textInputAction: TextInputAction.next,
 
-                            ],
-                          )),
-                          Padding(
-                          padding: const EdgeInsets.fromLTRB(8, 0, 8, 20),
-                          child: TextFormField(
-                            controller: phoneInputController,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              prefixIcon: Padding(
-                                padding: const EdgeInsets.all(8),
-                                child: Icon(
-                                  Icons.contact_phone_outlined,
-                                  color: Colors.green,
-                                  size: 35,
-                                ),
-                              ),
-                              //labelText: infoOfUser["phone"],
-                              hintText: "Telèfon",
-                              enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.black)),
-                              hintStyle: TextStyle(
+                              style: TextStyle(
                                 fontSize: 20,
                                 color: Colors.teal[900],
                               ),
-                            ),
-                            // Formato del teclado de entrada
-                            keyboardType:
-                                TextInputType.phone, //Formato de texto normal
-                            textInputAction: TextInputAction.next,
-
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.teal[900],
-                            ),
-                          )),
-                           Padding(
-                          padding: const EdgeInsets.fromLTRB(8, 0, 8, 20),
-                          child: TextFormField(
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return 'Camp Obligatori';
-                              } else {
-                                return null;
-                              }
-                            },
-
-                            controller: emailInputController,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              prefixIcon: Padding(
-                                padding: const EdgeInsets.all(8),
-                                child: Icon(
-                                  Icons.alternate_email_outlined,
-                                  color: Colors.green,
-                                  size: 35,
+                            )),
+                            Padding(
+                            padding: const EdgeInsets.fromLTRB(8, 0, 8, 20),
+                            child: TextFormField(
+                              controller: nameInputController,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                prefixIcon: Padding(
+                                  padding: const EdgeInsets.all(8),
+                                  child: Icon(
+                                    Icons.person_outline_outlined,
+                                    color: Colors.teal[700],
+                                    size: 35,
+                                  ),
+                                ),
+                                //labelText: infoOfUser["name"],
+                                hintText: "Nom",
+                                enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.black)),
+                                hintStyle: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.teal[900],
                                 ),
                               ),
-                              //labelText: infoOfUser["email"],
-                              hintText: "Correu electrònic",
-                              enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.black)),
-                              hintStyle: TextStyle(
+                              // Formato del teclado de entrada
+                              keyboardType:
+                                  TextInputType.text, //Formato de texto normal
+                              textInputAction: TextInputAction.next,
+
+                              style: TextStyle(
                                 fontSize: 20,
                                 color: Colors.teal[900],
                               ),
-                            ),
-                            // Formato del teclado de entrada
-                            keyboardType: TextInputType
-                                .emailAddress, //Formato de texto normal
-                            textInputAction: TextInputAction.next,
-
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.teal[900],
-                            ),
-                          )),
-                          Padding(
-                          padding: const EdgeInsets.fromLTRB(8, 0, 8, 20),
-                          child: TextFormField(
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return 'Camp Obligatori';
-                              } else {
-                                return null;
-                              }
-                            },
-                            controller: passwordInputController,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              prefixIcon: Padding(
-                                padding: const EdgeInsets.all(8),
-                                child: Icon(
-                                  Icons.vpn_key_outlined,
-                                  color: Colors.green,
-                                  size: 35,
+                            )),
+                            Padding(
+                            padding: const EdgeInsets.fromLTRB(8, 0, 8, 20),
+                            child: TextFormField(
+                              controller: surnameInputController,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                prefixIcon: Padding(
+                                  padding: const EdgeInsets.all(8),
+                                  child: Icon(
+                                    Icons.people_outline_outlined,
+                                    color: Colors.teal[700],
+                                    size: 35,
+                                  ),
+                                ),
+                                //labelText: infoOfUser["surname"],
+                                hintText: "Cognom",
+                                enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.black)),
+                                hintStyle: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.teal[900],
                                 ),
                               ),
-                              //labelText: infoOfUser["password"],
-                              hintText: "Contrasenya",
-                              enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.black)),
-                              hintStyle: TextStyle(
+                              // Formato del teclado de entrada
+                              keyboardType:
+                                  TextInputType.text, //Formato de texto normal
+                              textInputAction: TextInputAction.next,
+
+                              style: TextStyle(
                                 fontSize: 20,
                                 color: Colors.teal[900],
                               ),
-                            ),
-                            // Formato del teclado de entrada
-                            keyboardType: TextInputType
-                                .visiblePassword, //Formato de texto normal
-                            textInputAction: TextInputAction.next,
-                            obscureText: true,
-                            obscuringCharacter: '*',
+                            )),
+                            Padding(
+                            padding: const EdgeInsets.fromLTRB(8, 0, 8, 20),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
 
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.teal[900],
-                            ),
-                          )),
-                          Padding(
-                          padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
-                          child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                primary: Colors.teal[900],
-                                elevation: 5,
-                                padding: EdgeInsets.all(15),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15),
+                              children: [
+                                IconButton(
+                                  icon: Icon(Icons.cake_outlined,size: 35,color: Colors.teal[700],),
+                                  onPressed: () async{
+                                    //ensenyem el date picker
+                                    DateTime _selectedInitialdateTime = await showDatePicker(
+                                        initialDatePickerMode: DatePickerMode.year,
+                                        context: context,
+                                        initialDate: DateTime(1999),
+                                        firstDate: DateTime(1921),
+                                        lastDate: DateTime(2022),
+                                        currentDate: aniversari
+                                    );
+                                    if (_selectedInitialdateTime != null && _selectedInitialdateTime != aniversari)
+                                      setState(() {
+                                        aniversari = _selectedInitialdateTime;
+                                      });
+                                    print(aniversari.toString());
+                                  },),
+                                SizedBox(width: 4,),
+                                Text(
+                                  newFormat.format(aniversari),
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.teal[900],
+                                  ),
+                                ),
+
+                              ],
+                            )),
+                            Padding(
+                            padding: const EdgeInsets.fromLTRB(8, 0, 8, 20),
+                            child: TextFormField(
+                              controller: phoneInputController,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                prefixIcon: Padding(
+                                  padding: const EdgeInsets.all(8),
+                                  child: Icon(
+                                    Icons.contact_phone_outlined,
+                                    color: Colors.teal[700],
+                                    size: 35,
+                                  ),
+                                ),
+                                //labelText: infoOfUser["phone"],
+                                hintText: "Telèfon",
+                                enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.black)),
+                                hintStyle: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.teal[900],
                                 ),
                               ),
-                              onPressed: () async {
-                                /*var birthdateSplitted = birthDayInputController.text.split("-");
-                                var birthDate = DateTime.parse(birthdateSplitted[2] + "-" + birthdateSplitted[1] + "-" + birthdateSplitted[0]);
+                              // Formato del teclado de entrada
+                              keyboardType:
+                                  TextInputType.phone, //Formato de texto normal
+                              textInputAction: TextInputAction.next,
 
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.teal[900],
+                              ),
+                            )),
+                             Padding(
+                            padding: const EdgeInsets.fromLTRB(8, 0, 8, 20),
+                            child: TextFormField(
+                              validator: (value) {
+                                if (value.isEmpty) {
+                                  return 'Camp Obligatori';
+                                } else {
+                                  return null;
+                                }
+                              },
+
+                              controller: emailInputController,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                prefixIcon: Padding(
+                                  padding: const EdgeInsets.all(8),
+                                  child: Icon(
+                                    Icons.alternate_email_outlined,
+                                    color: Colors.teal[700],
+                                    size: 35,
+                                  ),
+                                ),
+                                //labelText: infoOfUser["email"],
+                                hintText: "Correu electrònic",
+                                enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.black)),
+                                hintStyle: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.teal[900],
+                                ),
+                              ),
+                              // Formato del teclado de entrada
+                              keyboardType: TextInputType
+                                  .emailAddress, //Formato de texto normal
+                              textInputAction: TextInputAction.next,
+
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.teal[900],
+                              ),
+                            )),
+                            Padding(
+                            padding: const EdgeInsets.fromLTRB(8, 0, 8, 20),
+                            child: TextFormField(
+                              validator: (value) {
+                                if (value.isEmpty) {
+                                  return 'Camp Obligatori';
+                                } else {
+                                  return null;
+                                }
+                              },
+                              controller: passwordInputController,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                prefixIcon: Padding(
+                                  padding: const EdgeInsets.all(8),
+                                  child: Icon(
+                                    Icons.vpn_key_outlined,
+                                    color: Colors.teal[700],
+                                    size: 35,
+                                  ),
+                                ),
+                                //labelText: infoOfUser["password"],
+                                hintText: "Contrasenya",
+                                enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.black)),
+                                hintStyle: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.teal[900],
+                                ),
+                              ),
+                              // Formato del teclado de entrada
+                              keyboardType: TextInputType
+                                  .visiblePassword, //Formato de texto normal
+                              textInputAction: TextInputAction.next,
+                              obscureText: true,
+                              obscuringCharacter: '*',
+
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.teal[900],
+                              ),
+                            )),
+                            Padding(
+                            padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary: Colors.teal[900],
+                                  elevation: 5,
+                                  padding: EdgeInsets.all(15),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                ),
+                                onPressed: () async {
+                                  /*var birthdateSplitted = birthDayInputController.text.split("-");
+                                  var birthDate = DateTime.parse(birthdateSplitted[2] + "-" + birthdateSplitted[1] + "-" + birthdateSplitted[0]);
+
+                                  User updatedUser = new User(
+                                    userName: userNameInputController.text,
+                                    name: nameInputController.text,
+                                    surname: surnameInputController.text,
+                                    email: emailInputController.text,
+                                    password: passwordInputController.text,
+                                    phone: phoneInputController.text,
+                                    birthDate: birthDate,
+                                  );
+                                  print("Actualizo");
+                                  print(updatedUser.name);
+                                  print(updatedUser.birthDate);*/
+                                  //Funció per modificar l'usuari
+                                  //Comprovem que tots els camps estan omplerts
+                                  if (_formKey.currentState.validate()) {
+                                //Retorna True si tots els camps obligatoris estan plens
+                                //Creem el usuari modificat o no
                                 User updatedUser = new User(
                                   userName: userNameInputController.text,
                                   name: nameInputController.text,
@@ -393,71 +418,122 @@ class _EditProfileState extends State<EditProfile> {
                                   email: emailInputController.text,
                                   password: passwordInputController.text,
                                   phone: phoneInputController.text,
-                                  birthDate: birthDate,
+                                  profilePhoto:infoOfUser['profilePhoto'],
+                                  birthDate: aniversari,
                                 );
                                 print("Actualizo");
                                 print(updatedUser.name);
-                                print(updatedUser.birthDate);*/
-                                //Funció per modificar l'usuari
-                                //Comprovem que tots els camps estan omplerts
-                                if (_formKey.currentState.validate()) {
-                              //Retorna True si tots els camps obligatoris estan plens
-                              //Creem el usuari modificat o no
-                              User updatedUser = new User(
-                                userName: userNameInputController.text,
-                                name: nameInputController.text,
-                                surname: surnameInputController.text,
-                                email: emailInputController.text,
-                                password: passwordInputController.text,
-                                phone: phoneInputController.text,
-                                profilePhoto:infoOfUser['profilePhoto'],
-                                birthDate: aniversari,
-                              );
-                              print("Actualizo");
-                              print(updatedUser.name);
 
-                              int code = await manager.updateUser(updatedUser);
+                                int code = await manager.updateUser(updatedUser);
 
-                              //Comprovem quin codi ens retorna
-                              if (code == 200) {
-                                //Tornem al Login amb un pop de la pagina
-                                Navigator.pushNamedAndRemoveUntil(context, "/home", ModalRoute.withName('/home'));
-                              } else if (code == 403) {
-                                //Repetición de correo o de nombre de Avatar
-                                showFlash(
-                                    context: context,
-                                    duration: const Duration(seconds: 3),
-                                    builder: (context, controller) {
-                                      return ErrorToast(
-                                        controller: controller,
-                                        textshow:
-                                            "El nom d'avatar o  el correu ja existeix en la BBDD ",
-                                      );
-                                    });
-                              } else {
-                                //Error en el servidor o en el guardat de dades
-                                showFlash(
-                                    context: context,
-                                    duration: const Duration(seconds: 3),
-                                    builder: (context, controller) {
-                                      return ErrorToast(
-                                        controller: controller,
-                                        textshow: "Servidor no disponible",
-                                      );
-                                    });
+                                //Comprovem quin codi ens retorna
+                                if (code == 200) {
+                                  //Tornem al Login amb un pop de la pagina
+                                  Navigator.pushNamedAndRemoveUntil(context, "/home", ModalRoute.withName('/home'));
+                                } else if (code == 403) {
+                                  //Repetición de correo o de nombre de Avatar
+                                  showFlash(
+                                      context: context,
+                                      duration: const Duration(seconds: 3),
+                                      builder: (context, controller) {
+                                        return ErrorToast(
+                                          controller: controller,
+                                          textshow:
+                                              "El nom d'avatar o  el correu ja existeix en la BBDD ",
+                                        );
+                                      });
+                                } else {
+                                  //Error en el servidor o en el guardat de dades
+                                  showFlash(
+                                      context: context,
+                                      duration: const Duration(seconds: 3),
+                                      builder: (context, controller) {
+                                        return ErrorToast(
+                                          controller: controller,
+                                          textshow: "Servidor no disponible",
+                                        );
+                                      });
+                                }
                               }
-                            }
 
-                              },
-                              child: Text(
-                                'Modificar',
-                                style: TextStyle(
-                                  fontSize: 25,
-                                  color: Colors.teal[50],
-                                ),
-                              )))
-                  ]),
-                      )))
-            ]));
+                                },
+                                child: Text(
+                                  'Modificar',
+                                  style: TextStyle(
+                                    fontSize: 25,
+                                    color: Colors.teal[50],
+                                  ),
+                                )))
+                    ]),
+                        )))
+              ]),
+            Positioned(
+              child: FloatingActionButton(
+                  backgroundColor: Colors.teal[900],
+                  onPressed: () async {
+                    //Tenemos que abrir la galeria i enviar la peticion de nueva foto para hacer que la actualize cuando lo hago volver
+                    //hacer el Set state i mostrarlo todito
+                    File image;
+                    var imagePicker = await ImagePicker.pickImage(
+                        source: ImageSource.gallery);
+                    if (imagePicker != null) {
+                      //Si escogemos algo pues lo guardamos y enviamos
+                      image = File(imagePicker.path);
+
+                      //Hacemos la peticion a la BBDD para subir imagen
+
+                      UsersManager manager = UsersManager.getInstance();
+
+                      bool error = await manager.addPhotoToUser(image);
+
+                      if(!error){
+
+                        Map newuser = await manager.getUser();
+                        setState(() {
+                          infoOfUser = newuser;
+                        });
+                      }
+                      else{
+                        showFlash(
+                            context: context,
+                            duration: const Duration(seconds: 3),
+                            builder: (context, controller) {
+                              return ErrorToast(
+                                controller: controller,
+                                textshow: "No s'ha pujat la fotografía",
+                              );
+                            });
+                      }
+
+
+
+
+
+
+
+                    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                  }, child: Icon(Icons.add_a_photo_outlined)),
+              right: MediaQuery.of(context).size.width *0.3,
+              top: MediaQuery.of(context).size.height * .10,
+
+            )
+          ],
+        ));
   }
 }

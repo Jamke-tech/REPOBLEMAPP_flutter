@@ -88,6 +88,12 @@ class _MapOffersState extends State<MapOffers> {
                 minZoom: 5,
                 zoom: 11,
                 maxZoom: 18,
+                onTap: (latlng){
+                  setState(() {
+                    InfoContainer= null;
+
+                  });
+                }
               ),
               layers: [
                 TileLayerOptions(

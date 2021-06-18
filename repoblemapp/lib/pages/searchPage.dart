@@ -123,7 +123,7 @@ class _SearchState extends State<Search> {
                                                 border: InputBorder.none,
                                                 hintText: 'Cerca una oferta',
                                                 hintStyle: TextStyle(
-                                                    fontFamily: 'Hontana', color: Colors.green,
+                                                    fontFamily: 'Hontana', color: Colors.teal[600].withOpacity(0.5),
                                                     fontSize: 18),
                                               ),
                                               textAlignVertical: TextAlignVertical.center,

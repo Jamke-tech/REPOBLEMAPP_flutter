@@ -1,8 +1,10 @@
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'package:repoblemapp/services/user_service.dart';
+import 'package:repoblemapp/widgets/card_map.dart';
 
 import 'package:repoblemapp/widgets/offerscard.dart';
 
@@ -12,7 +14,7 @@ import 'package:latlong/latlong.dart' as Location;
 
 
 class Fav extends StatefulWidget {
-  @override
+    @override
   _FavState createState() => _FavState();
 }
 
@@ -20,6 +22,10 @@ class _FavState extends State<Fav> {
 
   int numberOfFavourite =0;
   List<dynamic> infoOffersFavourite;
+  /// Used to trigger showing/hiding of popups.
+  final PopupController _popupLayerController = PopupController();
+
+  Widget InfoContainer = null;
 
   @override
   void initState()  {
@@ -44,6 +50,7 @@ class _FavState extends State<Fav> {
 
   @override
   Widget build(BuildContext context) {
+    List<Marker> markerlist =[];
 
     Future<List<dynamic>> _getInfoFavOffers() async{
       UsersManager manager = UsersManager.getInstance();
@@ -55,12 +62,35 @@ class _FavState extends State<Fav> {
       infoOffersFavourite= infoBBDD['savedOffers'] ;
       print(infoOffersFavourite);
 
+
+      int i =0;
+      while (i < infoOffersFavourite.length){
+        int position = i;
+        Marker mark = Marker(
+            width: 40,
+            height: 40,
+            point: Location.LatLng(
+                infoOffersFavourite[i]['point']['coordinates'][0],
+                infoOffersFavourite[i]['point']['coordinates'][1]),
+            builder: (context) => Container(
+              child:  Icon(
+                  Icons.location_on_outlined,
+                  color: Colors.deepOrange,
+                  size: 35,),
+              ),
+
+        );
+        markerlist.add(mark);
+        i++;
+
+      }
+
     }
     return Scaffold(
       //backgroundColor: Colors.green[300],
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: Colors.teal[400],
+        backgroundColor: Colors.teal[700],
         
         title: Text('Ofertes Preferides',
           style: TextStyle(
@@ -81,106 +111,142 @@ class _FavState extends State<Fav> {
               else
                 return Padding(
                   padding: const EdgeInsets.fromLTRB(8, 8, 8, 2),
-                  child: ListView(
+                  child: Column(
 
                     children: [
 
-                      //Añadimos un poco de elevacion a nuestro TextField
-                      //Para ello tenemos que hacer wrap in a Material widget
-                      Material(
-                        elevation: 10.0,
-                        borderRadius: BorderRadius.circular(30.0),
-                        shadowColor: Color(0x55434343),
-                        child: TextField(
-                          textAlign: TextAlign.start,
-                          textAlignVertical: TextAlignVertical.center,
-                          decoration: InputDecoration(
-                            hintText: "Busca a les ofertes preferides",
-                            border: InputBorder.none,
-                            icon: Icon(
-                              Icons.search,
-                            ),
-                            //falta poner el icono de la lupa   que no me ha dejado
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 30.0),
-                      //Añadimos una barra de tabulación
-                      //servira para distinguir las opciones de ver las ofertas en modo mapa o las ofertas en si
                       DefaultTabController(
                         length: 2,
                         child: Expanded(
                           child: Column(
                             children: [
                               TabBar(
-                                indicatorColor: Colors.black,
+                                indicatorColor: Colors.teal[700],
                                 unselectedLabelColor: Colors.grey[700],
-                                labelColor: Colors.black,
+                                labelColor: Colors.teal[700],
+                                labelStyle: TextStyle(
+                                  fontSize: 25,
+                                  fontFamily: "Brokenbrush",
+                                ),
+                                isScrollable: false,
                                 tabs: [
                                   Tab(
-                                    text: "Ofertes",
+                                    text:"OFERTES"
                                   ),
                                   Tab(
-                                    text: "Mapa",
+                                    text: "MAPA",
                                   ),
                                 ],
                               ),
                               SizedBox(height: 20.0),
-                              Container(
-                                  height: 450,
+                              Expanded(
+                                child: Container(
+                                    
 
-                                  child: TabBarView(
-                                    children: [
-                                      //Ponemos ya las ofertas
-                                      Container(
-                                        //Apartado de ofertas
-                                        child: ListView.builder(
-                                          itemCount: numberOfFavourite,
-                                          scrollDirection: Axis.horizontal,
-                                          itemBuilder: _itemBuilder,
+                                    child: TabBarView(
+                                      dragStartBehavior: DragStartBehavior.down,
+                                      children: [
+                                        //Ponemos ya las ofertas
+                                        Container(
+                                          //Apartado de ofertas
+                                          child: ListView.builder(
+                                            itemCount: numberOfFavourite,
+                                            scrollDirection: Axis.horizontal,
+                                            itemBuilder: _itemBuilder,
 
+                                          ),
                                         ),
-                                      ),
-                                      Container(
-                                        //Apartado de Mapa
-                                        child: Container(
-                                          child: Padding(
-                                              padding: const EdgeInsets.all(6.0),
-                                              child: FlutterMap(
-                                                  options: MapOptions(
-                                                    plugins: [MarkerClusterPlugin()],
-                                                    //Donde estarà el mapa centrado
-                                                    center: Location.LatLng(
-                                                        infoOffersFavourite[0]['point']['coordinates'][0],
-                                                        infoOffersFavourite[0]['point']['coordinates'][1]),
-                                                    minZoom: 5,
-                                                    zoom: 11,
-                                                    maxZoom: 18,
-                                                  ),
-                                                  layers: [
-                                                    TileLayerOptions(
-                                                        urlTemplate:
-                                                        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                                                        subdomains: ['a', 'b', 'c']),
-                                                    MarkerClusterLayerOptions(
-                                                      markers: [],
-                                                      polygonOptions: PolygonOptions(
-                                                          borderColor: Colors.teal,
-                                                          color: Colors.white,
-                                                          borderStrokeWidth: 3),
-                                                      builder: (context, markers) {
-                                                        return FloatingActionButton(
-                                                          child: Text(markers.length.toString()),
-                                                          onPressed: null,
-                                                        );
-                                                      },
-                                                    )
-                                                  ]
-                                              )),
+                                        Container(
+                                          //Apartado de Mapa
+                                          child: Column(
+                                            children: [
+                                              Expanded(
+                                                flex: 6,
+                                                child: Container(
+                                                  child: Padding(
+                                                      padding: const EdgeInsets.all(6.0),
+                                                      child: FlutterMap(
+                                                          options: MapOptions(
+                                                            plugins: [MarkerClusterPlugin(),PopupMarkerPlugin() ],
+                                                            //Donde estarà el mapa centrado
+                                                            center: Location.LatLng(
+                                                                infoOffersFavourite[0]['point']['coordinates'][0],
+                                                                infoOffersFavourite[0]['point']['coordinates'][1]),
+                                                            minZoom: 5,
+                                                            zoom: 11,
+                                                            maxZoom: 18,
+                                                            onTap: (_) => _popupLayerController
+                                                                .hidePopup(),
+                                                          ),
+                                                          layers: [
+                                                            TileLayerOptions(
+                                                                urlTemplate:
+                                                                'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                                                                subdomains: ['a', 'b', 'c']),
+                                                            MarkerClusterLayerOptions(
+                                                              markers: markerlist,
+                                                              polygonOptions: PolygonOptions(
+                                                                  borderColor: Colors.teal,
+                                                                  color: Colors.white,
+                                                                  borderStrokeWidth: 3),
+                                                              builder: (context, markers) {
+                                                                return FloatingActionButton(
+                                                                  child: Text(markers.length.toString()),
+                                                                  onPressed: null,
+                                                                );
+                                                              },
+                                                            ),
+                                                            PopupMarkerLayerOptions(
+                                                              markers: markerlist,
+                                                              popupController: _popupLayerController,
+                                                              popupBuilder: (BuildContext _, Marker marker) => Padding(
+                                                                padding: const EdgeInsets.all(10),
+                                                                child: Container(
+                                                                  padding: EdgeInsets.all(4),
+
+                                                                  decoration: BoxDecoration(
+                                                                      borderRadius: BorderRadius.circular(12.0),
+                                                                      color: Colors.teal[100]),
+                                                                  child: Column(
+                                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                                    mainAxisSize: MainAxisSize.min,
+                                                                    children: <Widget>[
+                                                                      Text(
+                                                                        infoOffersFavourite[markerlist.indexOf(marker)]['title'],
+                                                                        textAlign: TextAlign.center,
+                                                                        style: const TextStyle(
+                                                                          fontWeight: FontWeight.bold,
+                                                                          fontSize: 20.0,
+                                                                          color: Colors.teal,
+                                                                        ),
+                                                                      ),
+                                                                      const Padding(padding: EdgeInsets.symmetric(vertical: 4.0)),
+                                                                      Text(
+                                                                        "Preu: "+infoOffersFavourite[markerlist.indexOf(marker)]['price'].toString()+" €",
+                                                                        style: const TextStyle(fontSize: 16.0),
+                                                                      ),
+                                                                      Text(
+                                                                        infoOffersFavourite[markerlist.indexOf(marker)]['place'],
+                                                                        style: const TextStyle(fontSize: 12.0),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              )
+                                                            ),
+                                                          ]
+                                                      )),
+                                                ),
+                                              ),
+
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    ],)
+                                      ],)
+                                ),
                               ),
+                              SizedBox(height: 20.0),
 
                             ],
                           ),

@@ -164,7 +164,7 @@ class _SocialState extends State<Social> {
 
   AppBar buildAppBar() {
     return AppBar(
-      backgroundColor: Colors.teal[400],
+      backgroundColor: Colors.teal[700],
       automaticallyImplyLeading: false,
       title: Text("RepoblemAPP Chats"),
       actions: [

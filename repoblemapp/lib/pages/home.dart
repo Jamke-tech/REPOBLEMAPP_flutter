@@ -22,7 +22,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       bottomNavigationBar: CurvedNavigationBar(
         backgroundColor: Colors.lightGreen[200],
-        color: Colors.teal[400],
+        color: Colors.teal[700],
 
         index: selectedIndex,
         items: [

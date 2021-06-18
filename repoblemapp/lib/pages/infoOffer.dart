@@ -52,7 +52,7 @@ class _InfoOfferState extends State<InfoOffer> {
     }
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.teal[400],
+        backgroundColor: Colors.teal[700],
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_outlined,
@@ -115,7 +115,7 @@ class _InfoOfferState extends State<InfoOffer> {
                           borderRadius: BorderRadius.circular(30.0)),
                       //para darle un poco de profundidad
                       elevation: 5.0,
-                      shadowColor: Colors.teal,
+                      shadowColor: Colors.teal[600],
                       child: Container(
                         decoration: BoxDecoration(
                             image: DecorationImage(
@@ -185,10 +185,12 @@ class _InfoOfferState extends State<InfoOffer> {
 
           //Preu + nom + telefon + foto
           Container(
+
               margin: EdgeInsets.all(16),
               padding: EdgeInsets.all(6),
               decoration: BoxDecoration(
-                color: Colors.teal[200],
+
+                color: Colors.teal[400],
                 borderRadius: BorderRadius.all(Radius.circular(15)),
               ),
               child: Row(
@@ -224,7 +226,7 @@ class _InfoOfferState extends State<InfoOffer> {
                           Text(
                             infoOfOwner['name'] + ' ' + infoOfOwner['surname'],
                             style: TextStyle(
-                              fontSize: 15,
+                              fontSize: 16,
                               color: Colors.black,
                             ),
                             textAlign: TextAlign.end,

@@ -153,7 +153,7 @@ class _UpdateOfferState extends State<UpdateOffer> {
                                   padding: const EdgeInsets.all(8),
                                   child: Icon(
                                     Icons.title,
-                                    color: Colors.green,
+                                    color: Colors.teal[700],
                                     size: 35,
                                   ),
                                 ),
@@ -186,7 +186,7 @@ class _UpdateOfferState extends State<UpdateOffer> {
                                   padding: const EdgeInsets.all(8),
                                   child: Icon(
                                     Icons.euro,
-                                    color: Colors.green,
+                                    color: Colors.teal[700],
                                     size: 35,
                                   ),
                                 ),
@@ -227,7 +227,7 @@ class _UpdateOfferState extends State<UpdateOffer> {
                                   padding: const EdgeInsets.all(8),
                                   child: Icon(
                                     Icons.description_outlined,
-                                    color: Colors.green,
+                                    color: Colors.teal[700],
                                     size: 35,
                                   ),
                                 ),
@@ -268,7 +268,7 @@ class _UpdateOfferState extends State<UpdateOffer> {
                                   padding: const EdgeInsets.all(8),
                                   child: Icon(
                                     Icons.location_city,
-                                    color: Colors.green,
+                                    color: Colors.teal[700],
                                     size: 35,
                                   ),
                                 ),
@@ -298,15 +298,25 @@ class _UpdateOfferState extends State<UpdateOffer> {
                               children: [
                                 Icon(
                                   Icons.home_work_outlined,
-                                  color: Colors.green,
+                                  color: Colors.teal[700],
                                   size:35,
                                 ),
-                                SizedBox(width: 16,),
+                                SizedBox(width: 8,),
                                 DropdownButton(
                                   value: _valueProvince,
                                   items: lista.map((String a) {
                                     return DropdownMenuItem(
-                                        value: a, child: Text(a));
+                                        value: a, child: Text(a,
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        color: Colors.teal[900],
+                                      ),
+
+
+
+
+
+                                    ));
                                   }).toList(),
                                   onChanged: (value) => {
                                     setState(() {
@@ -338,7 +348,7 @@ class _UpdateOfferState extends State<UpdateOffer> {
                                   padding: const EdgeInsets.all(8),
                                   child: Icon(
                                     Icons.directions,
-                                    color: Colors.green,
+                                    color: Colors.teal[700],
                                     size: 35,
                                   ),
                                 ),

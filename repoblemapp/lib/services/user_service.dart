@@ -283,4 +283,41 @@ class UsersManager {
       return null;
     }
   }
+
+  Future<bool> addPhotoToUser(File image) async{
+    try{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String idUser = prefs.getString('id');
+
+
+    //Formato multipart
+
+    var request = http.MultipartRequest(
+      'POST', Uri.parse("http://${endpoints.IpApi}/api/user/newPhoto/$idUser"),
+    );
+
+    request.files.add(await http.MultipartFile.fromPath('image',image.path));
+
+    var response= await request.send();
+    final res = await http.Response.fromStream(response);
+
+    if(jsonDecode(res.body)['code'] == "200"){
+      return false;
+    }
+    else{
+      return true;
+    }
+
+  } catch (error) {
+    print(error);
+    return true;
+  }
+
+
+
+
+
+  }
+
+
 }
