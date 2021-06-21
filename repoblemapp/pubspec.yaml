@@ -40,6 +40,7 @@ dependencies:
   provider: ^4.3.3
   socket_io_client: ^0.9.12
   flutter_map_marker_popup: ^0.2.1
+  jitsi_meet: ^3.0.0
 
   latlong: ^0.6.1
 
@@ -57,8 +58,8 @@ dev_dependencies:
   flutter_launcher_icons: ^0.8.0
 
 flutter_native_splash:
-  color: '#0c2a0a'
-  image: assets/images/Repoblem_1000.png
+  color: '#00796B'
+  image: assets/images/Repoblem.png
   android: true
   ios: true
 

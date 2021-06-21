@@ -4,12 +4,16 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_socket_io/socket_io_manager.dart';
 import 'package:repoblemapp/http_services/endpoints.dart';
-import 'package:repoblemapp/models/Message.dart';
+import'package:repoblemapp/models/Message.dart';
 import 'package:repoblemapp/models/renueva_Chat.dart';
 import 'package:repoblemapp/models/User.dart';
 import 'package:flutter_socket_io/flutter_socket_io.dart';
 import 'package:provider/provider.dart';
+import 'package:repoblemapp/services/user_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:jitsi_meet/jitsi_meet.dart';
+import 'dart:io';
+import 'package:flutter/cupertino.dart';
 
 
 import 'package:socket_io_client/socket_io_client.dart' as IO;
@@ -34,8 +38,19 @@ class _ChatPageState extends State<ChatPage> with ChangeNotifier{
   Map<String, dynamic> infoOfChat;
   String id;
 
+  _scrollToBottom(){
+    _controller.jumpTo(_controller.position.maxScrollExtent);
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) => _scrollToBottom());
+
+
+
     //Pasamos un mapa con toda la informacion
     Map data = ModalRoute.of(context).settings.arguments;
     if(messages.isEmpty) {
@@ -123,8 +138,75 @@ class _ChatPageState extends State<ChatPage> with ChangeNotifier{
           ],
         ),
         actions: [
-          IconButton(icon: Icon(Icons.videocam,size: 35,), onPressed: () {
+          IconButton(icon: Icon(Icons.videocam,size: 35,),
+              onPressed: () async{
             //Abrimos una sala de Jitsi para hacer la video llamada
+
+            //Hem d'entrar a la sala de videoxat
+            //Configuramos la Url del servidor
+            Endpoints endpoints = Endpoints.getInstance();
+            String serverUrl = endpoints.urlServerJitsi;
+
+            //Recuperamos el nombre del usuario i el email para poderlos poner en el meet
+
+            UsersManager instance = UsersManager.getInstance();
+            Map infoOfUser = await instance.getUser();
+
+            String userName = infoOfUser['name'] + ' ' + infoOfUser['surname'];
+            print(userName);
+            String userEmail = infoOfUser['email'];
+
+
+            print(infoOfChat['_id']);
+
+            Map<FeatureFlagEnum, bool> featureFlags = {
+              FeatureFlagEnum.WELCOME_PAGE_ENABLED: false,
+            };
+
+            // Here is an example, disabling features for each platform
+            if (Platform.isAndroid) {
+              // Disable ConnectionService usage on Android to avoid issues (see README)
+              featureFlags[FeatureFlagEnum.CALL_INTEGRATION_ENABLED] = false;
+            } else if (Platform.isIOS) {
+              // Disable PIP on iOS as it looks weird
+              featureFlags[FeatureFlagEnum.PIP_ENABLED] = false;
+            }
+
+            //Creamos la variable donde pondremos todas las opciones de la session de Jitse meet
+            var options = JitsiMeetingOptions()
+              ..room = infoOfChat['_id']
+              ..serverURL = serverUrl
+              ..subject = infoOfChat['offerRelated']['title']
+              ..userDisplayName = userName
+              ..userEmail = userEmail
+              ..iosAppBarRGBAColor = "#0080FF80" //solamente para IOS
+              ..audioOnly = false
+              ..audioMuted = true
+              ..videoMuted = true
+              ..featureFlags.addAll(featureFlags)
+              ..webOptions = {
+                "roomName": infoOfChat['_id'],
+                "width": "100%",
+                "height": "100%",
+                "enableWelcomePage": false,
+                "chromeExtensionBanner": null,
+                "userInfo": {"displayName": userName}
+              };
+
+            //Hacemos la connexión con Jitsi enviandole las options que acabamos de poner
+            await JitsiMeet.joinMeeting(
+              options,
+            );
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -150,7 +150,7 @@ class _FavState extends State<Fav> {
                                         Container(
                                           //Apartado de ofertas
                                           child: ListView.builder(
-                                            itemCount: numberOfFavourite,
+                                            itemCount: infoOffersFavourite.isEmpty? 0:infoOffersFavourite.length,
                                             scrollDirection: Axis.horizontal,
                                             itemBuilder: _itemBuilder,
 
@@ -173,7 +173,7 @@ class _FavState extends State<Fav> {
                                                                 infoOffersFavourite[0]['point']['coordinates'][0],
                                                                 infoOffersFavourite[0]['point']['coordinates'][1]),
                                                             minZoom: 5,
-                                                            zoom: 11,
+                                                            zoom: 7,
                                                             maxZoom: 18,
                                                             onTap: (_) => _popupLayerController
                                                                 .hidePopup(),

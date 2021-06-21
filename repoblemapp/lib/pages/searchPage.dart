@@ -224,7 +224,7 @@ class _SearchState extends State<Search> {
 
                       Expanded(
                         child: ListView.builder(
-                            itemCount: offers.length,
+                            itemCount: offers.isEmpty ? 0: offers.length ,
                             itemBuilder: (context, index) {
                               bool favourite = false;
                               print(offers.length);
@@ -278,11 +278,29 @@ class _SearchState extends State<Search> {
                                                   fontSize: 16,
                                                 ),
                                               ),
-                                              subtitle: Text(offers[index]["village"],
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 12,
-                                                  )),
+                                              subtitle: Row(
+                                                children: [
+
+                                                  Text(offers[index]["village"],
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 12,
+                                                      )),
+                                                  SizedBox(width: 20,),
+
+                                                  Text(offers[index]["price"].toString(),
+                                                      style: TextStyle(
+                                                        color: Colors.amber,
+                                                        fontSize: 20,
+                                                      )),
+                                                  Text(" €",
+                                                      style: TextStyle(
+                                                        fontFamily: "Brokenbrush",
+                                                        color: Colors.amber,
+                                                        fontSize: 20,
+                                                      )),
+                                                ],
+                                              ),
                                               trailing: IconButton(
                                                 icon: Icon(
                                                   estrella,
@@ -342,11 +360,28 @@ class _SearchState extends State<Search> {
                                                   fontSize: 16,
                                                 ),
                                               ),
-                                              subtitle: Text(offers[index]["village"],
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 12,
-                                                  )),
+                                              subtitle: Row(
+                                                children: [
+                                                  Text(offers[index]["village"],
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 12,
+                                                      )),
+                                                  SizedBox(width: 20,),
+
+                                                  Text(offers[index]["price"].toString(),
+                                                      style: TextStyle(
+                                                        color: Colors.amber,
+                                                        fontSize: 20,
+                                                      )),
+                                                  Text(" €",
+                                                      style: TextStyle(
+                                                        fontFamily: "Brokenbrush",
+                                                        color: Colors.amber,
+                                                        fontSize: 20,
+                                                      )),
+                                                ],
+                                              ),
                                               trailing: IconButton(
                                                 icon: Icon(
                                                   estrella,
