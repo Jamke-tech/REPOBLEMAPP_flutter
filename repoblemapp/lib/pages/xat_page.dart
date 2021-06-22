@@ -42,6 +42,13 @@ class _ChatPageState extends State<ChatPage> with ChangeNotifier{
     _controller.jumpTo(_controller.position.maxScrollExtent);
   }
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    socketIO.disconnect();
+    super.dispose();
+  }
+
 
 
   @override
