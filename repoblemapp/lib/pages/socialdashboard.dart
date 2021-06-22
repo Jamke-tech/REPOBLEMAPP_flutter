@@ -217,13 +217,13 @@ class _SocialState extends State<Social> {
     return AppBar(
       backgroundColor: Colors.teal[700],
       automaticallyImplyLeading: false,
-      title: Text("RepoblemAPP Chats"),
-      actions: [
-        IconButton(
-          icon: Icon(Icons.search),
-          onPressed: () {},
-        ),
-      ],
+      title: Text("RepoblemAPP Chats",
+          style: TextStyle(
+            fontSize: 35,
+            fontFamily: "Hontana",
+            color: Colors.white,)),
+      centerTitle: true,
+
     );
   }
 }
