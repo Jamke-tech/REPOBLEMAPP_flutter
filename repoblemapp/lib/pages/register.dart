@@ -505,7 +505,7 @@ class _RegisterState extends State<Register> {
                                 email: emailInputController.text,
                                 password: passwordInputController.text,
                                 phone: phoneInputController.text,
-                                birthDate: dateSelected,
+                                birthDate:dateSelected,
                               );
                               print (dateSelected);
 
